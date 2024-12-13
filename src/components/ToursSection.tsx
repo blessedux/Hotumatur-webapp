@@ -49,10 +49,10 @@ const tours: TourCard[] = [
 
 export default function TourSection() {
     return (
-        <section className="w-full px-4 py-12 md:px-6 lg:px-8">
+        <section className="w-full px-4 py-8 md:px-6 lg:px-8">
             <div className="mx-auto max-w-6xl space-y-12">
                 <div className="text-center">
-                    <h2 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
+                    <h2 className="text-2xl font-bold tracking-tight md:text-4xl lg:text-5xl">
                         Vive La Esencia De Rapa Nui
                     </h2>
                 </div>

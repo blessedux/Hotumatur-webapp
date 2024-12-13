@@ -27,7 +27,7 @@ export default function NavBar() {
     })
 
     return (
-        <nav className="bg-gradient-to-r from-[#1f45d4] to-[#178fd9] px-4 py-4">
+        <nav className="bg-gradient-to-r from-[#1f45d4] to-[#9767ee] px-4 py-4">
             <div className="max-w-7xl mx-auto flex items-center justify-between">
                 <Link href="/" className="text-white text-2xl font-semibold">
                     <Image src="/hotumatur-logo.svg" alt="Logo" width={100} height={100} className="md:w-[160px] md:h-auto  brightness-0 invert" />
