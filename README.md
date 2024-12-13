@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hotumatur Tours
 
-## Getting Started
+Una aplicación web moderna para reservar tours en Isla de Pascua (Rapa Nui). Diseñada para ofrecer una experiencia de usuario fluida y atractiva, permitiendo a los visitantes explorar y reservar diferentes experiencias turísticas en la isla.
 
-First, run the development server:
+## Características Principales
+
+- Diseño responsivo y moderno
+- Sistema de reservas en tiempo real
+- Catálogo de tours interactivo
+- Interfaz de usuario intuitiva
+- Animaciones suaves y transiciones elegantes
+
+## Tecnologías Utilizadas
+
+- **Frontend Framework**: Next.js 15.1
+- **Lenguaje**: TypeScript
+- **Estilos**:
+  - Tailwind CSS
+  - Shadcn/ui
+  - Tailwind Animate
+- **Componentes**:
+  - Radix UI
+  - Headless UI
+  - React Spring (animaciones)
+- **Herramientas de Desarrollo**:
+  - ESLint
+  - Prettier
+  - TypeScript ESLint
+
+## Requisitos Previos
+
+- Node.js (versión 18 o superior)
+- npm o yarn
+
+## Instalación
+
+1. Clona el repositorio:
+
+```bash
+git clone https://github.com/tu-usuario/hotumatur-app.git
+cd hotumatur-app
+```
+
+2. Instala las dependencias:
+
+```bash
+npm install
+# o
+yarn install
+```
+
+3. Crea un archivo `.env.local` en la raíz del proyecto y configura las variables de entorno necesarias.
+
+4. Inicia el servidor de desarrollo:
 
 ```bash
 npm run dev
-# or
+# o
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts Disponibles
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` - Inicia el servidor de desarrollo
+- `npm run build` - Construye la aplicación para producción
+- `npm run start` - Inicia el servidor de producción
+- `npm run lint` - Ejecuta el linter
+- `npm run lint:fix` - Corrige automáticamente los problemas de linting
+- `npm run format` - Formatea el código usando Prettier
 
-## Learn More
+## Estructura del Proyecto
 
-To learn more about Next.js, take a look at the following resources:
+```
+hotumatur-app/
+├── src/
+│   ├── app/          # Páginas y layouts de Next.js
+│   ├── components/   # Componentes reutilizables
+│   ├── lib/         # Utilidades y helpers
+│   └── types/       # Definiciones de tipos TypeScript
+├── public/          # Archivos estáticos
+└── ...             # Archivos de configuración
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Licencia
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT](https://choosealicense.com/licenses/mit/)
