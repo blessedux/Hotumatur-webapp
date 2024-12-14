@@ -2,12 +2,10 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
-import { FaWhatsapp } from 'react-icons/fa';
-import { FaInstagram } from "react-icons/fa";
-import { FaTripadvisor } from "react-icons/fa";
-import { FaTiktok } from "react-icons/fa";
+import { FaWhatsapp, FaInstagram, FaTripadvisor, FaTiktok } from 'react-icons/fa';
+import { EnvelopeIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
+
 export default function Footer() {
     const [windowWidth, setWindowWidth] = useState(0);
 
@@ -24,7 +22,6 @@ export default function Footer() {
         <footer className='relative text-white overflow-hidden min-h-[600px] w-full'>
             {/* Video Background */}
             <div className='absolute inset-0 z-0 w-full h-full'>
-                {/* Blurred background for gaps */}
                 <div
                     className='absolute inset-0 bg-cover bg-center'
                     style={{
@@ -33,9 +30,7 @@ export default function Footer() {
                         transform: 'scale(1.1)',
                     }}
                 />
-                {/* Overlay */}
                 <div className='absolute inset-0 bg-emerald-950/70 z-10' />
-                {/* Vimeo Embed */}
                 <div className='absolute inset-0 overflow-hidden'>
                     <iframe
                         src='https://player.vimeo.com/video/1037857996?autoplay=1&muted=1&loop=1&background=1'
@@ -64,7 +59,7 @@ export default function Footer() {
                         <p className='text-sm tracking-wider uppercase'>
                             Ubicados en Hanga Roa, Rapa Nui{' '}
                             <Link
-                                href='https://www.google.com/maps/place/Hotumatur+Rapa+Nui/@-27.1515001,-109.4394778,17z/data=!3m1!4b1!4m6!3m5!1s0x9947fb91364cf45b:0xe03a9f249c442166!8m2!3d-27.1515002!4d-109.4346069!16s%2Fg%2F11vlw42ghx?entry=ttu&g_ep=EgoyMDI0MTIwOS4wIKXMDSoASAFQAw%3D%3D'
+                                href='https://www.google.com/maps/place/Hotumatur+Rapa+Nui/'
                                 className='underline underline-offset-4 hover:text-emerald-300'
                                 target='_blank'
                                 rel='noopener noreferrer'
@@ -72,42 +67,6 @@ export default function Footer() {
                                 Ver en el mapa
                             </Link>
                         </p>
-                    </div>
-
-                    {/* Contact Numbers */}
-                    <div className='grid grid-cols-1 md:grid-cols-3 gap-8 text-center w-full max-w-4xl'>
-                        <Link
-                            href='tel:+56962064520'
-                            className='relative group bg-white/10 rounded-lg p-6 transition-all duration-300 hover:bg-white/20'
-                        >
-                            <PhoneIcon className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 text-white opacity-5 group-hover:opacity-10 transition-opacity duration-300' />
-                            <h3 className='text-sm tracking-wider uppercase mb-2 relative z-10'>
-                                Reservaciones
-                            </h3>
-                            <p className='text-2xl relative z-10'>+56 9 6206 4520</p>
-                        </Link>
-                        <Link
-                            href='https://wa.me/56962064520'
-                            className='relative group bg-white/10 rounded-lg p-6 transition-all duration-300 hover:bg-white/20'
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <FaWhatsapp className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 text-white opacity-5 group-hover:opacity-10 transition-opacity duration-300' />
-                            <h3 className='text-sm tracking-wider uppercase mb-2 relative z-10'>
-                                WhatsApp
-                            </h3>
-                            <p className='text-2xl relative z-10'>+56 9 6206 4520</p>
-                        </Link>
-                        <Link
-                            href='mailto:info@hotumatur.com'
-                            className='relative group bg-white/10 rounded-lg p-6 transition-all duration-300 hover:bg-white/20'
-                        >
-                            <EnvelopeIcon className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 text-white opacity-5 group-hover:opacity-10 transition-opacity duration-300' />
-                            <h3 className='text-sm tracking-wider uppercase mb-2 relative z-10'>
-                                Email
-                            </h3>
-                            <p className='text-lg relative z-10'>info@hotumatur.com</p>
-                        </Link>
                     </div>
 
                     {/* Social Media */}
@@ -138,6 +97,24 @@ export default function Footer() {
                             aria-label='TikTok'
                         >
                             <FaTiktok className='w-8 h-8' />
+                        </Link>
+                        <Link
+                            href='https://wa.me/56962064520'
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='hover:text-emerald-300 transition-colors'
+                            aria-label='WhatsApp'
+                        >
+                            <FaWhatsapp className='w-8 h-8' />
+                        </Link>
+                        <Link
+                            href='/Contacto'
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='hover:text-emerald-300 transition-colors'
+                            aria-label='Email'
+                        >
+                            <EnvelopeIcon className='w-8 h-8' />
                         </Link>
                     </div>
 
@@ -194,7 +171,6 @@ export default function Footer() {
                         >
                             Tours
                         </Link>
-
                         <Link
                             href='/privacidad'
                             className='text-sm uppercase tracking-wider hover:text-emerald-300 transition-colors'
