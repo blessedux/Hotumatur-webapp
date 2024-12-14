@@ -82,7 +82,7 @@ export default function NavBar() {
                     <Link href="/nosotros" className="text-white hover:text-white/80">
                         Nosotros
                     </Link>
-                    <Link href="/contactanos" className="text-white hover:text-white/80">
+                    <Link href="/contacto" className="text-white hover:text-white/80">
                         Contáctanos
                     </Link>
                 </div>
