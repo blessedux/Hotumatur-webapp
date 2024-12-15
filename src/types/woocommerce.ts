@@ -1,17 +1,38 @@
-export interface WooProduct {
+// src/types/woocommerce.ts
+export interface Product {
   id: number;
   name: string;
   slug: string;
-  permalink: string;
   price: string;
+  regular_price: string;
   description: string;
-  images: { src: string }[];
+  short_description: string;
+  images: ProductImage[];
+  categories: ProductCategory[];
+  meta_data: {
+    id: number;
+    key: string;
+    value: string;
+  }[];
+  attributes: {
+    id: number;
+    name: string;
+    slug: string;
+    position: number;
+    visible: boolean;
+    variation: boolean;
+    options: string[];
+  }[];
 }
 
-export interface WooCategory {
+export interface ProductImage {
+  id: number;
+  src: string;
+  alt: string;
+}
+
+export interface ProductCategory {
   id: number;
   name: string;
   slug: string;
-  description: string;
-  image: { src: string };
 }

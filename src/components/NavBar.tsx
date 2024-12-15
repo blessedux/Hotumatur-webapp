@@ -6,16 +6,18 @@ import { Menu, Transition, MenuItems, MenuButton, MenuItem } from '@headlessui/r
 import { ChevronDown, MenuIcon, X } from 'lucide-react'
 import Image from 'next/image'
 import { useSpring, animated } from '@react-spring/web'
-
-const tours = [
-    { name: "Tour Isla de Pascua Clásico", href: "/tours/clasico" },
-    { name: "Aventura en Rapa Nui", href: "/tours/aventura" },
-    { name: "Descubre los Moais", href: "/tours/moais" },
-    { name: "Atardecer en Ahu Tahai", href: "/tours/atardecer" },
-]
+import { useProducts } from "@/hooks/useProducts"
 
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false)
+    const { products, loading } = useProducts()
+
+    const tours = products
+        .filter(product => product.categories.some(category => category.name === "Tours"))
+        .map(tour => ({
+            name: tour.name,
+            href: `/tours/${tour.slug}`
+        }))
 
     const menuAnimation = useSpring({
         transform: isOpen ? 'translateX(0%)' : 'translateX(100%)',
@@ -61,21 +63,24 @@ export default function NavBar() {
                             leaveTo="transform opacity-0 scale-95"
                         >
                             <MenuItems className="absolute right-0 mt-2 w-80 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ">
-                                <div className="py-4">
-                                    {tours.map((tour) => (
-                                        <MenuItem key={tour.name}>
-                                            {({ active }) => (
-                                                <Link
-                                                    href={tour.href}
-                                                    className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                                                        } block px-6 py-3 text-md`}
-                                                >
-                                                    {tour.name}
-                                                </Link>
-                                            )}
-                                        </MenuItem>
-                                    ))}
-                                </div>
+                                {loading ? (
+                                    <div className="px-6 py-3">Loading...</div>
+                                ) : (
+                                    <div className="py-4">
+                                        {tours.map((tour) => (
+                                            <MenuItem key={tour.name}>
+                                                {({ active }) => (
+                                                    <Link
+                                                        href={tour.href}
+                                                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'} block px-6 py-3 text-md`}
+                                                    >
+                                                        {tour.name}
+                                                    </Link>
+                                                )}
+                                            </MenuItem>
+                                        ))}
+                                    </div>
+                                )}
                             </MenuItems>
                         </Transition>
                     </Menu>
