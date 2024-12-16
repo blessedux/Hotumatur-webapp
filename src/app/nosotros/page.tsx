@@ -7,7 +7,7 @@ import PlanTrip from "./components/plan-trip";
 import Services from "./components/services";
 import { SpecialTripsSection } from "./components/special-trips";
 import Team from "./components/team";
-import Testimonials from "./components/Testimonials";
+import Testimonials from "@/components/Testimonials";
 import Gallery from "./components/gallery";
 import Partners from "./components/partners";
 import Image from "next/image";
