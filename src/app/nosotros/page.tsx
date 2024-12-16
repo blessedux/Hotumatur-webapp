@@ -120,27 +120,29 @@ export default function AboutPage() {
             <Gallery />
 
             {/* Blog Section */}
-            <section className="container py-24">
-                <h2 className="text-3xl font-bold text-center mb-12">Últimas Novedades</h2>
-                <div className="grid md:grid-cols-3 gap-8 mx-4">
-                    <BlogCard
-                        title="Viajes Educativos: Explorando Rapa Nui con Estudiantes"
-                        category="Educación"
-                        href="#"
-                        imageUrl="https://images.pexels.com/photos/2103127/pexels-photo-2103127.jpeg"
-                    />
-                    <BlogCard
-                        title="Paquetes Corporativos: Una Experiencia Única para Empresas"
-                        category="Corporativo"
-                        href="#"
-                        imageUrl="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg"
-                    />
-                    <BlogCard
-                        title="Testimonios de Nuestros Viajeros: La Magia de Rapa Nui"
-                        category="Testimonios"
-                        href="#"
-                        imageUrl="https://images.pexels.com/photos/214574/pexels-photo-214574.jpeg"
-                    />
+            <section className="py-24 flex justify-center">
+                <div className="container">
+                    <h2 className="text-3xl font-bold text-center mb-12">Últimas Novedades</h2>
+                    <div className="grid md:grid-cols-3 gap-8 mx-auto">
+                        <BlogCard
+                            title="Viajes Educativos: Explorando Rapa Nui con Estudiantes"
+                            category="Educación"
+                            href="#"
+                            imageUrl="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Motu-Tours1.webp"
+                        />
+                        <BlogCard
+                            title="Paquetes Corporativos: Una Experiencia Única para Empresas"
+                            category="Corporativo"
+                            href="#"
+                            imageUrl="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Easter-Island-Trekking-Experience-Chile.webp"
+                        />
+                        <BlogCard
+                            title="Testimonios de Nuestros Viajeros: La Magia de Rapa Nui"
+                            category="Testimonios"
+                            href="#"
+                            imageUrl="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/pexels-bianeyre-1236028-1.webp"
+                        />
+                    </div>
                 </div>
             </section>
 
