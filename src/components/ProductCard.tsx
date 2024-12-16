@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Product } from "@/types/woocommerce"
 import { useState } from "react"
 import Link from 'next/link'
+import { ShoppingCart } from 'lucide-react'
 
 interface ProductCardProps {
     product: Product
@@ -65,15 +66,25 @@ export function ProductCard({ product }: ProductCardProps) {
                         <span className="text-xl font-bold">${formatPrice(product.price)}</span>
                         <span className="text-sm text-muted-foreground">/Persona</span>
                     </div>
-                    <Link href={`/tours/${product.slug}`}>
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            className="bg-hotumatur-primary text-white hover:bg-hotumatur-primary/90"
-                        >
-                            Ver Detalles
-                        </Button>
-                    </Link>
+                    <div className="flex gap-2">
+                        <Link href={`/tours/${product.slug}`}>
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                            >
+                                Ver Detalles
+                            </Button>
+                        </Link>
+                        <Link href={`/checkout/${product.id}`}>
+                            <Button
+                                size="sm"
+                                className="bg-hotumatur-primary text-white hover:bg-hotumatur-primary/90"
+                            >
+                                <ShoppingCart className="w-4 h-4 mr-1" />
+                                Reservar
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

@@ -59,6 +59,18 @@ export default {
           'primary-light': '#212529',
           'primary-dark': '#0B194C',
         },
+        green: {
+          50: '#f0fdf4',
+        },
+        amber: {
+          50: '#fffbeb',
+        },
+        red: {
+          50: '#fef2f2',
+        },
+        blue: {
+          50: '#eff6ff',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

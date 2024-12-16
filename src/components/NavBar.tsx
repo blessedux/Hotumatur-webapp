@@ -7,6 +7,7 @@ import { ChevronDown, MenuIcon, X } from 'lucide-react'
 import Image from 'next/image'
 import { useSpring, animated } from '@react-spring/web'
 import { useProducts } from "@/hooks/useProducts"
+import ReservationIcon from '@/components/ReservationIcon'
 
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false)
@@ -90,6 +91,7 @@ export default function NavBar() {
                     <Link href="/contactanos" className="text-white hover:text-white/80">
                         Contáctanos
                     </Link>
+                    <ReservationIcon />
                 </div>
 
                 {/* Mobile menu panel */}

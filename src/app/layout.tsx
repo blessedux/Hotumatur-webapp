@@ -1,13 +1,10 @@
-import dynamic from 'next/dynamic'
+
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import NavBar from '@/components/NavBar';
-
-const Footer = dynamic(() => import('@/components/Footer'), {
-  loading: () => <div>Loading...</div>,
-});
-
+import { ReservationProvider } from '@/context/ReservationContext'
+import { Toaster } from "@/components/ui/toaster"
+import 'flag-icons/css/flag-icons.min.css'
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -31,13 +28,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}>
-        <div className="relative z-50">
-          <NavBar />
-        </div>
-        <div className="relative z-0">
-          {children}
-        </div>
-        <Footer />
+        <ReservationProvider>
+          <div className="relative z-0">
+            {children}
+          </div>
+          <Toaster />
+        </ReservationProvider>
       </body>
     </html>
   );

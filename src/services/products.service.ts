@@ -9,7 +9,7 @@ export class ProductsService {
         try {
             const response = await api.get(this.basePath, {
                 params: {
-                    per_page: 100  // or any number higher than your total products
+                    per_page: 100
                 }
             });
             return response.data;
@@ -18,10 +18,15 @@ export class ProductsService {
         }
     }
 
-    async getById(id: number): Promise<Product> {
+    async getBySlug(slug: string): Promise<Product | undefined> {
         try {
-            const response = await api.get(`${this.basePath}/${id}`);
-            return response.data;
+            const response = await api.get(this.basePath, {
+                params: {
+                    slug: slug,
+                    per_page: 1
+                }
+            });
+            return response.data[0];
         } catch (error) {
             throw this.handleError(error as AxiosError);
         }
@@ -30,19 +35,6 @@ export class ProductsService {
     private handleError(error: AxiosError): Error {
         console.error('ProductsService Error:', error);
         return new Error('Error in ProductsService');
-    }
-
-    async getBySlug(slug: string): Promise<Product> {
-        try {
-            const products = await this.getAll();
-            const product = products.find(product => product.slug === slug);
-            if (!product) {
-                throw new Error('Product not found');
-            }
-            return product;
-        } catch (error) {
-            throw this.handleError(error as AxiosError);
-        }
     }
 }
 

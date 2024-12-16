@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { FaWhatsapp, FaInstagram, FaTripadvisor, FaTiktok } from 'react-icons/fa';
+import { FaWhatsapp, FaInstagram, FaTripadvisor, FaTiktok, } from 'react-icons/fa';
 import { EnvelopeIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 

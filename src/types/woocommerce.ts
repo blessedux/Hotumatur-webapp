@@ -36,3 +36,26 @@ export interface ProductCategory {
   name: string;
   slug: string;
 }
+
+export interface LineItem {
+  product_id: number;
+  quantity: number;
+  meta_data?: Array<{
+    key: string;
+    value: string;
+  }>;
+}
+
+export interface Order {
+  id: number;
+  status: string;
+  total: string;
+  payment_url: string;
+  line_items: LineItem[];
+  customer: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+  };
+}
