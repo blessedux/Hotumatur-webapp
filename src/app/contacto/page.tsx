@@ -1,16 +1,24 @@
 "use client";
 
 import React from "react";
+import dynamic from "next/dynamic"; // Dynamically import
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
+import Footer from "@/components/Footer";
+import NewsletterSection from "./components/NewsletterSection";
+
+// Dynamically import TypewriterText with SSR disabled
+const TypewriterText = dynamic(() => import("./components/TypewriterText"), {
+    ssr: false,
+});
 
 const ContactPage: React.FC = () => {
     return (
-        <div className="min-h-screen w-full">
+        <div className="min-h-screen w-full bg-gradient-to-b from-blue-50 via-blue-100 to-white">
             {/* Contact Form Section */}
             <section className="container mx-auto px-4 py-12">
                 <div className="text-center mb-12">
@@ -20,21 +28,34 @@ const ContactPage: React.FC = () => {
                     </p>
                 </div>
 
-                <div className="max-w-5xl mx-auto rounded-lg overflow-hidden bg-[url('/placeholder.svg?height=600&width=1000')] bg-cover">
+                <div className="max-w-5xl mx-auto rounded-lg shadow-2xl overflow-hidden bg-white">
                     <div className="grid md:grid-cols-2 backdrop-blur-sm">
                         {/* Left Panel */}
-                        <div className="bg-zinc-800/90 p-8 text-white">
-                            <h2 className="text-2xl font-semibold mb-4">
-                                Información de Contacto
-                            </h2>
-                            <p className="text-zinc-300">
-                                Escríbenos y nuestro equipo se pondrá en contacto contigo lo antes
-                                posible.
-                            </p>
+                        <div className="relative bg-[#181A1B] p-8 text-white rounded-lg overflow-hidden">
+                            {/* Background Video */}
+                            <video
+                                className="absolute inset-0 w-full h-full object-cover"
+                                src="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Contact-Card-background-video.mp4"
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                            ></video>
+
+                            {/* Typing Text Content */}
+                            <div className="relative z-10">
+                                <TypewriterText
+                                    title="Información de Contacto"
+                                    subtext="Escríbenos y nuestro equipo se pondrá en contacto contigo lo antes posible."
+                                />
+                            </div>
+
+                            {/* Optional Dark Overlay */}
+                            <div className="absolute inset-0 bg-black bg-opacity-50 z-0"></div>
                         </div>
 
                         {/* Right Panel */}
-                        <div className="bg-white/90 p-8">
+                        <div className="bg-white p-8">
                             <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                                 <div className="grid md:grid-cols-2 gap-4">
                                     <div className="space-y-2">
@@ -54,30 +75,26 @@ const ContactPage: React.FC = () => {
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="telefono">Teléfono</Label>
-                                        <Input
-                                            id="telefono"
-                                            type="tel"
-                                            placeholder="+1 012 3456 789"
-                                        />
+                                        <Input id="telefono" type="tel" placeholder="+1 012 3456 789" />
                                     </div>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <Label>¿Con qué tienes dudas?</Label>
-                                    <RadioGroup defaultValue="tours" className="flex flex-wrap gap-6">
-                                        <div className="flex items-center space-x-2">
+                                <div className="space-y-4">
+                                    <Label className="mb-2">¿Con qué tienes dudas?</Label>
+                                    <RadioGroup defaultValue="tours" className="flex flex-row gap-6">
+                                        <div className="flex items-center gap-2">
                                             <RadioGroupItem value="tours" id="tours" />
                                             <Label htmlFor="tours">Tours</Label>
                                         </div>
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex items-center gap-2">
                                             <RadioGroupItem value="arriendos" id="arriendos" />
                                             <Label htmlFor="arriendos">Arriendos</Label>
                                         </div>
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex items-center gap-2">
                                             <RadioGroupItem value="guias" id="guias" />
                                             <Label htmlFor="guias">Guías</Label>
                                         </div>
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex items-center gap-2">
                                             <RadioGroupItem value="otro" id="otro" />
                                             <Label htmlFor="otro">Otro</Label>
                                         </div>
@@ -89,11 +106,11 @@ const ContactPage: React.FC = () => {
                                     <Textarea
                                         id="message"
                                         placeholder="Escribe tu mensaje..."
-                                        className="min-h-[120px] resize-none"
+                                        className="min-h-[120px] resize-none w-full"
                                     />
                                 </div>
 
-                                <Button className="bg-black text-white hover:bg-black/90">
+                                <Button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full flex items-center justify-center transition-all duration-300">
                                     Enviar Mensaje
                                 </Button>
                             </form>
@@ -102,34 +119,11 @@ const ContactPage: React.FC = () => {
                 </div>
             </section>
 
-            <section
-                className="bg-zinc-900 py-16 relative bg-cover bg-center"
-                style={{ backgroundImage: `url('https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/54748532.webp')` }}
-            >
-                <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-                <div className="relative container mx-auto px-4">
-                    <div className="max-w-2xl mx-auto text-center">
-                        <h2 className="text-3xl font-bold text-white mb-4">
-                            Suscríbete a nuestro Newsletter
-                        </h2>
-                        <p className="text-white  mb-8">
-                            Únete a nuestra comunidad y recibe en tu correo ofertas especiales,
-                            consejos de viaje y las historias más auténticas de la mágica Isla de
-                            Pascua.
-                        </p>
-                        <div className="flex gap-2 max-w-md mx-auto">
-                            <Input
-                                placeholder="Tu dirección de Email"
-                                type="email"
-                                className="bg-white"
-                            />
-                            <Button size="icon" className="bg-blue-600 hover:bg-blue-700">
-                                <Send className="h-4 w-4" />
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            {/* Newsletter Section */}
+            <NewsletterSection />
+
+            {/* Footer */}
+            <Footer />
         </div>
     );
 };
