@@ -7,14 +7,16 @@ import { Star, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { FaTripadvisor } from "react-icons/fa"
 
 interface TestimonialProps {
-    name: string
-    location: string
-    image: string
-    rating: number
-    text: string
-    date: string
+    name: string;
+    location: string;
+    image: string;
+    rating: number;
+    text: string;
+    date: string;
+    tripAdvisorLink: string;
 }
 
 function StarRating({ rating }: { rating: number }) {
@@ -31,9 +33,9 @@ function StarRating({ rating }: { rating: number }) {
     )
 }
 
-function TestimonialCard({ name, location, image, rating, text, date }: TestimonialProps) {
+function TestimonialCard({ name, location, image, rating, text, date, tripAdvisorLink }: TestimonialProps) {
     return (
-        <Card className="bg-primary/10 border-none h-full flex flex-col">
+        <Card className="bg-primary/10 border-none h-full flex flex-col relative">
             <CardHeader className="space-y-4">
                 <div className="flex items-center gap-4">
                     <Avatar className="h-16 w-16">
@@ -50,9 +52,24 @@ function TestimonialCard({ name, location, image, rating, text, date }: Testimon
             <CardContent className="flex-grow">
                 <p className="text-base">{text}</p>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex justify-between items-center">
                 <p className="text-sm text-muted-foreground">{date}</p>
             </CardFooter>
+            <a
+                href={tripAdvisorLink}
+                target="_blank"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute bottom-4 right-4"
+            >
+                <Button
+                    variant="secondary"
+                    className="flex items-center gap-2 px-4 py-2 text-sm"
+                >
+                    <FaTripadvisor className="w-4 h-4" />
+                    TripAdvisor
+                </Button>
+            </a>
         </Card>
     )
 }
@@ -79,44 +96,57 @@ export default function Testimonials() {
 
     const testimonials = [
         {
-            name: "Josh",
+            name: "C.C.",
             location: "Miami Beach, FL",
-            image: "/placeholder.svg?height=64&width=64",
+            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/C.C-profile.webp",
             rating: 5,
-            text: "Amazing stay! The place was spotless, and the host was super friendly. Perfect location—close to everything but still quiet and relaxing. Will definitely come back!",
-            date: "February 16, 2023",
+            text: "fantastic tour ! Enzo was amazing tour guide : knowledgeable , kind , and excellent English . AC van and the time spent at each site was timed perfectly! Highly recommend this tour of the South Easter Island .",
+            date: "May 2024",
+            tripAdvisorLink: "https://www.tripadvisor.com/Profile/S3091BKchrisc",
         },
         {
-            name: "Josh",
+            name: "Olga S",
             location: "Miami Beach, FL",
-            image: "/placeholder.svg?height=64&width=64",
+            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/OlgaS_profile.webp",
             rating: 5,
-            text: "Loved it! The home was cozy and had everything we needed. The view from the balcony was breathtaking, and check-in was a breeze. Highly recommend!",
-            date: "February 16, 2023",
+            text: "Amazing tour guide, very knowledgeable, pleasant, attentive. He answered every single question in full detail. Me and my wife were very happy with our guide!",
+            date: "May 2024",
+            tripAdvisorLink: "https://www.tripadvisor.com/Profile/D3506MZolgas",
         },
         {
-            name: "Josh",
+            name: "Sergio Ignacio A",
             location: "Miami Beach, FL",
-            image: "/placeholder.svg?height=64&width=64",
+            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/default-avatar-2020-44.webp",
             rating: 5,
-            text: "Fantastic experience! The property exceeded our expectations—clean, comfortable, and well-equipped. The host went above and beyond to make us feel welcome. Five stars!",
-            date: "February 16, 2023",
+            text: "I went with my partner and we received an excellent welcome from Hotumatur and Hotel Tupa. They showed us the most impressive places on the island, always in a close and personal manner, making you appreciate the place in a way that stays with you forever in your memory. I recommend them 100%.",
+            date: "May 2023",
+            tripAdvisorLink: "https://www.tripadvisor.com/Profile/sergioignacioa",
         },
         {
-            name: "Emma",
-            location: "New York, NY",
-            image: "/placeholder.svg?height=64&width=64",
+            name: "Feñoño",
+            location: "Santiago, Chile",
+            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/fenono-avatar.webp",
             rating: 5,
-            text: "Absolutely wonderful! The attention to detail in this property is outstanding. From the moment we arrived, we felt at home. The local recommendations provided by the host were spot on. Can't wait to return!",
-            date: "March 22, 2023",
+            text: "Pretty friendly, excellent service!! From the very first day yhey have helped me a lot, we went there with any plan set, thanks to them we took advantage of the whole stay, knowing new places of the island every single day. Also, after the tours we have with them great moments and share good meals",
+            date: "Oct 2023",
+            tripAdvisorLink: "https://www.tripadvisor.com/ShowUserReviews-g316040-d26626022-r920889084-Hotumatur_RapaNui-Easter_Island.html",
         },
         {
-            name: "Carlos",
-            location: "Los Angeles, CA",
-            image: "/placeholder.svg?height=64&width=64",
+            name: "Cisternista",
+            location: "Veniano, Italy",
+            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/cisternista.webp",
             rating: 5,
-            text: "An unforgettable stay! The property's unique charm and modern amenities created the perfect balance. The host's responsiveness and the seamless check-in process made our vacation stress-free from start to finish.",
-            date: "April 5, 2023",
+            text: "Full-day tour, from about 10am to 6pm, visiting the highlights of Easter Island. Small group of 13 people. The guide, Simon, a very prepared guy who puts great enthusiasm and professionalism in his work. Always ready to answer questions that were asked in both English and Spanish. Very good indeed. Excellent times spent in the different sites. The driver of the vehicle is also professional.",
+            date: "December 11, 2024",
+            tripAdvisorLink: "https://www.tripadvisor.com/AttractionProductReview-g1049073-d26766354-Full_Day_Tour_in_Rapa_Nui-Hanga_Roa_Easter_Island.html",
+        },
+        {
+            name: "Mario B",
+            location: "Berlin, Germany",
+            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/mario-b.webp",
+            rating: 5,
+            text: "Perfect day with Simon and our driver: What else can I write about that? Punctual pick-up at the port. Perfect tour. All seen. Everywhere enough time to enjoy and slow down.",
+            date: "December 4, 2024",
         },
     ]
 
@@ -144,7 +174,7 @@ export default function Testimonials() {
                     <Button
                         variant="outline"
                         size="icon"
-                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/20 backdrop-blur-sm"
                         onClick={scrollPrev}
                         disabled={!prevBtnEnabled}
                     >
@@ -154,7 +184,7 @@ export default function Testimonials() {
                     <Button
                         variant="outline"
                         size="icon"
-                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/20 backdrop-blur-sm"
                         onClick={scrollNext}
                         disabled={!nextBtnEnabled}
                     >
