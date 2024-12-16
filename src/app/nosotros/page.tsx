@@ -34,7 +34,7 @@ export default function AboutPage() {
 
                     </p>
                 </div>
-                <div className="relative h-[400px] mb-16">
+                <div className="relative h-[400px] ml-8 mb-16">
                     <Image
                         src={heroImage}
                         alt="Nuestra Historia"
@@ -43,32 +43,34 @@ export default function AboutPage() {
                         priority
                     />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <StatsCard
-                        number="15K+"
-                        label="Viajeros Felices"
-                        icon={<FaUsers />}
-                    />
-                    <StatsCard
-                        number="50+"
-                        label="Paquetes Exclusivos"
-                        icon={<FaSuitcase />}
-                    />
-                    <StatsCard
-                        number="100%"
-                        label="Autenticidad Local"
-                        icon={<FaChartBar />}
-                    />
-                    <StatsCard
-                        number="5 Estrellas"
-                        label="Experiencia Premium"
-                        icon={<FaStar />}
-                    />
+                <div className="flex justify-center min-h-screen">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <StatsCard
+                            number="15"
+                            label="Viajeros Felices"
+                            icon={<FaUsers />}
+                        />
+                        <StatsCard
+                            number="50"
+                            label="Paquetes Exclusivos"
+                            icon={<FaSuitcase />}
+                        />
+                        <StatsCard
+                            number="100"
+                            label="Autenticidad Local"
+                            icon={<FaChartBar />}
+                        />
+                        <StatsCard
+                            number="5"
+                            label="Experiencia Premium"
+                            icon={<FaStar />}
+                        />
+                    </div>
                 </div>
-            </section>
+            </section >
 
             {/* Plan Your Trip */}
-            <PlanTrip />
+            < PlanTrip />
             <section className="container py-24">
                 <div className="max-w-3xl mx-auto text-center mb-12">
                     <p className="text-muted-foreground"> Cada recorrido con Hotumatur es una invitación a descubrir la esencia más pura de nuestra cultura ancestral. Conocemos cada moai, cada paisaje y cada leyenda porque hemos crecido rodeados de su majestuosidad. Contamos la historia, la vivimos y la compartimos con orgullo.
@@ -120,7 +122,7 @@ export default function AboutPage() {
             {/* Blog Section */}
             <section className="container py-24">
                 <h2 className="text-3xl font-bold text-center mb-12">Últimas Novedades</h2>
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-3 gap-8 mx-4">
                     <BlogCard
                         title="Viajes Educativos: Explorando Rapa Nui con Estudiantes"
                         category="Educación"
