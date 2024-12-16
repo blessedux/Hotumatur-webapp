@@ -12,6 +12,8 @@ import Gallery from "./components/gallery";
 import Partners from "./components/partners";
 import Image from "next/image";
 
+const heroImage = "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Nosotoro-Bio-image.webp";
+
 export default function AboutPage() {
     return (
         <div className="min-h-screen">
@@ -21,20 +23,26 @@ export default function AboutPage() {
             {/* Our Story Section */}
             <section className="container py-24">
                 <div className="max-w-3xl mx-auto text-center mb-12">
-                    <h1 className="text-4xl font-bold mb-4">Nuestra Historia</h1>
+
                     <p className="text-muted-foreground">
-                        En Hotumatur, somos los embajadores oficiales de Rapa Nui, dedicados a
-                        crear experiencias auténticas e inolvidables. Nuestra misión es compartir
-                        la magia y el misterio de la Isla de Pascua con el mundo, conectando a las
-                        personas con la cultura ancestral.
+                        En Hotumatur, somos mucho más que una agencia de viajes; somos los embajadores oficiales de Rapa Nui.
+
+                        Nuestro compromiso va más allá de ofrecer tours y experiencias turísticas. Somos un equipo de guías locales nacidos y criados en la Isla de Pascua, quienes conocemos la historia, los secretos y las tradiciones de Rapa Nui como nadie más.
+
+                        Cada recorrido con Hotumatur es una invitación a descubrir la esencia más pura de nuestra cultura ancestral. Conocemos cada moai, cada paisaje y cada leyenda porque hemos crecido rodeados de su majestuosidad. No solo contamos la historia, la vivimos y la compartimos con orgullo.
+
+                        Nuestra misión es conectar a las personas con la magia y el misterio que hacen única a la Isla de Pascua. Queremos que cada visitante se lleve más que recuerdos: una conexión profunda con las raíces, los relatos y la espiritualidad que hacen de Rapa Nui un lugar irrepetible en el mundo.
+
+                        En Hotumatur, creemos que el turismo debe ser responsable y auténtico. Por eso, trabajamos codo a codo con la comunidad local para preservar nuestro patrimonio cultural y natural. Nuestros tours no son solo viajes; son experiencias transformadoras, diseñadas para que cada visitante sienta el latido de la isla, admire su belleza y comprenda su alma.
                     </p>
                 </div>
                 <div className="relative h-[400px] mb-16">
                     <Image
-                        src="https://images.pexels.com/photos/3155727/pexels-photo-3155727.jpeg"
+                        src={heroImage}
                         alt="Nuestra Historia"
                         fill
                         className="object-cover rounded-lg"
+                        priority
                     />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
