@@ -1,20 +1,13 @@
 "use client";
 
 import React from "react";
-import dynamic from "next/dynamic"; // Dynamically import
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import { Send } from "lucide-react";
 import Footer from "@/components/Footer";
 import NewsletterSection from "./components/NewsletterSection";
-
-// Dynamically import TypewriterText with SSR disabled
-const TypewriterText = dynamic(() => import("./components/TypewriterText"), {
-    ssr: false,
-});
 
 const ContactPage: React.FC = () => {
     return (
@@ -31,7 +24,7 @@ const ContactPage: React.FC = () => {
                 <div className="max-w-5xl mx-auto rounded-lg shadow-2xl overflow-hidden bg-white">
                     <div className="grid md:grid-cols-2 backdrop-blur-sm">
                         {/* Left Panel */}
-                        <div className="relative bg-[#181A1B] p-8 text-white rounded-lg overflow-hidden">
+                        <div className="relative bg-[#2159E2] p-8 text-white rounded-lg overflow-hidden">
                             {/* Background Video */}
                             <video
                                 className="absolute inset-0 w-full h-full object-cover"
@@ -42,12 +35,12 @@ const ContactPage: React.FC = () => {
                                 playsInline
                             ></video>
 
-                            {/* Typing Text Content */}
-                            <div className="relative z-10">
-                                <TypewriterText
-                                    title="Información de Contacto"
-                                    subtext="Escríbenos y nuestro equipo se pondrá en contacto contigo lo antes posible."
-                                />
+                            {/* Static Text Content */}
+                            <div className="relative z-10 space-y-4">
+                                <h2 className="text-4xl font-bold">Información de Contacto</h2>
+                                <p className="text-lg">
+                                    Escríbenos y nuestro equipo se pondrá en contacto contigo lo antes posible.
+                                </p>
                             </div>
 
                             {/* Optional Dark Overlay */}
