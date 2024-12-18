@@ -8,7 +8,6 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { translate } from "ol/transform";
 
 export function SpecialTripsSection() {
     return (

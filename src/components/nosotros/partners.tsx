@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Badge } from "@/app/nosotros/components/badge";
-import HotelCard from "@/app/nosotros/components/HotelCard";
+import HotelCard from "@/components/HotelCard";
 
 export default function Partners() {
     return (
