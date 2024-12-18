@@ -104,7 +104,7 @@ export default function AboutPage() {
             <Gallery />
 
             {/* Blog Section */}
-            <section className="py-24 flex justify-center">
+            <section className=" flex justify-center">
                 <div className="container">
                     <h2 className="text-3xl font-bold text-center mb-12">Últimas Novedades</h2>
                     <div className="grid md:grid-cols-3 gap-8 mx-auto">

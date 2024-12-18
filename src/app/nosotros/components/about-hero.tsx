@@ -43,7 +43,7 @@ export default function AboutHero() {
                     href="https://www.tripadvisor.com/Attraction_Review-g316040-d26626022-Reviews-Hotumatur_RapaNui-Easter_Island.html"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="absolute right-4 bottom-8 md:right-16 md:bottom-16 block w-full max-w-[25%] opacity-70 transition-opacity hover:opacity-100"
+                    className="absolute right-4 bottom-8 md:right-16 md:bottom-16 block w-[90%] sm:w-[70%] md:w-[50%] lg:max-w-[25%] opacity-70 transition-opacity hover:opacity-100"
                 >
                     <div className="flex items-center rounded-lg bg-white text-black p-4 shadow-md text-xs gap-3">
                         {/* TripAdvisor Icon */}
