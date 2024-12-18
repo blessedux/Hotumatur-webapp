@@ -38,8 +38,14 @@ export interface ProductCategory {
 }
 
 export interface LineItem {
+  id: number;
   product_id: number;
+  name: string;
   quantity: number;
+  total: string;
+  image?: {
+    src: string;
+  };
   meta_data?: Array<{
     key: string;
     value: string;
@@ -48,14 +54,23 @@ export interface LineItem {
 
 export interface Order {
   id: number;
+  number: string;
   status: string;
   total: string;
-  payment_url: string;
-  line_items: LineItem[];
-  customer: {
+  currency_symbol: string;
+  payment_method: string;
+  payment_method_title: string;
+  set_paid: boolean;
+  billing: {
     first_name: string;
     last_name: string;
     email: string;
     phone: string;
   };
+  line_items: LineItem[
+  ];
+  meta_data: Array<{
+    key: string;
+    value: string;
+  }>;
 }

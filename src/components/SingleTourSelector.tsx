@@ -9,25 +9,29 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { cn, generateFlightLikeId } from '@/lib/utils'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { useProducts } from '@/hooks/useProducts'
 import { useReservations } from '@/context/ReservationContext'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 
-const TourSelector = () => {
+interface SingleTourSelectorProps {
+    tourId: number;
+    tourName: string;
+    tourPrice: number;
+    tourImage: string;
+}
+
+export default function SingleTourSelector({ tourId, tourName, tourPrice, tourImage }: SingleTourSelectorProps) {
     const [date, setDate] = useState<Date>()
     const [people, setPeople] = useState("2")
-    const [selectedTourId, setSelectedTourId] = useState("")
-    const { products: tours, loading, error } = useProducts()
     const { addReservation } = useReservations()
     const { toast } = useToast()
     const router = useRouter()
 
     const handleReservation = () => {
-        if (!date || !selectedTourId) {
+        if (!date) {
             toast({
                 title: "Error",
-                description: "Por favor selecciona una fecha y un tour",
+                description: "Por favor selecciona una fecha para el tour",
                 variant: "destructive",
             })
             return
@@ -46,27 +50,16 @@ const TourSelector = () => {
             return
         }
 
-        const selectedTour = tours.find(tour => tour.id.toString() === selectedTourId)
-
-        if (!selectedTour) {
-            toast({
-                title: "Error",
-                description: "Tour no encontrado",
-                variant: "destructive",
-            })
-            return
-        }
-
         const reservationId = generateFlightLikeId();
 
         addReservation({
             id: reservationId,
-            productId: selectedTour.id,
+            productId: tourId,
             quantity: parseInt(people),
-            name: selectedTour.name,
-            price: Number(selectedTour.price) || 0,
+            name: tourName,
+            price: tourPrice,
             date: date.toISOString(),
-            image: selectedTour.images[0]?.src || "/placeholder.svg"
+            image: tourImage
         })
 
         toast({
@@ -74,7 +67,7 @@ const TourSelector = () => {
             title: "¡Reserva exitosa!",
             description: (
                 <div className="space-y-2 flex flex-col">
-                    <p>{`Has reservado ${selectedTour.name} para ${people} personas`}</p>
+                    <p>{`Has reservado ${tourName} para ${people} personas`}</p>
                     <Button
                         variant="default"
                         size="default"
@@ -88,24 +81,11 @@ const TourSelector = () => {
 
         // Resetear el formulario
         setDate(undefined)
-        setSelectedTourId("")
         setPeople("2")
     }
 
-    if (loading) {
-        return <div>Loading...</div>
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>
-    }
-
-    const filteredTours = tours.filter(product =>
-        product.categories.some(category => category.name === "Tours")
-    )
-
     return (
-        <div className="grid gap-4 md:grid-cols-[1fr_1.5fr_1fr_auto] items-end">
+        <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto] items-end">
             <div className="space-y-2">
                 <label className="text-lg text-white/80">Fecha:</label>
                 <Popover>
@@ -139,22 +119,6 @@ const TourSelector = () => {
             </div>
 
             <div className="space-y-2">
-                <label className="text-lg text-white/80">Tour:</label>
-                <Select value={selectedTourId} onValueChange={setSelectedTourId}>
-                    <SelectTrigger className="bg-white/10 border-white/20 text-white [&>span]:text-white/80 hover:bg-white/20">
-                        <SelectValue placeholder="Selecciona tu aventura" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {filteredTours.map((tour) => (
-                            <SelectItem key={tour.id} value={tour.id.toString()}>
-                                {tour.name}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </div>
-
-            <div className="space-y-2">
                 <label className="text-lg text-white/80">Personas:</label>
                 <Select value={people} onValueChange={setPeople}>
                     <SelectTrigger className="bg-white/10 border-white/20 text-white hover:bg-white/20">
@@ -179,5 +143,3 @@ const TourSelector = () => {
         </div>
     )
 }
-
-export default TourSelector

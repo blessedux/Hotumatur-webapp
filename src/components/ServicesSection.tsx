@@ -1,55 +1,61 @@
-import { Plane, Palmtree, Car, Waves } from 'lucide-react'
+import { Waves } from 'lucide-react'
 import Image from 'next/image'
+
+import { FaMotorcycle } from "react-icons/fa6";
+import { BsBicycle } from "react-icons/bs";
+import { MdOutlineDirectionsCar } from "react-icons/md";
+
 
 
 export default function ServicesSection() {
     return (
-        <div className="grid lg:grid-cols-2 gap-8 items-center p-6 lg:p-8 bg-white text-black">
+        <div className="grid lg:grid-cols-2 gap-8 items-center p-6 lg:p-8 bg-white text-black max-w-6xl mx-auto">
             {/* Left Column - Services */}
             <div className="space-y-6">
                 <div className="space-y-4">
-                    <h2 className="text-3xl lg:text-5xl font-bold leading-tight">
+                    <h2 className="text-3xl lg:text-4xl font-bold leading-tight">
                         Servicios Adicionales para una Experiencia Completa
                     </h2>
                     <p className="text-lg text-gray-600">
-                        Todo lo que necesitas para hacer de tu experiencia en Rapa Nui divertida e inolvidable.
+                        Vive tu expericia en Isla de Pascua a tu propio ritmo. Disfruta de la aventura y la libertad de moverte por la isla.
                     </p>
                 </div>
 
-                <div className="grid gap-4">
-                    <div className="flex items-center gap-4 p-4">
-                        <div className="p-2 bg-gray-100 rounded-lg">
-                            <Waves className="w-6 h-6 text-gray-600" />
+                <div className="grid">
+
+
+                    <div className="flex items-center gap-4 p-2">
+                        <div className="p-2 rounded-lg">
+                            <MdOutlineDirectionsCar className="w-6 h-6 text-gray-600" />
                         </div>
-                        <span>Arriendo de snorkel</span>
+                        <span>Arriendo de autos</span>
                     </div>
 
-                    <div className="flex items-center gap-4 p-4">
-                        <div className="p-2 bg-gray-100 rounded-lg">
-                            <Car className="w-6 h-6 text-gray-600" />
+                    <div className="flex items-center gap-4 p-2">
+                        <div className="p-2 rounded-lg">
+                            <FaMotorcycle className="w-6 h-6 text-gray-600" />
                         </div>
                         <span>Arriendo de cuadrimotos</span>
                     </div>
 
-                    <div className="flex items-center gap-4 p-4">
-                        <div className="p-2 bg-gray-100 rounded-lg">
-                            <Plane className="w-6 h-6 text-gray-600" />
+                    <div className="flex items-center gap-4 p-2">
+                        <div className="p-2 rounded-lg">
+                            <BsBicycle className="w-6 h-6 text-gray-600" />
                         </div>
-                        <span>Taxi desde y hacia el aeropuerto</span>
+                        <span>Arriendo de bicicletas</span>
                     </div>
 
-                    <div className="flex items-center gap-4 p-4">
-                        <div className="p-2 bg-gray-100 rounded-lg">
-                            <Palmtree className="w-6 h-6 text-gray-600" />
+                    <div className="flex items-center gap-4 p-2">
+                        <div className="p-2 rounded-lg">
+                            <Waves className="w-6 h-6 text-gray-600" />
                         </div>
-                        <span>Clases de surf</span>
+                        <span>Arriendo de snorkel</span>
                     </div>
                 </div>
             </div>
 
             {/* Right Column - Image */}
             <div className="relative aspect-square lg:aspect-auto">
-
                 <Image
                     src="/images/couple-snorkeling.webp"
                     alt="Couple snorkeling"
@@ -57,8 +63,6 @@ export default function ServicesSection() {
                     width={600}
                     height={600}
                     loading="lazy"
-                    placeholder="blur"
-                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQrJyEwPENDPzE2O0FBNjpLPS1yWEk6TnVrXGd5bIyrajprXnF8ZoNyfHP/2wBDARUXFx4aHR4eHHJ8QjxyXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFz/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                 />
             </div>
         </div>

@@ -5,8 +5,7 @@ import { MdAccessTime } from "react-icons/md";
 import { RiBatteryChargeLine } from "react-icons/ri";
 import { CheckCircle } from 'lucide-react'
 import { VscError } from "react-icons/vsc";
-import { Button } from "@/components/ui/button"
-import { ShoppingCart } from "lucide-react"
+import SingleTourSelector from "@/components/SingleTourSelector";
 
 interface Props {
     params: {
@@ -101,17 +100,19 @@ export default async function ProductPage({ params }: Props) {
                                 <p className="text-2xl md:text-3xl font-medium text-gray-200">
                                     ${Number(product.price).toLocaleString('es-CL')} <span className="text-lg">/por persona</span>
                                 </p>
-                                <Button
-                                    asChild
-                                    size="lg"
-                                    className="bg-hotumatur-primary hover:bg-hotumatur-primary/90"
-                                >
-                                    <a href={`/checkout/${product.id}`}>
-                                        <ShoppingCart className="w-5 h-5 mr-2" />
-                                        Reservar Ahora
-                                    </a>
-                                </Button>
+
+
                             </div>
+                            <div className="max-w-md pt-4">
+                                <SingleTourSelector
+                                    tourId={product.id}
+                                    tourName={product.name}
+                                    tourPrice={Number(product.price)}
+                                    tourImage={product.images[0]?.src || "/placeholder.svg"}
+                                />
+
+                            </div>
+
                         </div>
                     </div>
                 </section>

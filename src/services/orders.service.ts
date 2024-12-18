@@ -1,40 +1,16 @@
-import { Order, LineItem } from '@/types/woocommerce';
+import { Order } from '@/types/woocommerce';
+
+interface OrderResponse {
+    success: boolean;
+    order: Order;
+}
 
 export class OrdersService {
     private readonly basePath = '/api/orders';
 
-    async create(orderData: {
-        customer: {
-            first_name: string;
-            last_name: string;
-            email: string;
-            phone: string;
-        };
-        line_items: LineItem[];
-    }): Promise<Order> {
+    async getById(id: number): Promise<OrderResponse> {
         try {
-            const response = await fetch(this.basePath, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(orderData),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to create order');
-            }
-
-            return response.json();
-        } catch (error) {
-            console.error('Failed to create order:', error);
-            throw error;
-        }
-    }
-
-    async getById(id: number): Promise<Order> {
-        try {
-            const response = await fetch(`${this.basePath}?id=${id}`);
+            const response = await fetch(`${this.basePath}/${id}`);
 
             if (!response.ok) {
                 throw new Error(`Failed to get order ${id}`);
@@ -47,7 +23,7 @@ export class OrdersService {
         }
     }
 
-    async update(id: number, data: any): Promise<any> {
+    async update(id: number, data: Partial<Order>): Promise<OrderResponse> {
         try {
             const response = await fetch(`${this.basePath}/${id}`, {
                 method: 'PUT',
@@ -61,8 +37,7 @@ export class OrdersService {
                 throw new Error('Failed to update order');
             }
 
-            const responseData = await response.json();
-            return responseData;
+            return response.json();
         } catch (error) {
             console.error('Error updating order:', error);
             throw error;

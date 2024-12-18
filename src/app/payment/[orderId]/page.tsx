@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation'
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { ordersService } from '@/services/orders.service'
 import { Order } from '@/types/woocommerce'
 import { useToast } from "@/hooks/use-toast"
-import { format, parseISO } from 'date-fns'
+import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { ShoppingCart, CreditCard, Building2 } from 'lucide-react'
+import { ordersService } from '@/services/orders.service'
 
 export default function PaymentPage({ params }: { params: Promise<{ orderId: string }> }) {
     const resolvedParams = use(params)
@@ -56,11 +56,29 @@ export default function PaymentPage({ params }: { params: Promise<{ orderId: str
 
         try {
             if (selectedPaymentMethod === 'webpay') {
-                // Integración con WebPay
+                setLoading(true)
                 toast({
                     title: "Procesando pago",
                     description: "Redirigiendo a WebPay...",
                 })
+
+                // Llamar a nuestra API de pagos
+                const response = await fetch('/api/payments/flow', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ orderId: order.id })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Error al procesar el pago');
+                }
+
+                // Redirigir a la URL de pago de Flow
+                window.location.href = data.paymentUrl + '?token=' + data.token;
             } else {
                 // Transferencia bancaria
                 setLoading(true)
@@ -87,7 +105,7 @@ export default function PaymentPage({ params }: { params: Promise<{ orderId: str
                 // Redirigir a la página de éxito
                 router.push(`/checkout/success/${order.id}`);
             }
-        } catch (error) {
+        } catch {
             toast({
                 title: "Error",
                 description: "Error al procesar el pago",
@@ -97,6 +115,20 @@ export default function PaymentPage({ params }: { params: Promise<{ orderId: str
             setLoading(false)
         }
     }
+
+    const formatDate = (dateString: string) => {
+        try {
+            // Si la fecha ya está en formato "d de MMMM, yyyy", la devolvemos tal cual
+            if (dateString.includes(" de ")) {
+                return dateString;
+            }
+            // Si no, convertimos desde ISO
+            return format(new Date(dateString), "d 'de' MMMM, yyyy", { locale: es });
+        } catch {
+            console.error('Error formatting date:', dateString);
+            return dateString; // Fallback al string original
+        }
+    };
 
     if (loading) {
         return (
@@ -194,7 +226,7 @@ export default function PaymentPage({ params }: { params: Promise<{ orderId: str
                                                             </p>
                                                             {tourDate && (
                                                                 <p className="text-sm text-gray-500">
-                                                                    Fecha: {format(parseISO(tourDate), "d 'de' MMMM, yyyy", { locale: es })}
+                                                                    Fecha: {formatDate(tourDate)}
                                                                 </p>
                                                             )}
                                                         </div>

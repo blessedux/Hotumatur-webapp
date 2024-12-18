@@ -1,23 +1,30 @@
 import { NextResponse } from 'next/server';
 import { wooCommerceService } from '@/services/server/woocommerce.service';
+import { AxiosError } from 'axios';
 
 export async function GET(
     request: Request,
-    { params }: { params: { orderId: string } }
+    { params }: { params: Promise<{ orderId: string }> }
 ) {
+    const resolvedParams = await params;
+
+    if (!resolvedParams?.orderId) {
+        return NextResponse.json(
+            { error: 'Order ID is required' },
+            { status: 400 }
+        );
+    }
+
     try {
-        const order = await wooCommerceService.getOrder(Number(params.orderId));
+        const order = await wooCommerceService.getOrder(Number(resolvedParams.orderId));
         return NextResponse.json({
             success: true,
             order
         });
-    } catch (error: any) {
-        console.error('Error fetching order:', error.response?.data || error.message);
+    } catch (error) {
+        console.error('Error fetching order:', error);
         return NextResponse.json(
-            {
-                error: 'Failed to fetch order',
-                details: error.response?.data || error.message
-            },
+            { error: 'Failed to fetch order' },
             { status: 500 }
         );
     }
@@ -27,6 +34,13 @@ export async function PUT(
     request: Request,
     { params }: { params: { orderId: string } }
 ) {
+    if (!params?.orderId) {
+        return NextResponse.json(
+            { error: 'Order ID is required' },
+            { status: 400 }
+        );
+    }
+
     try {
         const updateData = await request.json();
         const order = await wooCommerceService.updateOrder(Number(params.orderId), updateData);
@@ -35,14 +49,17 @@ export async function PUT(
             success: true,
             order
         });
-    } catch (error: any) {
-        console.error('Error updating order:', error.response?.data || error.message);
+    } catch (error) {
+        const apiError = error as AxiosError;
+        console.error('Error updating order:', apiError.response?.data || apiError.message);
         return NextResponse.json(
             {
                 error: 'Failed to update order',
-                details: error.response?.data || error.message
+                details: apiError.response?.data || apiError.message
             },
             { status: 500 }
         );
     }
-} 
+}
+
+

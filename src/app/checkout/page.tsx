@@ -14,12 +14,12 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { cn } from "@/lib/utils"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { countryCodes } from "@/lib/constants/phone-codes"
 import { validatePhoneNumber } from '@/lib/libphonenumber';
 import { useToast } from "@/hooks/use-toast"
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { SelectCountry } from '@/components/ui/select-country'
 
 const formSchema = z.object({
     firstName: z.string()
@@ -59,16 +59,6 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-const SelectValueDisplay = ({ value }: { value: string }) => {
-    const country = countryCodes.find(c => c.dial_code === value);
-    return country ? (
-        <div className="flex items-center gap-2">
-            <span className={`fi fi-${country.code.toLowerCase()}`}></span>
-            <span className="font-medium">{country.dial_code}</span>
-        </div>
-    ) : null;
-};
-
 export default function CheckoutPage() {
     const router = useRouter()
     const { reservations, clearReservations } = useReservations()
@@ -77,7 +67,6 @@ export default function CheckoutPage() {
         register,
         watch,
         setValue,
-        trigger,
         formState: { errors, },
         handleSubmit,
         getValues
@@ -148,7 +137,7 @@ export default function CheckoutPage() {
                     meta_data: [
                         {
                             key: "tour_date",
-                            value: reservation.date
+                            value: format(parseISO(reservation.date), "d 'de' MMMM, yyyy", { locale: es })
                         }
                     ]
                 })),
@@ -268,29 +257,12 @@ export default function CheckoutPage() {
                             <div className="space-y-2">
                                 <Label htmlFor="phone">Número de teléfono*</Label>
                                 <div className="flex gap-2">
-                                    <Select
-                                        value={watch("phone.countryCode")}
-                                        onValueChange={(value) => {
-                                            setValue("phone.countryCode", value);
-                                            trigger("phone");
-                                        }}
-                                    >
-                                        <SelectTrigger className="w-[120px]">
-                                            <SelectValue>
-                                                <SelectValueDisplay value={watch("phone.countryCode")} />
-                                            </SelectValue>
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {countryCodes.map((country) => (
-                                                <SelectItem key={country.code} value={country.dial_code}>
-                                                    <div className="flex items-center gap-2">
-                                                        <span className={`fi fi-${country.code.toLowerCase()}`}></span>
-                                                        <span>{country.dial_code}</span>
-                                                    </div>
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                    <div className="w-[120px]">
+                                        <SelectCountry
+                                            value={watch('phone.countryCode')}
+                                            onValueChange={(value) => setValue('phone.countryCode', value)}
+                                        />
+                                    </div>
                                     <Input
                                         {...register("phone.number")}
                                         placeholder="912345678"

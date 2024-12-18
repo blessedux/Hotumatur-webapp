@@ -59,7 +59,7 @@ export class WooCommerceService {
         }
     }
 
-    async updateOrder(id: number, data: any): Promise<Order> {
+    async updateOrder(id: number, data: Partial<Order>): Promise<Order> {
         try {
             const response = await api.put(`${this.ordersPath}/${id}`, data);
             return response.data;

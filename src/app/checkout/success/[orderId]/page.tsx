@@ -1,28 +1,32 @@
 'use client'
 
-import { ordersService } from '@/services/orders.service';
+import { useState, useEffect, use } from 'react';
+import { useRouter } from 'next/navigation';
 import { CheckCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast"
+import { ordersService } from '@/services/orders.service';
+import { Order } from '@/types/woocommerce';
+import { Button } from "@/components/ui/button"
 
 interface Props {
-    params: {
-        orderId: string;
-    };
+    params: Promise<{ orderId: string }>;
 }
 
 export default function SuccessPage({ params }: Props) {
-    const [order, setOrder] = useState<any>(null);
-    const { toast } = useToast()
+    const router = useRouter();
+    const resolvedParams = use(params);
+    const [order, setOrder] = useState<Order | null>(null);
+    const [countdown, setCountdown] = useState(10);
+    const { toast } = useToast();
 
     useEffect(() => {
         const fetchOrder = async () => {
             try {
-                const response = await ordersService.getById(Number(params.orderId));
+                const response = await ordersService.getById(Number(resolvedParams.orderId));
                 if (response.success && response.order) {
                     setOrder(response.order);
                 }
-            } catch (error) {
+            } catch {
                 toast({
                     title: "Error",
                     description: "No se pudo cargar la información de la orden",
@@ -32,7 +36,20 @@ export default function SuccessPage({ params }: Props) {
         };
 
         fetchOrder();
-    }, [params.orderId, toast]);
+    }, [resolvedParams.orderId, toast]);
+
+    useEffect(() => {
+        if (countdown > 0) {
+            const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+            return () => clearTimeout(timer);
+        } else {
+            router.push('/');
+        }
+    }, [countdown, router]);
+
+    const handleRedirect = () => {
+        router.push('/');
+    };
 
     if (!order) {
         return (
@@ -50,7 +67,7 @@ export default function SuccessPage({ params }: Props) {
                 <p className="text-gray-600 mb-8">
                     Tu número de orden es: #{order.number}
                 </p>
-                <div className="bg-gray-50 p-6 rounded-lg text-left">
+                <div className="bg-gray-50 p-6 rounded-lg text-left mb-8">
                     <h2 className="font-semibold mb-4">Detalles de la orden</h2>
                     <div className="space-y-2">
                         <p>Estado: {order.status}</p>
@@ -58,6 +75,15 @@ export default function SuccessPage({ params }: Props) {
                         {order.billing?.email && <p>Email: {order.billing.email}</p>}
                     </div>
                 </div>
+                <p className="text-gray-600 mb-4">
+                    Serás redirigido a Hotumatur en {countdown} segundos
+                </p>
+                <Button
+                    onClick={handleRedirect}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                    Volver a Hotumatur
+                </Button>
             </div>
         </div>
     );
