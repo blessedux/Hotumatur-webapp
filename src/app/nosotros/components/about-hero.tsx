@@ -26,16 +26,16 @@ export default function AboutHero() {
             <div className="absolute inset-0 bg-black/40" />
 
             {/* Content */}
-            <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-white">
-                <p className="mb-4 text-center text-md md:text-2xl">Nuestra Historia</p>
+            <div className="relative z-10 flex h-full flex-col items-start justify-center px-4 text-white">
+                {/* Title */}
+                <h1 className="mb-4 text-left text-3xl md:text-5xl font-bold">Nuestra Historia</h1>
 
                 {/* Main Content */}
                 <div className="w-full max-w-2xl rounded-lg p-6 py-10">
-                    <p className="text-center text-lg md:text-xl">
+                    <p className="text-left text-lg md:text-2xl leading-relaxed">
                         En Hotumatur trabajamos para preservar la cultura y compartir la magia de la Isla de Pascua con el mundo.
-
-
                     </p>
+
                 </div>
 
                 {/* Review Card Positioned Slightly Right */}
@@ -61,6 +61,6 @@ export default function AboutHero() {
                     </div>
                 </a>
             </div>
-        </div>
+        </div >
     );
 }

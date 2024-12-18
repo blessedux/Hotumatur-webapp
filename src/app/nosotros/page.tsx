@@ -34,7 +34,7 @@ export default function AboutPage() {
 
                     </p>
                 </div>
-                <div className="relative h-[400px] ml-8 mb-16">
+                <div className="relative h-[400px] ml-8">
                     <Image
                         src={heroImage}
                         alt="Nuestra Historia"
@@ -69,13 +69,10 @@ export default function AboutPage() {
                 </div>
             </section >
 
-            {/* Plan Your Trip */}
-            < PlanTrip />
-            <section className="container py-24">
-                <div className="max-w-3xl mx-auto text-center mb-12">
+
+            <section className="container">
+                <div className="max-w-3xl mx-auto text-center">
                     <p className="text-muted-foreground"> Cada recorrido con Hotumatur es una invitación a descubrir la esencia más pura de nuestra cultura ancestral. Conocemos cada moai, cada paisaje y cada leyenda porque hemos crecido rodeados de su majestuosidad. Contamos la historia, la vivimos y la compartimos con orgullo.
-
-
                     </p>
                 </div>
                 <div className="max-w-3xl mx-auto text-center mb-12">
@@ -87,18 +84,9 @@ export default function AboutPage() {
                 <div className="max-w-3xl mx-auto text-center mb-12">
                     <p className="text-muted-foreground"> En Hotumatur, creemos que el turismo debe ser responsable y auténtico. Por eso, trabajamos codo a codo con la comunidad local para preservar nuestro patrimonio cultural y natural. Nuestros tours no son solo viajes; son experiencias transformadoras, diseñadas para que cada visitante sienta el latido de la isla, admire su belleza y comprenda su alma.
 
-
                     </p>
                 </div>
             </section>
-
-
-
-
-
-
-            {/* Our Services */}
-            <Services />
 
             {/* Special Trips */}
             <SpecialTripsSection />
@@ -108,10 +96,6 @@ export default function AboutPage() {
 
             {/* Testimonials */}
             <Testimonials />
-
-            <FlightMap />
-
-
 
             {/* Partners Section */}
             <Partners />
