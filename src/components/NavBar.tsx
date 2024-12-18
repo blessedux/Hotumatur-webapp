@@ -30,10 +30,10 @@ export default function NavBar() {
     })
 
     return (
-        <nav className="bg-gradient-to-r from-[#1f45d4] to-[#327ef8] px-4 py-4">
+        <nav className="bg-white/20 px-4 py-4 absolute top-0 left-0 right-0 z-[100]">
             <div className="max-w-7xl mx-auto flex items-center justify-between">
                 <Link href="/" className="text-white text-2xl font-semibold">
-                    <Image src="/hotumatur-logo.svg" alt="Logo" width={100} height={100} className="md:w-[160px] md:h-auto  brightness-0 invert" />
+                    <Image src="/hotumatur-logo.svg" alt="Logo" width={100} height={100} className="md:w-[160px] md:h-auto " />
                 </Link>
 
                 {/* Mobile menu button */}
@@ -46,9 +46,6 @@ export default function NavBar() {
 
                 {/* Desktop menu */}
                 <div className="hidden md:flex items-center gap-10">
-                    <Link href="/" className="text-white hover:text-white/80">
-                        Inicio
-                    </Link>
                     <Menu as="div" className="relative inline-block text-left">
                         <MenuButton className="inline-flex items-center text-white hover:text-white/80">
                             Tours

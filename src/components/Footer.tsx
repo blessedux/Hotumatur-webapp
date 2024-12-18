@@ -1,59 +1,30 @@
-'use client';
-
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
 import { FaWhatsapp, FaInstagram, FaTripadvisor, FaTiktok, } from 'react-icons/fa';
 import { EnvelopeIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 
 export default function Footer() {
-    const [windowWidth, setWindowWidth] = useState(0);
-
-    useEffect(() => {
-        const handleResize = () => setWindowWidth(window.innerWidth);
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    const videoScale = windowWidth < 768 ? '250%' : '150%';
-
     return (
         <footer className='relative text-white overflow-hidden min-h-[600px] w-full'>
             {/* Video Background */}
             <div className='absolute inset-0 z-0 w-full h-full'>
-                <div
-                    className='absolute inset-0 bg-cover bg-center'
-                    style={{
-                        backgroundImage: 'url(https://vumbnail.com/1037857996.jpg)',
-                        filter: 'blur(10px)',
-                        transform: 'scale(1.1)',
-                    }}
-                />
                 <div className='absolute inset-0 bg-emerald-950/70 z-10' />
-                <div className='absolute inset-0 overflow-hidden'>
-                    <iframe
-                        src='https://player.vimeo.com/video/1037857996?autoplay=1&muted=1&loop=1&background=1'
-                        style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            width: videoScale,
-                            height: videoScale,
-                            transform: 'translate(-50%, -50%)',
-                            objectFit: 'cover',
-                        }}
-                        frameBorder='0'
-                        allow='autoplay; fullscreen; picture-in-picture'
-                        allowFullScreen
-                        title='Footer Background Video'
-                    ></iframe>
-                </div>
+                <iframe
+                    src='https://player.vimeo.com/video/1037857996?autoplay=1&muted=1&loop=1&background=1'
+                    className="absolute 
+                              xl:top-1/2 xl:h-[200%] xl:w-[200%] xl:[aspect-ratio:16/9]
+                              top-[calc(50%-4px)] left-1/2 w-[177.77777778vh] min-w-full min-h-[calc(100%+6px)] 
+                              -translate-x-1/2 -translate-y-1/2"
+                    frameBorder='0'
+                    allow='autoplay; fullscreen; picture-in-picture'
+                    allowFullScreen
+                    title='Footer Background Video'
+                />
             </div>
 
             {/* Main Footer Content */}
-            <div className='relative z-20 w-full px-4 py-8'>
-                <div className='flex flex-col items-center space-y-12 max-w-7xl mx-auto'>
+            <div className='relative z-20 w-full px-4 py-8 flex flex-col min-h-[600px]'>
+                <div className='flex-grow flex flex-col items-center space-y-12 max-w-7xl mx-auto'>
                     {/* Location */}
                     <div className='text-center'>
                         <p className='text-sm tracking-wider uppercase'>
@@ -178,14 +149,11 @@ export default function Footer() {
                             Política de Privacidad
                         </Link>
                     </nav>
+                </div>
 
-                    {/* Copyright */}
-                    <div className='text-sm mt-8 mb-2'>
-                        <p>
-                            &copy; {new Date().getFullYear()} Hotumatur. Todos los derechos
-                            reservados.
-                        </p>
-                    </div>
+                {/* Copyright - Moved to bottom */}
+                <div className='text-sm text-center mt-8 pt-8 border-t border-white/10'>
+                    <p>&copy; {new Date().getFullYear()} Hotumatur. Todos los derechos reservados.</p>
                 </div>
             </div>
         </footer>

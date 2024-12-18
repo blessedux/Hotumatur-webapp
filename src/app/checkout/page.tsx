@@ -20,6 +20,8 @@ import { useToast } from "@/hooks/use-toast"
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { SelectCountry } from '@/components/ui/select-country'
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Card, CardContent } from "@/components/ui/card"
 
 const formSchema = z.object({
     firstName: z.string()
@@ -54,6 +56,7 @@ const formSchema = z.object({
             });
         }
     }),
+    paymentMethod: z.enum(['webpay', 'paypal']),
     specialRequests: z.string().optional()
 });
 
@@ -61,7 +64,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function CheckoutPage() {
     const router = useRouter()
-    const { reservations, clearReservations } = useReservations()
+    const { reservations } = useReservations()
     const [acceptTerms, setAcceptTerms] = useState(false)
     const {
         register,
@@ -80,6 +83,7 @@ export default function CheckoutPage() {
                 countryCode: "+56",
                 number: ""
             },
+            paymentMethod: "webpay",
             specialRequests: ""
         },
         mode: "all",
@@ -88,6 +92,7 @@ export default function CheckoutPage() {
     const { toast } = useToast()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isFormComplete, setIsFormComplete] = useState(false)
+    const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
 
     const formValues = watch()
 
@@ -99,15 +104,14 @@ export default function CheckoutPage() {
             values.email?.trim() !== "" &&
             values.phone?.number?.trim() !== ""
 
-        console.log('Form Values:', values)
-        console.log('Is Complete:', isComplete)
-
         setIsFormComplete(isComplete)
     }, [formValues, getValues])
 
     const total = reservations.reduce((total, item) => total + (item.price * item.quantity), 0)
 
     const onSubmit = handleSubmit(async (formData: FormData) => {
+        console.log('Form Data:', formData);
+
         if (!acceptTerms) {
             toast({
                 title: "Error",
@@ -120,7 +124,6 @@ export default function CheckoutPage() {
         setIsSubmitting(true);
 
         try {
-            // Obtener el código del país desde el código telefónico
             const country = countryCodes.find(c => c.dial_code === formData.phone.countryCode)?.code || 'CL';
 
             const orderData = {
@@ -149,8 +152,9 @@ export default function CheckoutPage() {
                 ] : []
             };
 
-            // Llamar directamente al endpoint de la API
-            const response = await fetch('/api/orders', {
+            console.log('Order Data:', orderData);
+
+            const orderResponse = await fetch('/api/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -158,22 +162,45 @@ export default function CheckoutPage() {
                 body: JSON.stringify(orderData)
             });
 
-            if (!response.ok) {
+            if (!orderResponse.ok) {
                 throw new Error('Failed to create order');
             }
 
-            const data = await response.json();
+            const orderResult = await orderResponse.json();
+            console.log('Order Result:', orderResult);
 
-            if (data.success) {
-                clearReservations();
-                // Redirigir a la página de pago incluyendo el ID de la orden
-                window.location.href = `/payment/${data.order.id}`;
+            if (formData.paymentMethod === 'webpay') {
+                toast({
+                    title: "Procesando pago",
+                    description: "Redirigiendo a WebPay...",
+                });
+
+                const paymentResponse = await fetch('/api/payments/flow', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ orderId: orderResult.order.id })
+                });
+
+                const paymentData = await paymentResponse.json();
+                console.log('Payment Data:', paymentData);
+
+                if (!paymentResponse.ok) {
+                    throw new Error(paymentData.error || 'Error al procesar el pago');
+                }
+
+                setRedirectUrl(paymentData.paymentUrl + '?token=' + paymentData.token);
             } else {
-                throw new Error('No payment URL received');
+                // PayPal placeholder
+                toast({
+                    title: "Error",
+                    description: "PayPal estará disponible próximamente",
+                    variant: "destructive"
+                });
             }
-
         } catch (error) {
-            console.error('Error creating order:', error);
+            console.error('Error processing order:', error);
             toast({
                 title: "Error",
                 description: "No se pudo procesar tu orden. Por favor intenta nuevamente.",
@@ -195,6 +222,12 @@ export default function CheckoutPage() {
             router.push('/');
         }
     }, [reservations, router, toast]);
+
+    useEffect(() => {
+        if (redirectUrl) {
+            window.location.href = redirectUrl;
+        }
+    }, [redirectUrl]);
 
     return (
         <form onSubmit={onSubmit} className="min-h-screen bg-white">
@@ -305,6 +338,49 @@ export default function CheckoutPage() {
                                 <a href="#" className="text-blue-600 hover:underline"> política de reembolsos</a> específicas para tours y rentals.
                             </p>
                         </div>
+
+                        {/* Agregar sección de métodos de pago antes del botón de confirmar */}
+                        <div className="space-y-4">
+                            <h2 className="text-xl font-semibold">Método de Pago</h2>
+                            <RadioGroup
+                                defaultValue="webpay"
+                                onValueChange={(value) => setValue('paymentMethod', value as 'webpay' | 'paypal')}
+                            >
+                                <Card className="cursor-pointer relative">
+                                    <CardContent className="flex items-center gap-4 p-4">
+                                        <RadioGroupItem value="webpay" id="webpay" />
+                                        <Image
+                                            src="/logos/webpay.png"
+                                            alt="WebPay"
+                                            width={80}
+                                            height={40}
+                                            className="object-contain"
+                                        />
+                                        <div>
+                                            <Label htmlFor="webpay">WebPay Plus</Label>
+                                            <p className="text-sm text-gray-500">Paga con tarjetas de débito y crédito chilenas</p>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+
+                                <Card className="cursor-pointer relative opacity-50">
+                                    <CardContent className="flex items-center gap-4 p-4">
+                                        <RadioGroupItem value="paypal" id="paypal" disabled />
+                                        <Image
+                                            src="/logos/paypal.png"
+                                            alt="PayPal"
+                                            width={80}
+                                            height={40}
+                                            className="object-contain h-auto w-[90px]"
+                                        />
+                                        <div>
+                                            <Label htmlFor="paypal">PayPal</Label>
+                                            <p className="text-sm text-gray-500">Próximamente disponible</p>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </RadioGroup>
+                        </div>
                     </div>
 
                     {/* Columna Derecha - Resumen de la Reserva */}
@@ -364,16 +440,16 @@ export default function CheckoutPage() {
                                 {isSubmitting ? (
                                     <div className="flex items-center gap-2">
                                         <span className="animate-spin">⏳</span>
-                                        Procesando...
+                                        Procesando Pago...
                                     </div>
                                 ) : (
-                                    "Confirmar Reserva en Rapa Nui"
+                                    "Pagar Ahora"
                                 )}
                             </Button>
 
                             <div className="text-center">
-                                <Button variant="link" className="text-blue-600" onClick={() => router.push('/')}>
-                                    Continuar Explorando Tours en Rapa Nui
+                                <Button variant="link" className="text-blue-600 border w-full py-4 hover:border-blue-600 hover:no-underline" onClick={() => router.push('/')}>
+                                    Continuar Explorando Hotumatur
                                     <ArrowRight className="ml-2 h-4 w-4" />
                                 </Button>
                             </div>
@@ -383,7 +459,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* Debug section actualizado */}
-            {process.env.NODE_ENV === 'development' && (
+            {/* {process.env.NODE_ENV === 'development' && (
                 <div className="mt-4 p-4 bg-gray-100 rounded text-sm">
                     <p className="font-bold mb-2">Debug:</p>
                     <div className="space-y-1">
@@ -411,7 +487,7 @@ export default function CheckoutPage() {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </form>
     );
 }

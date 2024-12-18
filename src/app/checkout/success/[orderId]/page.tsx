@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast"
 import { ordersService } from '@/services/orders.service';
 import { Order } from '@/types/woocommerce';
 import { Button } from "@/components/ui/button"
+import { useReservations } from '@/hooks/use-reservations'
 
 interface Props {
     params: Promise<{ orderId: string }>;
@@ -18,6 +19,15 @@ export default function SuccessPage({ params }: Props) {
     const [order, setOrder] = useState<Order | null>(null);
     const [countdown, setCountdown] = useState(10);
     const { toast } = useToast();
+    const { clearReservations } = useReservations()
+    const [hasCleared, setHasCleared] = useState(false);
+
+    useEffect(() => {
+        if (!hasCleared) {
+            clearReservations();
+            setHasCleared(true);
+        }
+    }, [clearReservations, hasCleared]);
 
     useEffect(() => {
         const fetchOrder = async () => {

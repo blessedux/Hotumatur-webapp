@@ -32,13 +32,14 @@ export default function NewsletterSection() {
                         <Input
                             placeholder="Tu dirección de Email"
                             type="email"
-                            className="bg-white rounded-full px-4 py-2 focus:outline-none"
+                            className="bg-white px-6 py-2"
                         />
                         <Button
                             size="icon"
-                            className="bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center"
+                            className="bg-blue-600 hover:bg-blue-700 text-white flex items-center w-auto px-6 h-10"
                         >
                             <Send className="h-5 w-5" />
+                            Suscribir
                         </Button>
                     </div>
                 </div>

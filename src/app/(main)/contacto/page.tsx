@@ -60,13 +60,13 @@ const ContactPage: React.FC = () => {
     };
 
     return (
-        <div className="w-full py-12 bg-gradient-to-b from-blue-50 via-blue-100 to-white">
+        <div className="w-full py-12 bg-gradient-to-b from-hotumatur-primary via-blue-100 to-white">
             <section className="container mx-auto px-4 py-12">
                 <div className="text-center mb-12">
-                    <h1 className="text-3xl font-bold mb-2">Contáctanos</h1>
-                    <p className="text-muted-foreground">
+                    <h1 className="text-4xl font-bold mb-2 pt-24">Contáctanos</h1>
+                    <h3 className="text-2xl">
                         ¿Alguna pregunta o comentario? ¡Envíanos un mensaje!
-                    </p>
+                    </h3>
                 </div>
 
                 <div className="max-w-5xl mx-auto rounded-lg shadow-2xl overflow-hidden bg-white">
@@ -75,7 +75,7 @@ const ContactPage: React.FC = () => {
                         <div className="relative bg-[#2159E2] text-white overflow-hidden h-full">
                             <div className="absolute inset-0">
                                 <iframe
-                                    src="https://player.vimeo.com/video/1037857996?autoplay=1&muted=1&loop=1&background=1"
+                                    src="https://player.vimeo.com/video/1040474331?autoplay=1&muted=1&loop=1&background=1"
                                     style={{
                                         position: 'absolute',
                                         top: '50%',

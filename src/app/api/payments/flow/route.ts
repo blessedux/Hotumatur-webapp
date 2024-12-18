@@ -12,10 +12,12 @@ export async function POST(request: Request) {
         const payment = await flowService.createPayment({
             amount: parseInt(order.total),
             email: order.billing.email,
-            commerceOrder: `ORDER-${orderId}`,
-            subject: `Pago Orden #${orderId} Hotumatur`,
+            commerceOrder: `${orderId}`,
+            subject: `Pago Orden #${orderId} en Hotumatur`,
             urlConfirmation: `${config.app.appUrl}/api/payments/flow/confirm`,
-            urlReturn: `${config.app.appUrl}/api/payments/flow/success`,
+            urlReturn: `${config.app.appUrl}/api/payments/flow/return`,
+            // urlConfirmation: `https://b16adb4b6db6.ngrok.app/api/payments/flow/confirm`,
+            // urlReturn: `https://b16adb4b6db6.ngrok.app/api/payments/flow/return`,
             paymentMethod: 1  // WebPay
         });
 

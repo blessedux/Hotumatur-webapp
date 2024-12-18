@@ -5,8 +5,6 @@ import { flowService } from '@/services/server/flow.service';
 export async function POST(request: Request) {
     try {
         const body = await request.text();
-        console.log('body received:', body);
-
         const params = new URLSearchParams(body);
         const token = params.get('token');
 
@@ -16,21 +14,20 @@ export async function POST(request: Request) {
 
         // Obtener el estado del pago desde Flow
         const paymentStatus = await flowService.getPaymentStatus(token);
-        const orderId = parseInt(paymentStatus.commerceOrder.replace('ORDER-', ''));
+        const orderId = parseInt(paymentStatus.commerceOrder);
 
-        // Actualizar la orden con el token de Flow
-        await wooCommerceService.updateOrder(orderId, {
-            meta_data: [
-                {
-                    key: 'flow_token',
-                    value: token
-                },
-                {
-                    key: 'flow_payment_date',
-                    value: new Date().toISOString()
-                }
-            ]
-        });
+        if (paymentStatus.status === 2) {
+            console.log('si es 2 se actualiza el estado de la orden woocommerce');
+            await wooCommerceService.updateOrder(orderId, {
+                status: 'completed',
+                meta_data: [
+                    {
+                        key: 'flow_order_id',
+                        value: paymentStatus.flowOrder
+                    }
+                ]
+            });
+        }
 
         // Retornar HTML con redirección automática
         return new Response(
