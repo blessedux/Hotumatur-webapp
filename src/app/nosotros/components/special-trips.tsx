@@ -56,13 +56,15 @@ export function SpecialTripsSection() {
                 </Card>
 
                 {/* Image */}
-                <div className="absolute  left-0 w-[120%] h-[160%] lg:w-[70%] lg:h-[160%] ml-20 transform -translate-x-10  rounded-lg overflow-hidden shadow-xl">
+                <div
+                    className="absolute left-0 w-full h-full lg:w-[70%] lg:h-[160%] ml-0 lg:ml-20 transform lg:-translate-x-10 rounded-none lg:rounded-lg overflow-hidden shadow-xl"
+                >
                     <img
-                        src="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/about_6_1-1.webp"
+                        src="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Hiking-Rapa-Nui-1024x395-1.webp"
                         alt="Special Trips Background"
                         className="object-cover w-full h-full"
                         style={{
-                            objectPosition: "center 25%",
+                            objectPosition: "left left 25%",
                         }}
                     />
                 </div>

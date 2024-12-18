@@ -1,3 +1,5 @@
+'use client'
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/app/nosotros/components/badge";
@@ -6,18 +8,45 @@ import { Star } from "lucide-react";
 import Link from "next/link";
 
 export default function HotelCard() {
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const images = [
+        "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/tupa-hotel.webp",
+        "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Foto_Portada-2-scaled-pzqr5y7mox8qskdcpnycpfepe8s6ygso1obixng6io.webp",
+        "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/PC090024-scaled-pzqqzsdpw0t2olbkp02eczdx7b5khwc0j6cxocl3b4.webp",
+    ];
+
+    // Auto-gallery logic
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+        }, 3000); // Change image every 3 seconds
+        return () => clearInterval(interval); // Cleanup interval on component unmount
+    }, [images.length]);
+
     return (
         <Card className="overflow-hidden max-w-4xl mx-auto bg-[#2D2D2D] text-white rounded-lg shadow-md">
             <div className="flex flex-col md:flex-row gap-6 p-6 md:p-8">
-                {/* Left Section: Image */}
-                <div className="relative w-full md:w-[400px] h-[300px] rounded-lg overflow-hidden">
-                    <Image
-                        src="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/tupa-hotel.webp"
-                        alt="Tupa Hotel exterior view"
-                        fill
-                        className="object-cover"
-                        priority
-                    />
+                {/* Left Section: Image Gallery */}
+                <div
+                    className="relative w-full md:w-[400px] h-[300px] rounded-lg overflow-hidden"
+                    onMouseEnter={() => clearInterval(window.galleryInterval)} // Pause on hover
+                    onMouseLeave={() =>
+                    (window.galleryInterval = setInterval(() => {
+                        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+                    }, 3000))
+                    }
+                >
+                    {images.map((image, index) => (
+                        <Image
+                            key={index}
+                            src={image}
+                            alt={`Hotel Image ${index + 1}`}
+                            fill
+                            className={`object-cover transition-opacity duration-1000 ease-in-out ${index === currentImageIndex ? "opacity-100" : "opacity-0"
+                                }`}
+                            priority={index === 0}
+                        />
+                    ))}
                 </div>
 
                 {/* Right Section: Content */}
@@ -50,10 +79,6 @@ export default function HotelCard() {
                     </div>
 
                     {/* Call to Action */}
-                    <div>
-
-                    </div>
-                    {/* CTA Button */}
                     <div>
                         <Button
                             asChild
