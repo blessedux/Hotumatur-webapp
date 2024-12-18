@@ -8,12 +8,25 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { translate } from "ol/transform";
 
 export function SpecialTripsSection() {
     return (
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-            <div className="container px-4 md:px-6">
-                <Card className="w-full max-w-4xl mx-auto">
+        <section className="relative w-full py-12 md:py-24 lg:py-32 bg-muted overflow-hidden">
+            {/* Background Image */}
+            <div className="absolute inset-0 -z-10">
+                <div
+                    className="absolute -inset-8 bg-cover bg-center bg-no-repeat"
+                    style={{
+                        backgroundImage: `url('https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/about_6_1-1.webp')`,
+                    }}
+                />
+            </div>
+
+            {/* Content */}
+            <div className="container relative z-20 px-4 md:px-6 flex items-center justify-between">
+                {/* Card */}
+                <Card className="w-full max-w-2xl bg-white shadow-lg relative z-30 lg:ml-auto transform translate-x-10">
                     <CardHeader>
                         <CardTitle className="text-3xl font-bold tracking-tight">
                             Viajes Especiales
@@ -29,7 +42,7 @@ export function SpecialTripsSection() {
                             diseñadas especialmente para ti.
                         </p>
                     </CardContent>
-                    <CardFooter className="flex justify-between items-center">
+                    <CardFooter className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <Button asChild>
                             <Link href="/contact">Solicitar Cotización</Link>
                         </Button>
@@ -41,6 +54,18 @@ export function SpecialTripsSection() {
                         </Link>
                     </CardFooter>
                 </Card>
+
+                {/* Image */}
+                <div className="absolute  left-0 w-[120%] h-[160%] lg:w-[70%] lg:h-[160%] ml-20 transform -translate-x-10  rounded-lg overflow-hidden shadow-xl">
+                    <img
+                        src="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/about_6_1-1.webp"
+                        alt="Special Trips Background"
+                        className="object-cover w-full h-full"
+                        style={{
+                            objectPosition: "center 25%",
+                        }}
+                    />
+                </div>
             </div>
         </section>
     );

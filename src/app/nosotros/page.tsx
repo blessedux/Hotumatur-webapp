@@ -23,71 +23,64 @@ export default function AboutPage() {
             <AboutHero />
 
             {/* Our Story Section */}
-            <section className="container py-24">
-                <div className="max-w-3xl mx-auto text-center mb-12">
-
-                    <p className="text-muted-foreground">
-                        En Hotumatur, somos mucho más que una agencia de viajes; somos los embajadores oficiales de Rapa Nui.
-
-                        Nuestro compromiso va más allá de ofrecer tours y experiencias turísticas. Somos un equipo de guías locales nacidos y criados en la Isla de Pascua, quienes conocemos la historia, los secretos y las tradiciones de Rapa Nui como nadie más.
-
-
-                    </p>
-                </div>
-                <div className="relative h-[400px] ml-8">
-                    <Image
-                        src={heroImage}
-                        alt="Nuestra Historia"
-                        fill
-                        className="object-cover rounded-lg"
-                        priority
-                    />
-                </div>
-                <div className="flex justify-center min-h-screen">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <StatsCard
-                            number="15"
-                            label="Viajeros Felices"
-                            icon={<FaUsers />}
-                        />
-                        <StatsCard
-                            number="50"
-                            label="Paquetes Exclusivos"
-                            icon={<FaSuitcase />}
-                        />
-                        <StatsCard
-                            number="100"
-                            label="Autenticidad Local"
-                            icon={<FaChartBar />}
-                        />
-                        <StatsCard
-                            number="5"
-                            label="Experiencia Premium"
-                            icon={<FaStar />}
+            <section className="mb-24">
+                <h2 className="text-3xl font-bold text-center mb-12">Nuestra Historia</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div className="space-y-6">
+                        <p className="text-lg leading-relaxed ml-12 w-50%">
+                            En Hotumatur, somos mucho más que una agencia de viajes; somos los embajadores oficiales de Rapa Nui.
+                        </p>
+                        <p className="text-lg leading-relaxed ml-12 w-50">
+                            Nuestro compromiso va más allá de ofrecer tours y experiencias turísticas. Somos un equipo de guías locales nacidos y criados en la Isla de Pascua, quienes conocemos la historia, los secretos y las tradiciones de Rapa Nui como nadie más.
+                        </p>
+                    </div>
+                    <div className="relative h-[400px]">
+                        <Image
+                            src={heroImage}
+                            alt="Nuestra Historia"
+                            fill
+                            className="object-cover rounded-lg"
+                            priority
                         />
                     </div>
                 </div>
-            </section >
+            </section>
 
-
-            <section className="container">
-                <div className="max-w-3xl mx-auto text-center">
-                    <p className="text-muted-foreground"> Cada recorrido con Hotumatur es una invitación a descubrir la esencia más pura de nuestra cultura ancestral. Conocemos cada moai, cada paisaje y cada leyenda porque hemos crecido rodeados de su majestuosidad. Contamos la historia, la vivimos y la compartimos con orgullo.
-                    </p>
-                </div>
-                <div className="max-w-3xl mx-auto text-center mb-12">
-                    <p className="text-muted-foreground"> Nuestra misión es conectar a las personas con la magia y el misterio que hacen única a la Isla de Pascua. Queremos que cada visitante se lleve más que recuerdos: una conexión profunda con las raíces, los relatos y la espiritualidad que hacen de Rapa Nui un lugar irrepetible en el mundo.
-
-
-                    </p>
-                </div>
-                <div className="max-w-3xl mx-auto text-center mb-12">
-                    <p className="text-muted-foreground"> En Hotumatur, creemos que el turismo debe ser responsable y auténtico. Por eso, trabajamos codo a codo con la comunidad local para preservar nuestro patrimonio cultural y natural. Nuestros tours no son solo viajes; son experiencias transformadoras, diseñadas para que cada visitante sienta el latido de la isla, admire su belleza y comprenda su alma.
-
-                    </p>
+            {/* Stats Section */}
+            <section className="mb-24">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <StatsCard number="15" label="Viajeros Felices" icon={<FaUsers />} />
+                    <StatsCard number="50" label="Paquetes Exclusivos" icon={<FaSuitcase />} />
+                    <StatsCard number="100" label="Autenticidad Local" icon={<FaChartBar />} />
+                    <StatsCard number="5" label="Experiencia Premium" icon={<FaStar />} />
                 </div>
             </section>
 
+            {/* Mission and Values Section */}
+            <section className="hidden max-w-4xl mx-auto">
+                <div className="space-y-12">
+                    <div>
+                        <h3 className="text-2xl font-semibold mb-4">Nuestra Misión</h3>
+                        <p className="text-lg leading-relaxed">
+                            Cada recorrido con Hotumatur es una invitación a descubrir la esencia más pura de nuestra cultura ancestral. Conocemos cada moai, cada paisaje y cada leyenda porque hemos crecido rodeados de su majestuosidad. Contamos la historia, la vivimos y la compartimos con orgullo.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 className="text-2xl font-semibold mb-4">Nuestro Compromiso</h3>
+                        <p className="text-lg leading-relaxed">
+                            Nuestra misión es conectar a las personas con la magia y el misterio que hacen única a la Isla de Pascua. Queremos que cada visitante se lleve más que recuerdos: una conexión profunda con las raíces, los relatos y la espiritualidad que hacen de Rapa Nui un lugar irrepetible en el mundo.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 className="text-2xl font-semibold mb-4">Nuestros Valores</h3>
+                        <p className="text-lg leading-relaxed">
+                            En Hotumatur, creemos que el turismo debe ser responsable y auténtico. Por eso, trabajamos codo a codo con la comunidad local para preservar nuestro patrimonio cultural y natural. Nuestros tours no son solo viajes; son experiencias transformadoras, diseñadas para que cada visitante sienta el latido de la isla, admire su belleza y comprenda su alma.
+                        </p>
+                    </div>
+                </div>
+            </section>
             {/* Special Trips */}
             <SpecialTripsSection />
 
@@ -106,7 +99,7 @@ export default function AboutPage() {
             {/* Blog Section */}
             <section className=" flex justify-center">
                 <div className="container">
-                    <h2 className="text-3xl font-bold text-center mb-12">Últimas Novedades</h2>
+                    <h2 className="text-3xl font-bold text-center mt-12 mb-12">Últimas Novedades</h2>
                     <div className="grid md:grid-cols-3 gap-8 mx-auto">
                         <BlogCard
                             title="Viajes Educativos: Explorando Rapa Nui con Estudiantes"

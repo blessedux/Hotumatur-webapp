@@ -7,7 +7,7 @@ import HotelCard from "@/app/nosotros/components/HotelCard";
 
 export default function Partners() {
     return (
-        <section className="container py-24">
+        <section className="container py-24 w-full">
 
 
             {/* Tupa Hotel Highlighted Card */}

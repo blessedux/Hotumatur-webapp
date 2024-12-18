@@ -53,7 +53,7 @@ export default function Team() {
         <section className="py-20 relative">
             <div className="container mx-auto px-4">
                 <div className="mb-12 text-center">
-                    <h2 className="text-2xl font-semibold text-[#21b8c7]">
+                    <h2 className="text-2xl font-semibold text-black">
                         Conoce a Nuestro Equipo
                     </h2>
                     <h3 className="mt-2 text-3xl font-bold text-white md:text-4xl">

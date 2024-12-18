@@ -28,7 +28,7 @@ export function BlogCard({ title, category, href, imageUrl }: BlogCardProps) {
                     href={href}
                     className="inline-flex items-center text-sm text-primary hover:underline"
                 >
-                    READ MORE
+                    Leer más
                     <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
             </div>
