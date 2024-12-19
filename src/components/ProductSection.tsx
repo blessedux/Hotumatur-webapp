@@ -18,7 +18,7 @@ export default function ProductSection() {
             <div className="mx-auto max-w-6xl space-y-12">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold tracking-tight md:text-4xl lg:text-5xl">
-                        Vive La Esencia De Rapa Nui
+                        Vive La Esencia De <span className="font-satisfy">Rapa Nui</span>
                     </h2>
                 </div>
 

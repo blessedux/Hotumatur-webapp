@@ -8,6 +8,11 @@ import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { FaTripadvisor } from "react-icons/fa"
+import { Satisfy } from '@next/font/google';
+
+const satisfyFont = Satisfy({
+    subsets: ['latin'], weight: '400'
+});
 
 interface TestimonialProps {
     name: string;
@@ -158,7 +163,10 @@ export default function Testimonials() {
                         Experiencias Reales:
                     </h2>
                     <p className="text-2xl md:text-4xl font-bold text-black">
-                        Opiniones de Nuestros Clientes
+                        <span className={`${satisfyFont.className}`}>
+                            Opiniones de Nuestros Clientes
+                        </span>
+
                     </p>
                 </div>
                 <div className="relative">

@@ -1,7 +1,4 @@
 import TourSelector from '@/components/TourSelector'
-import { Satisfy } from '@next/font/google';
-
-const satisfyFont = Satisfy({ subsets: ['latin'], weight: '400' });
 
 
 export default function HeroSection() {
@@ -22,8 +19,8 @@ export default function HeroSection() {
             </div>
             <div className="absolute inset-0 bg-black/40" />
             <div className="relative z-10 flex h-full flex-col items-center justify-center px-4">
-                <p className="mb-4 text-center text-md md:text-2xl text-white">
-                    Ven a conocer la magia de <span className={`${satisfyFont.className}`}>Rapa Nui</span>
+                <p className="mb-4 text-center text-md md:text-2xl font-satisfy text-white">
+                    Ven a conocer la magia de Rapa Nui
                 </p>
 
                 <h1 className="mb-10 md:mb-16 text-center text-3xl font-bold text-white md:text-6xl">
