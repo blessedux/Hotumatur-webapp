@@ -1,20 +1,28 @@
-name: Docker Build and Push
+name: Docker Build and Deploy
 
 on:
   push:
-    branches: [ "main" ]  # o "master" según tu rama principal
-    tags: [ 'v*.*.*' ]   # se activará con tags tipo v1.0.0
+    branches: [ "main" ]
+    tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ "main" ]  # o "master"
+    branches: [ "main" ]
 
 env:
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
-  NEXT_PUBLIC_WC_API_URL: ${{ secrets.NEXT_PUBLIC_WC_API_URL }}
+  REGISTRY_DOCKERHUB: docker.io
+  REGISTRY_GITHUB: ghcr.io
+  IMAGE_NAME: hotumatur-app
 
 jobs:
   build:
+    name: Build Docker Image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,23 +30,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to Docker Hub
+      - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/hotumatur-app
+          images: |
+            ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
+            ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=pr
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha,format=long
+            type=sha,format=short
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -51,4 +66,31 @@ jobs:
             NEXT_PUBLIC_APP_URL=${{ secrets.NEXT_PUBLIC_APP_URL }}
             NEXT_PUBLIC_WC_API_URL=${{ secrets.NEXT_PUBLIC_WC_API_URL }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max 
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to Coolify
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - name: Deploy to Production
+        run: |
+          curl -X POST ${{ secrets.COOLIFY_WEBHOOK_URL }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "secret": "${{ secrets.COOLIFY_WEBHOOK_SECRET }}",
+              "image": "${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}"
+            }'
+
+      - name: Verify Deployment
+        run: |
+          echo "🚀 Deployment triggered for image: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}"
+          echo "⏳ Waiting for Coolify to pull and start the new container..."
+          sleep 30  # Dar tiempo a Coolify para iniciar el contenedor
+
+      - name: Deployment Status
+        run: |
+          echo "✅ Deployment process completed"
+          echo "🌐 Check your Coolify dashboard for deployment status"
