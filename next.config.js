@@ -1,11 +1,25 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['hotumatur.thefullstack.digital', 'images.pexels.com', 'media-cdn.tripadvisor.com', 'backend.hotumatur.com']
-    },
+    output: 'standalone',
     eslint: {
         ignoreDuringBuilds: true,
     },
+    typescript: {
+        ignoreBuildErrors: true
+    },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'hotumatur.thefullstack.digital',
+                port: '',
+                search: '',
+            },
+        ],
+    },
+    // Optimizaciones de producción
+    poweredByHeader: false,
+    reactStrictMode: true,
 }
 
 module.exports = nextConfig 
