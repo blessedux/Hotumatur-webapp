@@ -5,6 +5,7 @@ import Testimonials from '@/components/Testimonials';
 import PreFooter from '@/components/PreFooter';
 import { Suspense } from 'react';
 
+
 export default function Home() {
   return (
     <div className="relative z-0">
@@ -17,6 +18,7 @@ export default function Home() {
           <ServicesSection />
           <Testimonials />
           <PreFooter />
+
         </div>
       </main>
     </div>

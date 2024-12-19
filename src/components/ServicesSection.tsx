@@ -35,7 +35,7 @@ export default function ServicesSection() {
                         <div className="p-2 rounded-lg">
                             <FaMotorcycle className="w-6 h-6 text-gray-600" />
                         </div>
-                        <span>Arriendo de cuadrimotos</span>
+                        <span>Arriendo de cuatrimotos</span>
                     </div>
 
                     <div className="flex items-center gap-4 p-2">

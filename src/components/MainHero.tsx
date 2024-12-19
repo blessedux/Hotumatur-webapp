@@ -19,7 +19,7 @@ export default function HeroSection() {
             </div>
             <div className="absolute inset-0 bg-black/40" />
             <div className="relative z-10 flex h-full flex-col items-center justify-center px-4">
-                <p className="mb-4 text-center text-md md:text-2xl font-satisfy text-white">
+                <p className="mb-4 text-center text-xl md:text-2xl font-satisfy text-white">
                     Ven a conocer la magia de Rapa Nui
                 </p>
 

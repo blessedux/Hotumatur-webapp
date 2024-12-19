@@ -28,7 +28,7 @@ export default function AboutHero() {
             {/* Content */}
             <div className="relative z-10 flex h-full flex-col items-start justify-center px-4 text-white">
                 {/* Title */}
-                <h1 className="mb-4 text-left text-3xl md:text-5xl font-bold">Nuestra Historia</h1>
+                <h1 className="mb-4 text-left text-3xl md:text-5xl  font-bold">Nuestra Historia</h1>
 
                 {/* Main Content */}
                 <div className="w-full max-w-2xl rounded-lg p-6 py-10">

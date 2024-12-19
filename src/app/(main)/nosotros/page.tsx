@@ -23,7 +23,7 @@ export default function AboutPage() {
 
             {/* Our Story Section */}
             <section className="mb-24">
-                <h2 className="text-3xl font-bold text-center mt-12 mb-12">Nuestra Historia</h2>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6">
                         <p className="text-lg leading-relaxed ml-12 w-50%">
@@ -33,7 +33,7 @@ export default function AboutPage() {
                             Nuestro compromiso va más allá de ofrecer tours y experiencias turísticas. Somos un equipo de guías locales nacidos y criados en la Isla de Pascua, quienes conocemos la historia, los secretos y las tradiciones de Rapa Nui como nadie más.
                         </p>
                     </div>
-                    <div className="relative h-[400px]">
+                    <div className="relative mt-20 h-[400px]">
                         <Image
                             src={heroImage}
                             alt="Nuestra Historia"
