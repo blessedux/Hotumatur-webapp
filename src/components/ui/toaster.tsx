@@ -35,20 +35,23 @@ export function Toaster() {
 
   return (
     <ToastProvider>
-      {transitions((style, toast) => (
-        <animated.div style={style}>
-          <Toast key={toast.id} {...toast}>
-            <div className="grid gap-1">
-              {toast.title && <ToastTitle>{toast.title}</ToastTitle>}
-              {toast.description && (
-                <ToastDescription>{toast.description}</ToastDescription>
-              )}
-            </div>
-            {toast.action}
-            <ToastClose />
-          </Toast>
-        </animated.div>
-      ))}
+      {transitions((style, toast) => {
+        const { id, title, description, action, ...props } = toast
+        return (
+          <animated.div style={style} key={id}>
+            <Toast {...props}>
+              <div className="grid gap-1">
+                {title && <ToastTitle>{title}</ToastTitle>}
+                {description && (
+                  <ToastDescription>{description}</ToastDescription>
+                )}
+              </div>
+              {action}
+              <ToastClose />
+            </Toast>
+          </animated.div>
+        )
+      })}
       <ToastViewport />
     </ToastProvider>
   )

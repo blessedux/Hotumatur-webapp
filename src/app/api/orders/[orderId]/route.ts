@@ -2,9 +2,11 @@ import { NextResponse } from 'next/server';
 import { wooCommerceService } from '@/services/server/woocommerce.service';
 import { AxiosError } from 'axios';
 
+type Params = Promise<{ orderId: string }>
+
 export async function GET(
     request: Request,
-    { params }: { params: Promise<{ orderId: string }> }
+    { params }: { params: Params }
 ) {
     const resolvedParams = await params;
 
@@ -32,9 +34,11 @@ export async function GET(
 
 export async function PUT(
     request: Request,
-    { params }: { params: { orderId: string } }
+    { params }: { params: Params }
 ) {
-    if (!params?.orderId) {
+    const resolvedParams = await params;
+
+    if (!resolvedParams?.orderId) {
         return NextResponse.json(
             { error: 'Order ID is required' },
             { status: 400 }
@@ -43,7 +47,7 @@ export async function PUT(
 
     try {
         const updateData = await request.json();
-        const order = await wooCommerceService.updateOrder(Number(params.orderId), updateData);
+        const order = await wooCommerceService.updateOrder(Number(resolvedParams.orderId), updateData);
 
         return NextResponse.json({
             success: true,

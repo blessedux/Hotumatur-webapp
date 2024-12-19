@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { cn } from "@/lib/utils"
 import { countryCodes } from "@/lib/constants/phone-codes"
 import { validatePhoneNumber } from '@/lib/libphonenumber';
-import { useToast } from "@/hooks/use-toast"
+import { toast as showToast } from "@/hooks/use-toast"
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { SelectCountry } from '@/components/ui/select-country'
@@ -89,7 +89,6 @@ export default function CheckoutPage() {
         mode: "all",
         reValidateMode: "onChange"
     })
-    const { toast } = useToast()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isFormComplete, setIsFormComplete] = useState(false)
     const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
@@ -113,10 +112,9 @@ export default function CheckoutPage() {
         console.log('Form Data:', formData);
 
         if (!acceptTerms) {
-            toast({
+            showToast({
                 title: "Error",
-                description: "Debes aceptar los términos y condiciones",
-                variant: "destructive"
+                description: "Debes aceptar los términos y condiciones"
             });
             return;
         }
@@ -170,9 +168,9 @@ export default function CheckoutPage() {
             console.log('Order Result:', orderResult);
 
             if (formData.paymentMethod === 'webpay') {
-                toast({
+                showToast({
                     title: "Procesando pago",
-                    description: "Redirigiendo a WebPay...",
+                    description: "Redirigiendo a WebPay..."
                 });
 
                 const paymentResponse = await fetch('/api/payments/flow', {
@@ -193,18 +191,16 @@ export default function CheckoutPage() {
                 setRedirectUrl(paymentData.paymentUrl + '?token=' + paymentData.token);
             } else {
                 // PayPal placeholder
-                toast({
+                showToast({
                     title: "Error",
-                    description: "PayPal estará disponible próximamente",
-                    variant: "destructive"
+                    description: "PayPal estará disponible próximamente"
                 });
             }
         } catch (error) {
             console.error('Error processing order:', error);
-            toast({
+            showToast({
                 title: "Error",
-                description: "No se pudo procesar tu orden. Por favor intenta nuevamente.",
-                variant: "destructive"
+                description: "No se pudo procesar tu orden. Por favor intenta nuevamente."
             });
         } finally {
             setIsSubmitting(false);
@@ -214,14 +210,13 @@ export default function CheckoutPage() {
     // Agregar validación para asegurar que hay reservaciones
     useEffect(() => {
         if (reservations.length === 0) {
-            toast({
+            showToast({
                 title: "No hay reservaciones",
-                description: "Por favor selecciona al menos un tour antes de continuar",
-                variant: "destructive"
+                description: "Por favor selecciona al menos un tour antes de continuar"
             });
             router.push('/');
         }
-    }, [reservations, router, toast]);
+    }, [reservations, router]);
 
     useEffect(() => {
         if (redirectUrl) {

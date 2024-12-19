@@ -3,7 +3,17 @@
 import { useState } from 'react'
 import Image from "next/image"
 
-const team = [
+// Define the TeamMember type
+interface TeamMember {
+    name: string;
+    role: string;
+    image: string;
+    bio: string;
+    specialties: string[];
+    languages: string[];
+}
+
+const team: TeamMember[] = [
     {
         name: "Ana Pakarati",
         role: "Guía Turística",
@@ -47,7 +57,7 @@ const team = [
 ]
 
 export default function Team() {
-    const [selectedMember, setSelectedMember] = useState(null)
+    const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null)
 
     return (
         <section className="py-20 relative">
