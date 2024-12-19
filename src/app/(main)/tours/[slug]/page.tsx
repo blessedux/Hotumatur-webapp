@@ -6,11 +6,11 @@ import { CheckCircle } from 'lucide-react'
 import { VscError } from "react-icons/vsc";
 import SingleTourSelector from "@/components/SingleTourSelector";
 
-interface Props {
+type Props = {
     params: {
-        slug: string
-    }
-}
+        slug: string;
+    };
+};
 
 async function getProduct(slug: string) {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
@@ -64,7 +64,7 @@ interface MappedAttribute {
     value: string;
 }
 
-export default async function ProductPage({ params }: Props) {
+async function TourPage({ params }: Props) {
     const product = await getProduct(params.slug)
 
     if (!product) {
@@ -174,4 +174,6 @@ export default async function ProductPage({ params }: Props) {
             </div>
         </div>
     )
-} 
+}
+
+export default TourPage; 
