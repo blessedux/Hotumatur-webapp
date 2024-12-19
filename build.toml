@@ -1,0 +1,6 @@
+[build]
+builder = "nixpacks"
+buildCommand = "npm run build"  # o el comando que necesites
+publishDir = "dist"  # directorio donde se genera tu build
+
+[deploy]startCommand = "npm start"
