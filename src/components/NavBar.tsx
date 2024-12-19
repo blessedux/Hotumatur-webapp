@@ -82,10 +82,6 @@ export default function NavBar() {
                             </MenuItems>
                         </Transition>
                     </Menu>
-
-                    <Link href="#" className="text-white hover:text-white/80">
-                        Rentals
-                    </Link>
                     <Link href="/nosotros" className="text-white hover:text-white/80">
                         Nosotros
                     </Link>
