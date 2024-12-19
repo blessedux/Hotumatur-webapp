@@ -22,6 +22,7 @@ jobs:
     
     outputs:
       image_tag: ${{ steps.meta.outputs.tags }}
+      job_status: ${{ job.status }}
 
     steps:
       - name: Checkout repository
@@ -71,26 +72,50 @@ jobs:
   deploy:
     name: Deploy to Coolify
     needs: build
+    if: |
+      needs.build.result == 'success' && 
+      (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
     
     steps:
-      - name: Deploy to Production
+      - name: Notify Coolify via Webhook
+        id: deploy
         run: |
-          curl -X POST ${{ secrets.COOLIFY_WEBHOOK_URL }} \
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "${{ secrets.COOLIFY_WEBHOOK_URL }}" \
             -H "Content-Type: application/json" \
+            -H "x-webhook-secret: ${{ secrets.COOLIFY_WEBHOOK_SECRET }}" \
             -d '{
-              "secret": "${{ secrets.COOLIFY_WEBHOOK_SECRET }}",
-              "image": "${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}"
-            }'
+              "status": "success",
+              "force": true,
+              "image": "docker.io/bzzmn/hotumatur-app",
+              "imageTag": "sha-${{ github.sha }}"
+            }')
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n 1)
+          BODY=$(echo "$RESPONSE" | sed '$ d')
+          
+          echo "status_code=$HTTP_CODE" >> $GITHUB_OUTPUT
+          echo "response=$BODY" >> $GITHUB_OUTPUT
+          
+          if [ "$HTTP_CODE" -eq 200 ]; then
+            echo "✅ Deployment triggered successfully"
+          else
+            echo "❌ Deployment failed with status code: $HTTP_CODE"
+            echo "Response: $BODY"
+            exit 1
+          fi
 
-      - name: Verify Deployment
+      - name: Deployment Summary
+        if: always()
         run: |
-          echo "🚀 Deployment triggered for image: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}"
-          echo "⏳ Waiting for Coolify to pull and start the new container..."
-          sleep 30  # Dar tiempo a Coolify para iniciar el contenedor
-
-      - name: Deployment Status
-        run: |
-          echo "✅ Deployment process completed"
-          echo "🌐 Check your Coolify dashboard for deployment status"
+          echo "### Deployment Status 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "- **Image**: docker.io/bzzmn/hotumatur-app:sha-${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status Code**: ${{ steps.deploy.outputs.status_code }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Response**: ${{ steps.deploy.outputs.response }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Timestamp**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ steps.deploy.outputs.status_code }}" -eq 200 ]; then
+            echo "✅ Deployment completed successfully" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Deployment failed" >> $GITHUB_STEP_SUMMARY
+          fi
