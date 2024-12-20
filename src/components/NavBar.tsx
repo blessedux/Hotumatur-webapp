@@ -84,7 +84,7 @@ export default function NavBar() {
                     </Menu>
                     <Link href="#" className="text-white hover:text-white/80">
                         Rentals
-                    </Link> *
+                    </Link>
                     <Link href="/nosotros" className="text-white hover:text-white/80">
                         Nosotros
                     </Link>
