@@ -5,12 +5,7 @@ import { RiBatteryChargeLine } from "react-icons/ri";
 import { CheckCircle } from 'lucide-react'
 import { VscError } from "react-icons/vsc";
 import SingleTourSelector from "@/components/SingleTourSelector";
-
-interface Props {
-    params: {
-        slug: string
-    }
-}
+import { Metadata } from "next";
 
 async function getProduct(slug: string) {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
@@ -64,25 +59,44 @@ interface MappedAttribute {
     value: string;
 }
 
-export default async function ProductPage({ params }: Props) {
-    const product = await getProduct(params.slug)
+type Params = Promise<{ slug: string }>
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
-    if (!product) {
-        return <div>Producto no encontrado</div>
+export default async function Page(props: {
+    params: Params
+    searchParams: SearchParams
+}) {
+    const params = await props.params
+    const slug = params.slug
+
+    const getData = async () => {
+        const product = await getProduct(slug)
+        if (!product) {
+            return null
+        }
+        const subtitulo = product.meta_data.find((meta: MetaData) => meta.key === 'subtitulo')?.value
+        const productAttributes = product.attributes.map((attr: ProductAttribute) => ({
+            name: attr.name.charAt(0).toUpperCase() + attr.name.slice(1),
+            value: attr.options[0]
+        }))
+        return {
+            ...product,
+            subtitulo,
+            productAttributes
+        }
     }
 
-    const subtitulo = product.meta_data.find((meta: MetaData) => meta.key === 'subtitulo')?.value
-    const productAttributes = product.attributes.map((attr: ProductAttribute) => ({
-        name: attr.name.charAt(0).toUpperCase() + attr.name.slice(1),
-        value: attr.options[0]
-    }))
+    const tourData = await getData()
+    if (!tourData) {
+        return <div>Producto no encontrado</div>
+    }
 
     return (
         <div className="min-h-[calc(100dvh-80px-700px)] mx-auto">
             <section className="relative h-[600px] w-full overflow-hidden">
                 <Image
-                    src={product.images[0]?.src || "/placeholder.svg"}
-                    alt={product.name}
+                    src={tourData.images[0]?.src || "/placeholder.svg"}
+                    alt={tourData.name}
                     fill
                     className="object-cover object-center absolute inset-0"
                     sizes="100vw"
@@ -90,23 +104,23 @@ export default async function ProductPage({ params }: Props) {
                 />
                 <div className="absolute inset-0 bg-black/20 ">
                     <div className="container mx-auto px-4 h-full flex flex-col justify-end pb-10 text-white max-w-[1200px]">
-                        <h1 className="text-4xl md:text-5xl font-bold mb-4">{product.name}</h1>
-                        {subtitulo && (
-                            <p className="text-xl md:text-2xl text-gray-100 mb-4">{subtitulo}</p>
+                        <h1 className="text-4xl md:text-5xl font-bold mb-4">{tourData.name}</h1>
+                        {tourData.subtitulo && (
+                            <p className="text-xl md:text-2xl text-gray-100 mb-4">{tourData.subtitulo}</p>
                         )}
                         <div className="flex items-center gap-4">
                             <p className="text-2xl md:text-3xl font-medium text-gray-200">
-                                ${Number(product.price).toLocaleString('es-CL')} <span className="text-lg">/por persona</span>
+                                ${Number(tourData.price).toLocaleString('es-CL')} <span className="text-lg">/por persona</span>
                             </p>
 
 
                         </div>
                         <div className="max-w-md pt-4">
                             <SingleTourSelector
-                                tourId={product.id}
-                                tourName={product.name}
-                                tourPrice={Number(product.price)}
-                                tourImage={product.images[0]?.src || "/placeholder.svg"}
+                                tourId={tourData.id}
+                                tourName={tourData.name}
+                                tourPrice={Number(tourData.price)}
+                                tourImage={tourData.images[0]?.src || "/placeholder.svg"}
                             />
 
                         </div>
@@ -123,13 +137,13 @@ export default async function ProductPage({ params }: Props) {
                             prose-ul:mt-4 prose-ul:list-disc prose-ul:pl-6
                             prose-li:text-gray-600 prose-li:mb-2
                             prose-strong:text-gray-900 prose-strong:font-semibold"
-                    dangerouslySetInnerHTML={{ __html: product.description }}
+                    dangerouslySetInnerHTML={{ __html: tourData.description }}
                 />
                 <Card className="mt-10">
                     <CardContent className="p-10">
                         <h3 className="text-2xl font-bold mb-6">Detalles del Tour</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {productAttributes.map((attr: MappedAttribute) => {
+                            {tourData.productAttributes.map((attr: MappedAttribute) => {
                                 const config = iconConfig[attr.name.toLowerCase() as keyof typeof iconConfig] || {
                                     icon: CheckCircle,
                                     size: 'h-5 w-5',
@@ -174,4 +188,17 @@ export default async function ProductPage({ params }: Props) {
             </div>
         </div>
     )
+}
+
+export async function generateMetadata(props: {
+    params: Params
+    searchParams: SearchParams
+}): Promise<Metadata> {
+    const params = await props.params
+    const product = await getProduct(params.slug)
+
+    return {
+        title: `Tour - ${product.name}`,
+        description: product.description?.replace(/<[^>]*>/g, '').slice(0, 160) || `Details for the tour ${params.slug}`,
+    }
 } 

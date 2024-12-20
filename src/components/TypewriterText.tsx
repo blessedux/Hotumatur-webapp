@@ -12,16 +12,16 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({ title, subtext }) => {
     const [displayedSubtext, setDisplayedSubtext] = useState("");
     const [hasMounted, setHasMounted] = useState(false);
 
-    // Run only on the client side
     useEffect(() => {
         setHasMounted(true);
 
-        if (typeof window === "undefined") return; // Prevent running on the server
+        if (typeof window === "undefined") return;
 
         let titleIndex = 0;
         let subtextIndex = 0;
+        let titleInterval: NodeJS.Timeout;
+        let subtextInterval: NodeJS.Timeout;
 
-        // Typewriter for title
         const typeTitle = () => {
             if (titleIndex < title.length) {
                 setDisplayedTitle((prev) => prev + title[titleIndex]);
@@ -32,7 +32,6 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({ title, subtext }) => {
             }
         };
 
-        // Typewriter for subtext
         const typeSubtext = () => {
             if (subtextIndex < subtext.length) {
                 setDisplayedSubtext((prev) => prev + subtext[subtextIndex]);
@@ -42,19 +41,19 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({ title, subtext }) => {
             }
         };
 
-        // Start subtext typing after title
         const startSubtextTyping = () => {
             setTimeout(() => {
                 subtextInterval = setInterval(typeSubtext, 50);
             }, 500);
         };
 
-        let titleInterval = setInterval(typeTitle, 100);
-        let subtextInterval: NodeJS.Timer;
+        titleInterval = setInterval(typeTitle, 100);
 
         return () => {
             clearInterval(titleInterval);
-            clearInterval(subtextInterval);
+            if (subtextInterval) {
+                clearInterval(subtextInterval);
+            }
         };
     }, [title, subtext]);
 

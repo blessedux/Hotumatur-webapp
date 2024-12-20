@@ -1,0 +1,25 @@
+{
+    "name": "hotumatur-app",
+    "type": "docker",
+    "image": "bzzmn/hotumatur-app:latest",
+    "port": 3000,
+    "env": [
+        "NODE_ENV=production",
+        "NEXT_TELEMETRY_DISABLED=1",
+        "NEXT_PUBLIC_APP_URL",
+        "NEXT_PUBLIC_WC_API_URL",
+        "WC_CONSUMER_KEY",
+        "WC_CONSUMER_SECRET",
+        "FLOW_API_KEY",
+        "FLOW_SECRET_KEY",
+        "FLOW_API_URL"
+    ],
+    "resources": {
+        "cpu": 1,
+        "memory": 1024
+    },
+    "healthCheck": {
+        "path": "/",
+        "port": 3000
+    }
+}

@@ -48,10 +48,10 @@ export default function AboutPage() {
             {/* Stats Section */}
             <section className="mb-24">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <StatsCard number="15" label="Viajeros Felices" icon={<FaUsers />} />
-                    <StatsCard number="50" label="Paquetes Exclusivos" icon={<FaSuitcase />} />
-                    <StatsCard number="100" label="Autenticidad Local" icon={<FaChartBar />} />
-                    <StatsCard number="5" label="Experiencia Premium" icon={<FaStar />} />
+                    <StatsCard number={15} label="Viajeros Felices" icon={<FaUsers />} />
+                    <StatsCard number={50} label="Paquetes Exclusivos" icon={<FaSuitcase />} />
+                    <StatsCard number={100} label="Autenticidad Local" icon={<FaChartBar />} />
+                    <StatsCard number={5} label="Experiencia Premium" icon={<FaStar />} />
                 </div>
             </section>
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Badge } from "@/app/nosotros/components/badge";
+import { Badge } from "@/components/nosotros/badge";
 import HotelCard from "@/components/HotelCard";
 
 export default function Partners() {

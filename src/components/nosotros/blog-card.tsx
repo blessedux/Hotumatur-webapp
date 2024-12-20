@@ -4,7 +4,7 @@ import Link from "next/link"
 
 interface BlogCardProps {
     title: string
-    category: stringa
+    category: string
     href: string
     imageUrl: string
 }

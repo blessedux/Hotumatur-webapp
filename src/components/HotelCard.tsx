@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/nosotros/badge";
@@ -9,6 +9,7 @@ import Link from "next/link";
 
 export default function HotelCard() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const images = [
         "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/tupa-hotel.webp",
         "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Foto_Portada-2-scaled-pzqr5y7mox8qskdcpnycpfepe8s6ygso1obixng6io.webp",
@@ -17,11 +18,22 @@ export default function HotelCard() {
 
     // Auto-gallery logic
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-        }, 3000); // Change image every 3 seconds
-        return () => clearInterval(interval); // Cleanup interval on component unmount
+        startInterval();
+        return () => stopInterval(); // Cleanup on unmount
     }, [images.length]);
+
+    const startInterval = () => {
+        intervalRef.current = setInterval(() => {
+            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+        }, 3000);
+    };
+
+    const stopInterval = () => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+    };
 
     return (
         <Card className="overflow-hidden max-w-4xl mx-auto bg-[#2D2D2D] text-white rounded-lg shadow-md">
@@ -29,12 +41,8 @@ export default function HotelCard() {
                 {/* Left Section: Image Gallery */}
                 <div
                     className="relative w-full md:w-[400px] h-[300px] rounded-lg overflow-hidden"
-                    onMouseEnter={() => clearInterval(window.galleryInterval)} // Pause on hover
-                    onMouseLeave={() =>
-                    (window.galleryInterval = setInterval(() => {
-                        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-                    }, 3000))
-                    }
+                    onMouseEnter={stopInterval}
+                    onMouseLeave={startInterval}
                 >
                     {images.map((image, index) => (
                         <Image

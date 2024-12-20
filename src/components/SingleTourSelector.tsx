@@ -63,7 +63,6 @@ export default function SingleTourSelector({ tourId, tourName, tourPrice, tourIm
         })
 
         toast({
-            variant: "success",
             title: "¡Reserva exitosa!",
             description: (
                 <div className="space-y-2 flex flex-col">

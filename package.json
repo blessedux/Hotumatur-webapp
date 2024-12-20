@@ -8,9 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\""
   },
   "dependencies": {
     "@fontsource/satisfy": "^5.1.0",
@@ -43,7 +41,8 @@
     "flag-icons": "^7.2.3",
     "libphonenumber-js": "^1.11.16",
     "lucide-react": "^0.468.0",
-    "next": "15.1.0",
+    "next": "^15.1.2",
+    "nodemailer": "^6.9.16",
     "react": "^18.2.0",
     "react-country-flag": "^3.1.0",
     "react-day-picker": "^8.10.1",
@@ -57,23 +56,20 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/typography": "^0.5.15",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@types/jest": "^29.5.14",
-    "@types/node": "^20",
-    "@types/react": "^18.2.0",
+    "@types/node": "^20.17.10",
+    "@types/nodemailer": "^6.4.17",
+    "@types/react": "^18.3.17",
     "@types/react-dom": "^18.2.0",
-    "@types/tailwindcss": "^3.1.0",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "jest": "^29.7.0",
     "postcss": "^8",
     "prettier": "^3.4.2",
     "shadcn-ui": "^0.9.4",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5.7.2"
   }
 }

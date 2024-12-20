@@ -16,7 +16,7 @@ interface TestimonialProps {
     rating: number;
     text: string;
     date: string;
-    tripAdvisorLink: string;
+    tripAdvisorLink?: string;
 }
 
 function StarRating({ rating }: { rating: number }) {
@@ -55,21 +55,22 @@ function TestimonialCard({ name, location, image, rating, text, date, tripAdviso
             <CardFooter className="flex justify-between items-center">
                 <p className="text-sm text-muted-foreground">{date}</p>
             </CardFooter>
-            <a
-                href={tripAdvisorLink}
-                target="_blank"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="absolute bottom-4 right-4"
-            >
-                <Button
-                    variant="secondary"
-                    className="flex items-center gap-2 px-4 py-2 text-sm"
+            {tripAdvisorLink && (
+                <a
+                    href={tripAdvisorLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute bottom-4 right-4"
                 >
-                    <FaTripadvisor className="w-4 h-4" />
-                    TripAdvisor
-                </Button>
-            </a>
+                    <Button
+                        variant="secondary"
+                        className="flex items-center gap-2 px-4 py-2 text-sm"
+                    >
+                        <FaTripadvisor className="w-4 h-4" />
+                        TripAdvisor
+                    </Button>
+                </a>
+            )}
         </Card>
     )
 }
