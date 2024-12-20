@@ -78,6 +78,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      # Trigger Coolify deployment
+      - name: Trigger deployment in Coolify
+        run: |
+          curl --request GET "${{ secrets.COOLIFY_WEBHOOK }}" \
+               --header "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}"
+
       - name: Verify Deployment
         run: |
           echo "🚀 New deployment details:"
