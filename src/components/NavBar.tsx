@@ -1,39 +1,45 @@
-"use client"
+"use client";
 
-import { useState, Fragment } from "react"
-import Link from "next/link"
-import { Menu, Transition, MenuItems, MenuButton, MenuItem } from '@headlessui/react'
-import { ChevronDown, MenuIcon, X } from 'lucide-react'
-import Image from 'next/image'
-import { useSpring, animated } from '@react-spring/web'
-import { useProducts } from "@/hooks/useProducts"
-import ReservationIcon from '@/components/ReservationIcon'
+import { useState, Fragment } from "react";
+import Link from "next/link";
+import { Menu, Transition, MenuItems, MenuButton, MenuItem } from "@headlessui/react";
+import { ChevronDown, MenuIcon, X } from "lucide-react";
+import Image from "next/image";
+import { useSpring, animated } from "@react-spring/web";
+import ReservationIcon from "@/components/ReservationIcon";
 
 export default function NavBar() {
-    const [isOpen, setIsOpen] = useState(false)
-    const { products, loading } = useProducts()
+    const [isOpen, setIsOpen] = useState(false);
 
-    const tours = products
-        .filter(product => product.categories.some(category => category.name === "Tours"))
-        .map(tour => ({
-            name: tour.name,
-            href: `/tours/${tour.slug}`
-        }))
+    // Static menu items for Tours
+    const toursMenu = [
+        { name: "Tours Privados", href: "/tours-privados" },
+        { name: "Tours Grupales", href: "/tours-grupales" },
+        { name: "Tours Especiales", href: "/tours-especiales" },
+    ];
 
     const menuAnimation = useSpring({
-        transform: isOpen ? 'translateX(0%)' : 'translateX(100%)',
+        transform: isOpen ? "translateX(0%)" : "translateX(100%)",
         opacity: isOpen ? 1 : 0,
         config: {
             tension: 180,
             friction: 20,
         },
-    })
+    });
+
+    const tours = toursMenu || []; // Use toursMenu or an empty array as fallback
 
     return (
         <nav className="bg-white/20 px-4 py-4 absolute top-0 left-0 right-0 z-[100]">
             <div className="max-w-7xl mx-auto flex items-center justify-between">
                 <Link href="/" className="text-white text-2xl font-semibold">
-                    <Image src="/hotumatur-logo.svg" alt="Logo" width={100} height={100} className="md:w-[160px] md:h-auto " />
+                    <Image
+                        src="/hotumatur-logo.svg"
+                        alt="Logo"
+                        width={100}
+                        height={100}
+                        className="md:w-[160px] md:h-auto"
+                    />
                 </Link>
 
                 {/* Mobile menu button */}
@@ -60,30 +66,26 @@ export default function NavBar() {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <MenuItems className="absolute right-0 mt-2 w-80 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ">
-                                {loading ? (
-                                    <div className="px-6 py-3">Loading...</div>
-                                ) : (
-                                    <div className="py-4">
-                                        {tours.map((tour) => (
-                                            <MenuItem key={tour.name}>
-                                                {({ active }) => (
-                                                    <Link
-                                                        href={tour.href}
-                                                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'} block px-6 py-3 text-md`}
-                                                    >
-                                                        {tour.name}
-                                                    </Link>
-                                                )}
-                                            </MenuItem>
-                                        ))}
-                                    </div>
-                                )}
+                            <MenuItems className="absolute right-0 mt-2 w-80 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <div className="py-4">
+                                    {toursMenu.map((tour) => (
+                                        <MenuItem key={tour.name}>
+                                            {({ active }) => (
+                                                <Link
+                                                    href={tour.href}
+                                                    className={`${active ? "bg-gray-100 text-gray-900" : "text-gray-700"} block px-6 py-3 text-md`}
+                                                >
+                                                    {tour.name}
+                                                </Link>
+                                            )}
+                                        </MenuItem>
+                                    ))}
+                                </div>
                             </MenuItems>
                         </Transition>
                     </Menu>
-                    <Link href="#" className="text-white hover:text-white/80">
-                        Rentals
+                    <Link href="/actividades" className="text-white hover:text-white/80">
+                        Actividades
                     </Link>
                     <Link href="/nosotros" className="text-white hover:text-white/80">
                         Nosotros
@@ -95,10 +97,10 @@ export default function NavBar() {
                 </div>
 
                 {/* Mobile menu panel */}
-
                 <animated.div
                     style={menuAnimation}
-                    className="absolute top-[95px] left-0 right-0 bg-[#E5B455] p-10 md:hidden z-[100] py-20">
+                    className="absolute top-[95px] left-0 right-0 bg-[#E5B455] p-10 md:hidden z-[100] py-20"
+                >
                     <div className="flex flex-col gap-6">
                         <Link
                             href="/"
@@ -112,15 +114,15 @@ export default function NavBar() {
                             <button
                                 className="text-white hover:text-white/80 flex items-center text-xl"
                                 onClick={(e) => {
-                                    e.preventDefault()
-                                    e.stopPropagation()
+                                    e.preventDefault();
+                                    e.stopPropagation();
                                 }}
                             >
                                 Tours
                                 <ChevronDown className="ml-1 h-4 w-4" aria-hidden="true" />
                             </button>
                             <div className="mt-2 space-y-2 p-4">
-                                {tours.map((tour) => (
+                                {toursMenu.map((tour) => (
                                     <Link
                                         key={tour.name}
                                         href={tour.href}
@@ -133,6 +135,13 @@ export default function NavBar() {
                             </div>
                         </div>
                         <Link
+                            href="/activities"
+                            className="text-white hover:text-white/80 text-lg"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Activities
+                        </Link>
+                        <Link
                             href="/nosotros"
                             className="text-white hover:text-white/80 text-lg"
                             onClick={() => setIsOpen(false)}
@@ -140,7 +149,7 @@ export default function NavBar() {
                             Nosotros
                         </Link>
                         <Link
-                            href="/contactanos"
+                            href="/contacto"
                             className="text-white hover:text-white/80 text-lg"
                             onClick={() => setIsOpen(false)}
                         >
@@ -150,6 +159,5 @@ export default function NavBar() {
                 </animated.div>
             </div>
         </nav>
-    )
+    );
 }
-

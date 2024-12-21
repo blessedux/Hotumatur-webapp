@@ -1,60 +1,60 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { CalendarIcon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { cn, generateFlightLikeId } from '@/lib/utils'
-import { format } from 'date-fns'
-import { es } from 'date-fns/locale'
-import { useProducts } from '@/hooks/useProducts'
-import { useReservations } from '@/context/ReservationContext'
-import { useToast } from '@/hooks/use-toast'
-import { useRouter } from 'next/navigation'
+import { useState } from 'react';
+import { CalendarIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { cn, generateFlightLikeId } from '@/lib/utils';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
+import { useProducts } from '@/hooks/useProducts';
+import { useReservations } from '@/context/ReservationContext';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 const TourSelector = () => {
-    const [date, setDate] = useState<Date>()
-    const [people, setPeople] = useState("2")
-    const [selectedTourId, setSelectedTourId] = useState("")
-    const { products: tours, loading, error } = useProducts()
-    const { addReservation } = useReservations()
-    const { toast } = useToast()
-    const router = useRouter()
+    const [date, setDate] = useState<Date>();
+    const [people, setPeople] = useState('2');
+    const [selectedTourId, setSelectedTourId] = useState('');
+    const { products: tours = [], loading, error } = useProducts(); // Ensure tours is always an array
+    const { addReservation } = useReservations();
+    const { toast } = useToast();
+    const router = useRouter();
 
     const handleReservation = () => {
         if (!date || !selectedTourId) {
             toast({
-                title: "Error",
-                description: "Por favor selecciona una fecha y un tour",
-                variant: "destructive",
-            })
-            return
+                title: 'Error',
+                description: 'Por favor selecciona una fecha y un tour',
+                variant: 'destructive',
+            });
+            return;
         }
 
-        // Validar que la fecha sea posterior a hoy
-        const today = new Date()
-        today.setHours(0, 0, 0, 0)
+        // Validate that the selected date is not in the past
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
         if (date < today) {
             toast({
-                title: "Error",
-                description: "La fecha seleccionada debe ser posterior a hoy",
-                variant: "destructive",
-            })
-            return
+                title: 'Error',
+                description: 'La fecha seleccionada debe ser posterior a hoy',
+                variant: 'destructive',
+            });
+            return;
         }
 
-        const selectedTour = tours.find(tour => tour.id.toString() === selectedTourId)
+        const selectedTour = tours.find((tour) => tour.id.toString() === selectedTourId);
 
         if (!selectedTour) {
             toast({
-                title: "Error",
-                description: "Tour no encontrado",
-                variant: "destructive",
-            })
-            return
+                title: 'Error',
+                description: 'Tour no encontrado',
+                variant: 'destructive',
+            });
+            return;
         }
 
         const reservationId = generateFlightLikeId();
@@ -62,16 +62,16 @@ const TourSelector = () => {
         addReservation({
             id: reservationId,
             productId: selectedTour.id,
-            quantity: parseInt(people),
+            quantity: parseInt(people, 10),
             name: selectedTour.name,
             price: Number(selectedTour.price) || 0,
             date: date.toISOString(),
-            image: selectedTour.images[0]?.src || "/placeholder.svg"
-        })
+            image: selectedTour.images?.[0]?.src || '/placeholder.svg',
+        });
 
         toast({
-            variant: "success",
-            title: "¡Reserva exitosa!",
+            variant: 'success',
+            title: '¡Reserva exitosa!',
             description: (
                 <div className="space-y-2 flex flex-col">
                     <p>{`Has reservado ${selectedTour.name} para ${people} personas`}</p>
@@ -83,26 +83,29 @@ const TourSelector = () => {
                         Continuar la compra
                     </Button>
                 </div>
-            )
-        })
+            ),
+        });
 
-        // Resetear el formulario
-        setDate(undefined)
-        setSelectedTourId("")
-        setPeople("2")
-    }
+        // Reset form
+        setDate(undefined);
+        setSelectedTourId('');
+        setPeople('2');
+    };
 
     if (loading) {
-        return <div>Loading...</div>
+        return <div>Loading...</div>;
     }
 
     if (error) {
-        return <div>Error: {error}</div>
+        return <div>Error: {error}</div>;
     }
 
-    const filteredTours = tours.filter(product =>
-        product.categories.some(category => category.name === "Tours")
-    )
+    // Filter tours for categories related to "Tours"
+    const filteredTours = Array.isArray(tours)
+        ? tours.filter((product) =>
+            product.categories.some((category) => category.name === 'Tours')
+        )
+        : [];
 
     return (
         <div className="grid gap-4 md:grid-cols-[1fr_1.5fr_1fr_auto] items-end">
@@ -113,12 +116,12 @@ const TourSelector = () => {
                         <Button
                             variant="outline"
                             className={cn(
-                                "w-full justify-start text-left font-normal bg-white/10 border-white/20 hover:bg-white/20",
-                                !date && "text-white/60"
+                                'w-full justify-start text-left font-normal bg-white/10 border-white/20 hover:bg-white/20',
+                                !date && 'text-white/60'
                             )}
                         >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {date ? format(date, "PPP", { locale: es }) : "Fecha del tour"}
+                            {date ? format(date, 'PPP', { locale: es }) : 'Fecha del tour'}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
@@ -129,9 +132,9 @@ const TourSelector = () => {
                             initialFocus
                             locale={es}
                             disabled={(date) => {
-                                const today = new Date()
-                                today.setHours(0, 0, 0, 0)
-                                return date < today
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                return date < today;
                             }}
                         />
                     </PopoverContent>
@@ -177,7 +180,7 @@ const TourSelector = () => {
                 Reservar
             </Button>
         </div>
-    )
-}
+    );
+};
 
-export default TourSelector
+export default TourSelector;
