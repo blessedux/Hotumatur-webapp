@@ -1,5 +1,5 @@
 import TourSelector from '@/components/TourSelector'
-
+import FadeIn from './FadeIn'
 
 export default function HeroSection() {
     return (
@@ -22,13 +22,13 @@ export default function HeroSection() {
                 <p className="mb-4 text-center text-xl md:text-2xl font-satisfy text-white">
                     Ven a conocer la magia de Rapa Nui
                 </p>
-
-                <h1 className="mb-10 md:mb-16 text-center text-3xl font-bold text-white md:text-6xl">
-                    Aventuras Guiadas por
-                    <br />
-                    Expertos Locales
-                </h1>
-
+                <FadeIn>
+                    <h1 className="mb-10 md:mb-16 text-center text-3xl font-bold text-white md:text-6xl">
+                        Aventuras Guiadas por
+                        <br />
+                        Expertos Locales
+                    </h1>
+                </FadeIn>
                 <div className="w-full max-w-4xl rounded-lg bg-gray-200/20 p-6 py-10 backdrop-blur-sm">
                     <TourSelector />
                 </div>

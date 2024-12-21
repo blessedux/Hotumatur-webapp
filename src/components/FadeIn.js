@@ -1,3 +1,4 @@
+'use client'
 // components/FadeIn.js
 import React from "react";
 import { useSpring, animated } from "@react-spring/web";

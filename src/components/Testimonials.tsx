@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { FaTripadvisor } from "react-icons/fa"
+import FadeIn from './FadeIn'
 
 interface TestimonialProps {
     name: string;
@@ -154,17 +155,19 @@ export default function Testimonials() {
     return (
         <div className="bg-primary-900 px-4 py-16 md:py-24">
             <div className="mx-auto max-w-6xl space-y-12">
-                <div className="text-center space-y-4">
-                    <h2 className="text-3xl md:text-5xl font-bold text-black">
-                        Experiencias Reales:
-                    </h2>
-                    <p className="text-2xl md:text-4xl font-bold font-satisfy text-black">
+                <FadeIn>
+                    <div className="text-center space-y-4">
+                        <h2 className="text-3xl md:text-5xl font-bold text-black">
+                            Experiencias Reales:
+                        </h2>
+                        <p className="text-2xl md:text-4xl font-bold font-satisfy text-black">
 
-                        Opiniones de Nuestros Clientes
+                            Opiniones de Nuestros Clientes
 
 
-                    </p>
-                </div>
+                        </p>
+                    </div>
+                </FadeIn>
                 <div className="relative">
                     <div className="overflow-hidden" ref={emblaRef}>
                         <div className="flex">
