@@ -99,7 +99,7 @@ export default function NavBar() {
                 {/* Mobile menu panel */}
                 <animated.div
                     style={menuAnimation}
-                    className="absolute top-[95px] left-0 right-0 bg-[#E5B455] p-10 md:hidden z-[100] py-20"
+                    className="absolute top-[95px] left-0 right-0 bg-white/30 backdrop-blur-md rounded-lg p-6 shadow-lg p-10 md:hidden z-[100] py-20"
                 >
                     <div className="flex flex-col gap-6">
                         <Link
