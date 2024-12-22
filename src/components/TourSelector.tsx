@@ -13,12 +13,13 @@ import { useProducts } from '@/hooks/useProducts';
 import { useReservations } from '@/context/ReservationContext';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import SkeletonForm from '@/components/SkeletonForm';
 
 const TourSelector = () => {
     const [date, setDate] = useState<Date>();
-    const [people, setPeople] = useState('2');
-    const [selectedTourId, setSelectedTourId] = useState('');
-    const { products: tours = [], loading, error } = useProducts(); // Ensure tours is always an array
+    const [people, setPeople] = useState("2");
+    const [selectedTourId, setSelectedTourId] = useState("");
+    const { products: tours, loading, error } = useProducts();
     const { addReservation } = useReservations();
     const { toast } = useToast();
     const router = useRouter();
@@ -26,22 +27,21 @@ const TourSelector = () => {
     const handleReservation = () => {
         if (!date || !selectedTourId) {
             toast({
-                title: 'Error',
-                description: 'Por favor selecciona una fecha y un tour',
-                variant: 'destructive',
+                title: "Error",
+                description: "Por favor selecciona una fecha y un tour",
+                variant: "destructive",
             });
             return;
         }
 
-        // Validate that the selected date is not in the past
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
         if (date < today) {
             toast({
-                title: 'Error',
-                description: 'La fecha seleccionada debe ser posterior a hoy',
-                variant: 'destructive',
+                title: "Error",
+                description: "La fecha seleccionada debe ser posterior a hoy",
+                variant: "destructive",
             });
             return;
         }
@@ -50,9 +50,9 @@ const TourSelector = () => {
 
         if (!selectedTour) {
             toast({
-                title: 'Error',
-                description: 'Tour no encontrado',
-                variant: 'destructive',
+                title: "Error",
+                description: "Tour no encontrado",
+                variant: "destructive",
             });
             return;
         }
@@ -66,7 +66,7 @@ const TourSelector = () => {
             name: selectedTour.name,
             price: Number(selectedTour.price) || 0,
             date: date.toISOString(),
-            image: selectedTour.images?.[0]?.src || '/placeholder.svg',
+            image: selectedTour.images[0]?.src || "/placeholder.svg",
         });
 
         toast({
@@ -86,26 +86,22 @@ const TourSelector = () => {
             ),
         });
 
-        // Reset form
         setDate(undefined);
-        setSelectedTourId('');
-        setPeople('2');
+        setSelectedTourId("");
+        setPeople("2");
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <SkeletonForm />; // Keep SkeletonForm for loading state
     }
 
     if (error) {
         return <div>Error: {error}</div>;
     }
 
-    // Filter tours for categories related to "Tours"
-    const filteredTours = Array.isArray(tours)
-        ? tours.filter((product) =>
-            product.categories.some((category) => category.name === 'Tours')
-        )
-        : [];
+    const filteredTours = tours.filter((product) =>
+        product.categories.some((category) => category.name === "Tours")
+    );
 
     return (
         <div className="grid gap-4 md:grid-cols-[1fr_1.5fr_1fr_auto] items-end">

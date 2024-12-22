@@ -2,6 +2,7 @@
 
 import { useProducts } from '@/hooks/useProducts';
 import { ProductCard } from '@/components/ProductCard';
+import SkeletonCard from '@/components/SkeletonCard';
 
 export default function ProductSection() {
     const { products, loading, error } = useProducts();
@@ -13,7 +14,26 @@ export default function ProductSection() {
         )
         : [];
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) {
+        return (
+            <section className="w-full px-4 py-32 md:px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl space-y-12">
+                    <div className="text-center">
+                        <h2 className="text-2xl font-bold tracking-tight md:text-4xl lg:text-5xl">
+                            Vive La Esencia De <span className="font-satisfy">Rapa Nui</span>
+                        </h2>
+                    </div>
+
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        {[...Array(6)].map((_, index) => (
+                            <SkeletonCard key={index} />
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
     if (error) return <div>Error: {error}</div>;
 
     return (
