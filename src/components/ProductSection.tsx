@@ -37,7 +37,10 @@ export default function ProductSection() {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <section className="w-full px-4 py-32 md:px-6 lg:px-8">
+        <section className="w-full px-4 py-32 md:px-6 lg:px-8"
+            style={{
+                background: 'linear-gradient(to bottom, #5879AA, white)',
+            }}>
             <div className="mx-auto max-w-6xl space-y-12">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold tracking-tight md:text-4xl lg:text-5xl">
