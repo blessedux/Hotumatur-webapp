@@ -1,27 +1,28 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { CalendarIcon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { cn, generateFlightLikeId } from '@/lib/utils'
-import { format } from 'date-fns'
-import { es } from 'date-fns/locale'
-import { useProducts } from '@/hooks/useProducts'
-import { useReservations } from '@/context/ReservationContext'
-import { useToast } from '@/hooks/use-toast'
-import { useRouter } from 'next/navigation'
+import { useState } from 'react';
+import { CalendarIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { cn, generateFlightLikeId } from '@/lib/utils';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
+import { useProducts } from '@/hooks/useProducts';
+import { useReservations } from '@/context/ReservationContext';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import SkeletonForm from '@/components/SkeletonForm';
 
 const TourSelector = () => {
-    const [date, setDate] = useState<Date>()
-    const [people, setPeople] = useState("2")
-    const [selectedTourId, setSelectedTourId] = useState("")
-    const { products: tours, loading, error } = useProducts()
-    const { addReservation } = useReservations()
-    const { toast } = useToast()
-    const router = useRouter()
+    const [date, setDate] = useState<Date>();
+    const [people, setPeople] = useState("2");
+    const [selectedTourId, setSelectedTourId] = useState("");
+    const { products: tours, loading, error } = useProducts();
+    const { addReservation } = useReservations();
+    const { toast } = useToast();
+    const router = useRouter();
 
     const handleReservation = () => {
         if (!date || !selectedTourId) {
@@ -29,32 +30,31 @@ const TourSelector = () => {
                 title: "Error",
                 description: "Por favor selecciona una fecha y un tour",
                 variant: "destructive",
-            })
-            return
+            });
+            return;
         }
 
-        // Validar que la fecha sea posterior a hoy
-        const today = new Date()
-        today.setHours(0, 0, 0, 0)
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
         if (date < today) {
             toast({
                 title: "Error",
                 description: "La fecha seleccionada debe ser posterior a hoy",
                 variant: "destructive",
-            })
-            return
+            });
+            return;
         }
 
-        const selectedTour = tours.find(tour => tour.id.toString() === selectedTourId)
+        const selectedTour = tours.find((tour) => tour.id.toString() === selectedTourId);
 
         if (!selectedTour) {
             toast({
                 title: "Error",
                 description: "Tour no encontrado",
                 variant: "destructive",
-            })
-            return
+            });
+            return;
         }
 
         const reservationId = generateFlightLikeId();
@@ -66,8 +66,8 @@ const TourSelector = () => {
             name: selectedTour.name,
             price: Number(selectedTour.price) || 0,
             date: date.toISOString(),
-            image: selectedTour.images[0]?.src || "/placeholder.svg"
-        })
+            image: selectedTour.images[0]?.src || "/placeholder.svg",
+        });
 
         toast({
             variant: "success",
@@ -83,26 +83,25 @@ const TourSelector = () => {
                         Continuar la compra
                     </Button>
                 </div>
-            )
-        })
+            ),
+        });
 
-        // Resetear el formulario
-        setDate(undefined)
-        setSelectedTourId("")
-        setPeople("2")
-    }
+        setDate(undefined);
+        setSelectedTourId("");
+        setPeople("2");
+    };
 
     if (loading) {
-        return <div>Loading...</div>
+        return <SkeletonForm />;
     }
 
     if (error) {
-        return <div>Error: {error}</div>
+        return <div>Error: {error}</div>;
     }
 
-    const filteredTours = tours.filter(product =>
-        product.categories.some(category => category.name === "Tours")
-    )
+    const filteredTours = tours.filter((product) =>
+        product.categories.some((category) => category.name === "Tours")
+    );
 
     return (
         <div className="grid gap-4 md:grid-cols-[1fr_1.5fr_1fr_auto] items-end">
@@ -129,9 +128,9 @@ const TourSelector = () => {
                             initialFocus
                             locale={es}
                             disabled={(date) => {
-                                const today = new Date()
-                                today.setHours(0, 0, 0, 0)
-                                return date < today
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                return date < today;
                             }}
                         />
                     </PopoverContent>
@@ -177,7 +176,7 @@ const TourSelector = () => {
                 Reservar
             </Button>
         </div>
-    )
-}
+    );
+};
 
-export default TourSelector
+export default TourSelector;

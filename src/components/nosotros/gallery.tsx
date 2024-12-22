@@ -2,31 +2,31 @@ import Image from "next/image"
 
 const gallery = [
     {
-        src: "https://backend.hotumatur.com/wp-content/uploads/2024/11/835481a75410efaac35d2a4593bef8f8.webp",
+        src: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/835481a75410efaac35d2a4593bef8f8.webp",
         alt: "Vista panorámica de Rapa Nui"
     },
     {
-        src: "https://backend.hotumatur.com/wp-content/uploads/2024/11/viaje-a-ios-motus.webp",
+        src: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/viaje-a-ios-motus.webp",
         alt: "Viaje a los Motus"
     },
     {
-        src: "https://backend.hotumatur.com/wp-content/uploads/2024/11/4877a51aa25f8369662cc9f845d1a336-1.webp",
+        src: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/1000039572.jpg",
         alt: "Moai al atardecer"
     },
     {
-        src: "https://backend.hotumatur.com/wp-content/uploads/2024/11/rear-view-man-standing-against-rock-formation-1-scaled-1.webp",
+        src: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/poike-volcano-view-from-1.webp",
         alt: "Hombre observando formación rocosa"
     },
     {
-        src: "https://backend.hotumatur.com/wp-content/uploads/2024/11/Palmeras-Anakena-scaled.jpg",
+        src: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Palmeras-Anakena-scaled-1.jpg",
         alt: "Palmeras en la playa Anakena"
     },
     {
-        src: "https://backend.hotumatur.com/wp-content/uploads/2024/12/orongo.webp",
+        src: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Palmeras-Anakena-scaled-1.jpg",
         alt: "Vista de Orongo"
     },
     {
-        src: "https://backend.hotumatur.com/wp-content/uploads/2024/12/SaveClip.App_467800294_558923963446183_6199225768949597065_n.webp",
+        src: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Palmeras-Anakena-scaled-1.jpg",
         alt: "Escena cultural de Rapa Nui"
     }
 ]
