@@ -1,66 +1,40 @@
 'use client';
 
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Product } from "@/types/woocommerce"
-import Link from 'next/link'
-import { useSpring, animated } from '@react-spring/web';
-import { useEffect, useState } from 'react';
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Product } from "@/types/woocommerce";
+import Link from 'next/link';
+import { useState } from 'react';
 
 interface ProductCardProps {
-    product: Product
+    product: Product;
 }
 
 function truncateHTML(html: string, maxLength: number = 250): { text: string; isTruncated: boolean } {
-    const tmp = document.createElement('div')
-    tmp.innerHTML = html
-    const text = tmp.textContent || tmp.innerText || ''
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    const text = tmp.textContent || tmp.innerText || '';
 
-    const isTruncated = text.length > maxLength
+    const isTruncated = text.length > maxLength;
     return {
         text: isTruncated ? text.slice(0, maxLength).trim() + '...' : text,
-        isTruncated
-    }
+        isTruncated,
+    };
 }
 
 function formatPrice(price: string | number): string {
-    return Number(price).toLocaleString('es-CL')
+    return Number(price).toLocaleString('es-CL');
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-    const [isMobile, setIsMobile] = useState(false);
-
-    // Detect if the screen size is mobile
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768); // Mobile breakpoint
-        };
-
-        handleResize(); // Initial check
-        window.addEventListener('resize', handleResize);
-
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    // React Spring animation
-    const fadeInStyles = useSpring({
-        opacity: isMobile ? 1 : 0,
-        transform: isMobile ? 'translateY(0)' : 'translateY(20px)',
-        config: { duration: 500 },
-        from: { opacity: 0, transform: 'translateY(20px)' },
-    });
-
-    const [isExpanded, setIsExpanded] = useState(false)
-    const { text, isTruncated } = truncateHTML(product.short_description)
-    const description = isExpanded ?
-        (product.short_description ? document.createElement('div').textContent = product.short_description : '') :
-        text
+    const [isExpanded, setIsExpanded] = useState(false);
+    const { text, isTruncated } = truncateHTML(product.short_description);
+    const description = isExpanded
+        ? (product.short_description ? document.createElement('div').textContent = product.short_description : '')
+        : text;
 
     return (
-        <animated.div
-            style={fadeInStyles} // Apply animation styles
-            className="group relative overflow-hidden rounded-lg border bg-background p-2 flex flex-col h-full"
-        >
+        <div className="group relative overflow-hidden rounded-lg border bg-background p-2 flex flex-col h-full">
             <Link href={`/tours/${product.slug}`} className="flex flex-col h-full">
                 <div className="aspect-[4/3] overflow-hidden rounded-md relative h-[240px]">
                     <Image
@@ -101,6 +75,6 @@ export function ProductCard({ product }: ProductCardProps) {
                     </div>
                 </div>
             </Link>
-        </animated.div>
-    )
+        </div>
+    );
 }

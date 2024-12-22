@@ -135,11 +135,11 @@ export default function NavBar() {
                             </div>
                         </div>
                         <Link
-                            href="/activities"
+                            href="/actividades"
                             className="text-white hover:text-white/80 text-lg"
                             onClick={() => setIsOpen(false)}
                         >
-                            Activities
+                            Actividades
                         </Link>
                         <Link
                             href="/nosotros"
