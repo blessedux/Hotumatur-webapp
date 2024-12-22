@@ -1,10 +1,15 @@
-'use client'
-// components/FadeIn.js
-import React from "react";
+'use client';
+
+import React, { ReactNode } from "react";
 import { useSpring, animated } from "@react-spring/web";
 import { useInView } from "react-intersection-observer";
 
-const FadeIn = ({ children, delay = 0 }) => {
+interface FadeInProps {
+    children: ReactNode; // The content inside the FadeIn component
+    delay?: number; // Optional delay in seconds
+}
+
+const FadeIn: React.FC<FadeInProps> = ({ children, delay = 0 }) => {
     const { ref, inView } = useInView({
         threshold: 0.1, // Trigger when 10% of the element is visible
         triggerOnce: true, // Only trigger once
@@ -18,7 +23,7 @@ const FadeIn = ({ children, delay = 0 }) => {
     });
 
     return (
-        <animated.div ref={ref} style={styles}>
+        <animated.div ref={ref as React.Ref<HTMLDivElement>} style={styles}>
             {children}
         </animated.div>
     );

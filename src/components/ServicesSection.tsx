@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { FaMotorcycle } from "react-icons/fa6";
 import { BsBicycle } from "react-icons/bs";
 import { MdOutlineDirectionsCar } from "react-icons/md";
+import FadeIn from './FadeIn';
 
 
 
@@ -23,34 +24,41 @@ export default function ServicesSection() {
 
                 <div className="grid">
 
+                    <FadeIn>
+                        <div className="flex items-center gap-4 p-2">
+                            <div className="p-2 rounded-lg">
+                                <MdOutlineDirectionsCar className="w-6 h-6 text-gray-600" />
+                            </div>
 
-                    <div className="flex items-center gap-4 p-2">
-                        <div className="p-2 rounded-lg">
-                            <MdOutlineDirectionsCar className="w-6 h-6 text-gray-600" />
-                        </div>
-                        <span>Arriendo de autos</span>
-                    </div>
+                            <span>Arriendo de autos</span>
 
-                    <div className="flex items-center gap-4 p-2">
-                        <div className="p-2 rounded-lg">
-                            <FaMotorcycle className="w-6 h-6 text-gray-600" />
                         </div>
-                        <span>Arriendo de cuatrimotos</span>
-                    </div>
+                    </FadeIn>
+                    <FadeIn>
+                        <div className="flex items-center gap-4 p-2">
+                            <div className="p-2 rounded-lg">
+                                <FaMotorcycle className="w-6 h-6 text-gray-600" />
+                            </div>
+                            <span>Arriendo de cuatrimotos</span>
+                        </div>
+                    </FadeIn>
+                    <FadeIn>
+                        <div className="flex items-center gap-4 p-2">
+                            <div className="p-2 rounded-lg">
+                                <BsBicycle className="w-6 h-6 text-gray-600" />
+                            </div>
+                            <span>Arriendo de bicicletas</span>
+                        </div>
+                    </FadeIn>
 
-                    <div className="flex items-center gap-4 p-2">
-                        <div className="p-2 rounded-lg">
-                            <BsBicycle className="w-6 h-6 text-gray-600" />
+                    <FadeIn>
+                        <div className="flex items-center gap-4 p-2">
+                            <div className="p-2 rounded-lg">
+                                <Waves className="w-6 h-6 text-gray-600" />
+                            </div>
+                            <span>Arriendo de snorkel</span>
                         </div>
-                        <span>Arriendo de bicicletas</span>
-                    </div>
-
-                    <div className="flex items-center gap-4 p-2">
-                        <div className="p-2 rounded-lg">
-                            <Waves className="w-6 h-6 text-gray-600" />
-                        </div>
-                        <span>Arriendo de snorkel</span>
-                    </div>
+                    </FadeIn>
                 </div>
             </div>
 
