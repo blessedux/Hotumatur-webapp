@@ -12,7 +12,6 @@ gsap.registerPlugin(ScrollTrigger);
 export default function ProductSection() {
     const { products, loading, error } = useProducts();
     const sectionRef = useRef<HTMLElement>(null);
-    const backgroundRef = useRef<HTMLDivElement>(null);
 
     // Filter products by category
     const tours = Array.isArray(products)
@@ -23,22 +22,19 @@ export default function ProductSection() {
 
     useEffect(() => {
         const section = sectionRef.current;
-        const background = backgroundRef.current;
 
-        if (section && background) {
-            // Animate the background opacity in a gradient pattern
+        if (section) {
             gsap.fromTo(
-                background,
-                { backgroundPosition: 'left top', opacity: 0 },
+                section,
+                { opacity: 0, y: 50 },
                 {
-                    backgroundPosition: 'right bottom',
                     opacity: 1,
-                    duration: 3,
+                    y: 0,
+                    duration: 1,
                     scrollTrigger: {
                         trigger: section,
                         start: 'top 80%',
-                        end: 'bottom 20%',
-                        scrub: true,
+                        toggleActions: 'play none none reverse',
                     },
                 }
             );
@@ -47,7 +43,7 @@ export default function ProductSection() {
 
     if (loading) {
         return (
-            <section ref={sectionRef} className="w-full px-4 py-32 md:px-6 lg:px-8">
+            <section ref={sectionRef} className="relative z-[2] w-full px-4 py-32 md:px-6 lg:px-8">
                 <div className="mx-auto max-w-6xl space-y-12">
                     <div className="text-center">
                         <h2 className="text-2xl font-bold tracking-tight md:text-4xl lg:text-5xl">
@@ -70,22 +66,12 @@ export default function ProductSection() {
     return (
         <section
             ref={sectionRef}
-            className="relative w-full px-4 py-32 md:px-6 lg:px-8 overflow-hidden"
+            className="relative z-[2] w-full px-4 py-32 md:px-6 lg:px-8 border-4 border-gray-500 shadow-lg"
+            style={{
+                background: 'linear-gradient(to bottom, #ffffff, #f8f9fa)',
+            }}
         >
-            {/* Animated Background */}
-            <div
-                ref={backgroundRef}
-                className="absolute inset-0 w-full h-full pointer-events-none"
-                style={{
-                    backgroundImage: "url('./images/rapanui-background.svg')",
-                    backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat',
-                    opacity: 0, // Start fully transparent
-                }}
-            ></div>
-
-            {/* Product Section Content */}
-            <div className="relative z-10 mx-auto max-w-6xl space-y-12">
+            <div className="mx-auto max-w-6xl space-y-12">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold tracking-tight md:text-4xl lg:text-5xl">
                         Vive La Esencia De <span className="font-satisfy">Rapa Nui</span>

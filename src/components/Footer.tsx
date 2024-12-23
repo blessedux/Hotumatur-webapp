@@ -90,7 +90,7 @@ export default function Footer() {
                             <FaWhatsapp className='w-8 h-8' />
                         </Link>
                         <Link
-                            href='/Contacto'
+                            href='/contacto'
                             target='_blank'
                             rel='noopener noreferrer'
                             className='hover:text-emerald-300 transition-colors'
