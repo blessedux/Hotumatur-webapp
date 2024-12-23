@@ -1,20 +1,11 @@
+'use client'
+
 import NewsletterSection from "@/components/NewsletterSection";
-import { StatsCard } from "@/components/nosotros/stats-card";
 import { BlogCard } from "@/components/nosotros/blog-card";
-import AboutHero from "@/components/nosotros/about-hero";
-import PlanTrip from "@/components/nosotros/plan-trip";
-import Services from "@/components/nosotros/services";
 import { SpecialTripsSection } from "@/components/nosotros/special-trips";
-import Team from "@/components/nosotros/team";
-import Testimonials from "@/components/Testimonials";
-import Gallery from "@/components/nosotros/gallery";
-import Partners from "@/components/nosotros/partners";
-import Image from "next/image";
-import { FlightMap } from "@/components/flight-map";
-import { FaUsers, FaSuitcase, FaChartBar, FaStar } from "react-icons/fa";
 import ProductSection from "@/components/ProductSection";
 
-const heroImage = "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Nosotoro-Bio-image.webp";
+const heroImage = "https://backend.hotumatur.com/wp-content/uploads/2024/12/Nosotoro-Bio-image.webp";
 
 export default function ToursPrivadosPage() {
     return (

@@ -1,7 +1,7 @@
 import NewsletterSection from "@/components/NewsletterSection";
 import { StatsCard } from "@/components/nosotros/stats-card";
 import { BlogCard } from "@/components/nosotros/blog-card";
-import AboutHero from "@/components/nosotros/about-hero";
+import AboutHero from "@/components/nosotros/AboutHero";
 import PlanTrip from "@/components/nosotros/plan-trip";
 import Services from "@/components/nosotros/services";
 import { SpecialTripsSection } from "@/components/nosotros/special-trips";
@@ -14,7 +14,7 @@ import { FlightMap } from "@/components/flight-map";
 import { FaUsers, FaSuitcase, FaChartBar, FaStar } from "react-icons/fa";
 import ProductSection from "@/components/ProductSection";
 
-const heroImage = "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Nosotoro-Bio-image.webp";
+const heroImage = "https://backend.hotumatur.com/wp-content/uploads/2024/12/Nosotoro-Bio-image.webp";
 
 export default function ActividadesPage() {
     return (
@@ -41,19 +41,19 @@ export default function ActividadesPage() {
                             title="Viajes Educativos: Explorando Rapa Nui con Estudiantes"
                             category="Educación"
                             href="#"
-                            imageUrl="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Motu-Tours1.webp"
+                            imageUrl="https://backend.hotumatur.com/wp-content/uploads/2024/12/Motu-Tours1.webp"
                         />
                         <BlogCard
                             title="Paquetes Corporativos: Una Experiencia Única para Empresas"
                             category="Corporativo"
                             href="#"
-                            imageUrl="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Easter-Island-Trekking-Experience-Chile.webp"
+                            imageUrl="https://backend.hotumatur.com/wp-content/uploads/2024/12/Easter-Island-Trekking-Experience-Chile.webp"
                         />
                         <BlogCard
                             title="Testimonios de Nuestros Viajeros: La Magia de Rapa Nui"
                             category="Testimonios"
                             href="#"
-                            imageUrl="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/pexels-bianeyre-1236028-1.webp"
+                            imageUrl="https://backend.hotumatur.com/wp-content/uploads/2024/12/pexels-bianeyre-1236028-1.webp"
                         />
                     </div>
                 </div>

@@ -11,7 +11,7 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'hotumatur.thefullstack.digital',
+                hostname: 'backend.hotumatur.com',
                 port: '',
                 search: '',
             },

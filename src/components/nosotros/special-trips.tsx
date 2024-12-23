@@ -17,7 +17,7 @@ export function SpecialTripsSection() {
                 <div
                     className="absolute -inset-8 bg-cover bg-center bg-no-repeat"
                     style={{
-                        backgroundImage: `url('https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/about_6_1-1.webp')`,
+                        backgroundImage: `url('https://backend.hotumatur.com/wp-content/uploads/2024/12/about_6_1-1.webp')`,
                     }}
                 />
             </div>
@@ -59,7 +59,7 @@ export function SpecialTripsSection() {
                     className="absolute left-0 w-full h-full lg:w-[70%] lg:h-[160%] ml-0 lg:ml-20 transform lg:-translate-x-10 rounded-none lg:rounded-lg overflow-hidden shadow-xl"
                 >
                     <img
-                        src="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Hiking-Rapa-Nui-1024x395-1.webp"
+                        src="https://backend.hotumatur.com/wp-content/uploads/2024/12/Hiking-Rapa-Nui-1024x395-1.webp"
                         alt="Special Trips Background"
                         className="object-cover w-full h-full"
                         style={{

@@ -11,9 +11,9 @@ export default function HotelCard() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const images = [
-        "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/tupa-hotel.webp",
-        "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Foto_Portada-2-scaled-pzqr5y7mox8qskdcpnycpfepe8s6ygso1obixng6io.webp",
-        "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/PC090024-scaled-pzqqzsdpw0t2olbkp02eczdx7b5khwc0j6cxocl3b4.webp",
+        "https://backend.hotumatur.com/wp-content/uploads/2024/12/tupa-hotel.webp",
+        "https://backend.hotumatur.com/wp-content/uploads/2024/12/Foto_Portada-2-scaled-pzqr5y7mox8qskdcpnycpfepe8s6ygso1obixng6io.webp",
+        "https://backend.hotumatur.com/wp-content/uploads/2024/12/PC090024-scaled-pzqqzsdpw0t2olbkp02eczdx7b5khwc0j6cxocl3b4.webp",
     ];
 
     // Auto-gallery logic

@@ -148,7 +148,7 @@ export default function Footer() {
                             Nosotros
                         </Link>
                         <Link
-                            href='/tours'
+                            href='/#'
                             className='text-sm uppercase tracking-wider hover:text-emerald-300 transition-colors'
                         >
                             Tours

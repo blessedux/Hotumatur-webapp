@@ -9,7 +9,7 @@ export default function ReviewCard() {
             <div className="flex flex-col md:flex-row gap-6 bg-[#2D2D2D] text-white">
                 <div className="relative w-full md:w-[300px] h-[300px] group">
                     <Image
-                        src="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Hotumatur_Logo_BlueBackground.webp"
+                        src="https://backend.hotumatur.com/wp-content/uploads/2024/12/Hotumatur_Logo_BlueBackground.webp"
                         alt="Hotumatur Logo"
                         fill
                         className="object-cover"
