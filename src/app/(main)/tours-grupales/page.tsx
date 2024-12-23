@@ -31,19 +31,19 @@ export default function ToursGrupalesPage() {
                             title="Viajes Educativos: Explorando Rapa Nui con Estudiantes"
                             category="Educación"
                             href="#"
-                            imageUrl="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Motu-Tours1.webp"
+                            imageUrl="https://backend.hotumatur.com/wp-content/uploads/2024/12/Motu-Tours1.webp"
                         />
                         <BlogCard
                             title="Paquetes Corporativos: Una Experiencia Única para Empresas"
                             category="Corporativo"
                             href="#"
-                            imageUrl="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/Easter-Island-Trekking-Experience-Chile.webp"
+                            imageUrl="https://backend.hotumatur.com/wp-content/uploads/2024/12/Easter-Island-Trekking-Experience-Chile.webp"
                         />
                         <BlogCard
                             title="Testimonios de Nuestros Viajeros: La Magia de Rapa Nui"
                             category="Testimonios"
                             href="#"
-                            imageUrl="https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/pexels-bianeyre-1236028-1.webp"
+                            imageUrl="https://backend.hotumatur.com/wp-content/uploads/2024/12/pexels-bianeyre-1236028-1.webp"
                         />
                     </div>
                 </div>
