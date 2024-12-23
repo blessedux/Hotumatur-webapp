@@ -71,6 +71,7 @@ export default function HeroSection() {
                 />
             </div>
             <div className="absolute inset-0 bg-black/40" />
+
             <div className="relative z-10 flex h-full flex-col items-center justify-center px-4">
                 <p className="mb-4 text-center text-xl md:text-2xl font-satisfy text-white">
                     Ven a conocer la magia de Rapa Nui
@@ -85,6 +86,7 @@ export default function HeroSection() {
                 <div className="w-full max-w-4xl rounded-lg bg-gray-200/20 p-6 py-10 backdrop-blur-sm">
                     <TourSelector />
                 </div>
+
             </div>
         </div>
     );

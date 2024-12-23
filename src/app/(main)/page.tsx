@@ -5,6 +5,7 @@ import Testimonials from '@/components/Testimonials';
 import PreFooter from '@/components/PreFooter';
 import Preloader from '@/components/Preloader';
 import { Suspense } from 'react';
+import Gallery from '@/components/nosotros/gallery';
 
 
 export default function Home() {
@@ -16,12 +17,13 @@ export default function Home() {
           <Suspense fallback={<div>Loading...</div>}>
             <ProductSection />
           </Suspense>
+          <Gallery />
           <ServicesSection />
           <Testimonials />
           <PreFooter />
 
         </div>
-      </main>
-    </div>
+      </main >
+    </div >
   );
 }
