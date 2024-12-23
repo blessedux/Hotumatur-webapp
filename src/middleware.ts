@@ -9,7 +9,7 @@ export function middleware() {
             default-src 'self';
             script-src 'self' 'unsafe-inline' 'unsafe-eval';
             style-src 'self' 'unsafe-inline';
-            img-src 'self' data: https://hotumatur.thefullstack.digital https://vumbnail.com;
+            img-src 'self' data: https://backend.hotumatur.com https://vumbnail.com;
             font-src 'self';
             connect-src 'self';
             frame-src 'self' https://player.vimeo.com;
