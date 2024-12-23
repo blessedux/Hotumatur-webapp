@@ -38,6 +38,7 @@
     "embla-carousel-autoplay": "^8.5.1",
     "embla-carousel-react": "^8.5.1",
     "flag-icons": "^7.2.3",
+    "gsap": "^3.12.5",
     "libphonenumber-js": "^1.11.16",
     "lucide-react": "^0.468.0",
     "next": "^15.1.2",

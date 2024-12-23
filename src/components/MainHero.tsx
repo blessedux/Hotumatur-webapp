@@ -1,9 +1,59 @@
-import TourSelector from '@/components/TourSelector'
-import FadeIn from './FadeIn'
+'use client'
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import TourSelector from "@/components/TourSelector";
+import FadeIn from "./FadeIn";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
+    const heroRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const hero = heroRef.current;
+
+        if (hero) {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: hero,
+                    start: "top top",
+                    end: "300px", // Adjust this if needed
+                    scrub: true,
+                },
+            });
+
+            // Default animation for desktop
+            tl.to(hero, {
+                y: 130,
+                borderRadius: "20%",
+                padding: "5%",
+                duration: 1,
+                ease: "power1.out",
+            });
+
+            // Media query for mobile
+            ScrollTrigger.matchMedia({
+                "(max-width: 768px)": function () {
+                    gsap.to(hero, {
+                        borderRadius: "10%", // Adjust border-radius for mobile
+                        duration: 1,
+                        ease: "power1.out",
+                        scrollTrigger: {
+                            trigger: hero,
+                            start: "top top",
+                            end: "300px",
+                            scrub: true,
+                        },
+                    });
+                },
+            });
+        }
+    }, []);
+
     return (
-        <div className="relative h-[calc(100dvh-80px)] md:h-[calc(100dvh-132px)] w-full overflow-hidden z-[1]">
+        <div ref={heroRef} className="relative h-[calc(100dvh-80px)] md:h-[calc(100dvh-132px)] w-full overflow-hidden z-[1]">
             {/* Video Background */}
             <div className="absolute top-0 left-0 w-full h-full z-[0]">
                 <iframe
@@ -34,6 +84,5 @@ export default function HeroSection() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
-

@@ -12,7 +12,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        satisfy: ['Satisfy', 'cursive'], // Add 'cursive' as a fallback
+        satisfy: ['"Satisfy"'], // Add 'cursive' as a fallback
       },
       colors: {
         background: 'hsl(var(--background))',
