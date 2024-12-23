@@ -28,12 +28,12 @@ export default function AboutHero() {
             {/* Content */}
             <div className="relative z-10 flex h-full flex-col items-start justify-center px-4 text-white">
                 {/* Title */}
-                <h1 className="mb-4 text-left text-3xl md:text-5xl  font-bold">Nuestra Historia</h1>
+                <h1 className="mb-4 text-left text-3xl md:text-5xl font-satisfy font-bold">Nuestra Historia</h1>
 
                 {/* Main Content */}
                 <div className="w-full max-w-2xl rounded-lg p-6 py-10">
                     <p className="text-left text-lg md:text-2xl leading-relaxed">
-                        En Hotumatur trabajamos para preservar la cultura y compartir la magia de la Isla de Pascua con el mundo.
+                        En Hotumatur trabajamos para preservar la cultura y compartir la magia de Rapa Nui con el mundo.
                     </p>
 
                 </div>
