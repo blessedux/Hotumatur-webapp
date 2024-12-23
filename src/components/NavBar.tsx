@@ -87,6 +87,9 @@ export default function NavBar() {
                     <Link href="/actividades" className="text-white hover:text-white/80">
                         Actividades
                     </Link>
+                    <Link href="/rentals" className="text-white hover:text-white/80">
+                        Rentals
+                    </Link>
                     <Link href="/nosotros" className="text-white hover:text-white/80">
                         Nosotros
                     </Link>
@@ -140,6 +143,13 @@ export default function NavBar() {
                             onClick={() => setIsOpen(false)}
                         >
                             Actividades
+                        </Link>
+                        <Link
+                            href="/rentals"
+                            className="text-white hover:text-white/80 text-lg"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Rentals
                         </Link>
                         <Link
                             href="/nosotros"

@@ -1,7 +1,7 @@
 import NewsletterSection from "@/components/NewsletterSection";
 import { StatsCard } from "@/components/nosotros/stats-card";
 import { BlogCard } from "@/components/nosotros/blog-card";
-import AboutHero from "@/components/nosotros/about-hero";
+import AboutHero from "@/components/nosotros/AboutHero";
 import PlanTrip from "@/components/nosotros/plan-trip";
 import Services from "@/components/nosotros/services";
 import { SpecialTripsSection } from "@/components/nosotros/special-trips";
