@@ -6,14 +6,9 @@ export class ProductsService {
     private readonly basePath: string;
 
     constructor() {
-        const baseUrl = process.env.NEXT_PUBLIC_WC_API_URL;
-
-        if (!baseUrl) {
-            throw new Error('NEXT_PUBLIC_WC_API_URL is not defined');
-        }
 
         // Ensure the base path is properly constructed without double slashes
-        this.basePath = `${baseUrl.replace(/\/$/, '')}/wp-json/wc/v3/products`;
+        this.basePath = `https://backend.hotumatur.com/wp-json/wc/v3/products`;
     }
 
     async getAll(): Promise<Product[]> {

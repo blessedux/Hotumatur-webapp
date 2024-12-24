@@ -8,20 +8,21 @@ import SingleTourSelector from "@/components/SingleTourSelector";
 import { Metadata } from "next";
 
 async function getProduct(slug: string) {
-    // Ensure the correct base URL is set for the backend
-    const baseUrl = process.env.NEXT_PUBLIC_WC_API_URL || 'http://backend.hotumatur.com';
-    const url = `${baseUrl}/wp-json/v3/api/products/${slug}`;
-
+    const baseUrl = 'https://backend.hotumatur.com/wp-json/wc/v3/products';
+    const consumerKey = process.env.WC_CONSUMER_KEY;
+    const consumerSecret = process.env.WC_CONSUMER_SECRET;
     console.log('Fetching product for slug:', slug);
-    console.log('Constructed API URL:', url);
 
     try {
-        // Fetch the product data from the backend API
+        const url = `${baseUrl}?slug=${encodeURIComponent(slug)}&per_page=1`;
+        console.log('Constructed API URL:', url);
+
         const response = await fetch(url, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // Include authentication token if required
-                'Authorization': `Bearer ${process.env.WC_API_TOKEN || ''}`,
+                // Use Base64-encoded WooCommerce API keys for authentication
+                'Authorization': `Basic ${Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64')}`,
             },
         });
 
@@ -36,7 +37,7 @@ async function getProduct(slug: string) {
         const data = await response.json();
         console.log('Fetched product data:', data);
 
-        return data;
+        return data[0]; // Assuming the API returns an array and you want the first product
     } catch (error) {
         console.error('Error fetching product:', error);
         throw new Error('Error fetching product data. Please check the API and configuration.');

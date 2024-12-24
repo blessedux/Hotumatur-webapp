@@ -2,7 +2,7 @@ import axios from 'axios';
 import { config } from '@/config';
 
 const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://backend.hotumatur.com', // Ensure this URL is correct
+    baseURL: 'https://backend.hotumatur.com',
     auth: {
         username: config.woocommerce.consumerKey!,
         password: config.woocommerce.consumerSecret!
