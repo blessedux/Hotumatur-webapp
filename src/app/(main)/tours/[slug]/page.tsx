@@ -9,18 +9,22 @@ import { Metadata } from "next";
 
 async function getProduct(slug: string) {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/products/${slug}`);
+    const url = `${baseUrl}/api/products/${slug}`;
+    console.log('Fetching product for slug:', slug);
+    console.log('Constructed API URL:', url);
 
-    console.log('Fetching product for slug:', slug); // Debugging
-    console.log('API URL:', `${baseUrl}/api/products/${slug}`); // Debug the URL
+    const response = await fetch(url);
 
+    console.log('Response status:', response.status);
     if (!response.ok) {
-        console.error('API Response Status:', response.status); // Debug status
-        console.error('API Response Text:', await response.text()); // Debug response
+        const errorText = await response.text();
+        console.error('Error response text:', errorText);
         throw new Error('Failed to fetch product');
     }
 
-    return response.json();
+    const data = await response.json();
+    console.log('Fetched product data:', data);
+    return data;
 }
 
 const iconConfig = {
