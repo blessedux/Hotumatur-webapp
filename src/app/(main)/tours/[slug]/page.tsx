@@ -8,12 +8,14 @@ import SingleTourSelector from "@/components/SingleTourSelector";
 import { Metadata } from "next";
 
 async function getProduct(slug: string) {
-    const baseUrl = process.env.NEXT_PUBLIC_WC_API_URL || 'http://backend.hotumatur.com';
-    const response = await fetch(`${baseUrl}/api/products/${slug}`, {
-        next: { revalidate: 60 }
-    });
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/api/products/${slug}`);
+
+    console.log('Fetching product for slug:', slug); // Log the slug
+    console.log('API URL:', `${baseUrl}/api/products/${slug}`); // Log the full URL
 
     if (!response.ok) {
+        console.error('API Response Status:', response.status);
         throw new Error('Failed to fetch product');
     }
 
