@@ -10,7 +10,11 @@ export function useProducts() {
         const fetchProducts = async () => {
             try {
                 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'; // Use the correct base URL
-                const response = await fetch(`${baseUrl}/api/products`); // Absolute URL
+                const response = await fetch('https://backend.hotumatur.com/wp-json/wc/v3/products?per_page=100', {
+                    headers: {
+                        Authorization: `Basic ${btoa(`${process.env.WC_CONSUMER_KEY}:${process.env.WC_CONSUMER_SECRET}`)}`,
+                    },
+                });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
