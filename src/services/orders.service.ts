@@ -6,7 +6,16 @@ interface OrderResponse {
 }
 
 export class OrdersService {
-    private readonly basePath = '/api/orders';
+    private readonly basePath: string;
+
+    constructor() {
+        const apiUrl = process.env.FLOW_API_URL;
+        if (!apiUrl) {
+            throw new Error('Environment variable NEXT_PUBLIC_API_URL is not set.');
+        }
+        this.basePath = `${apiUrl}/api/orders`;
+    }
+
 
     async getById(id: number): Promise<OrderResponse> {
         try {
