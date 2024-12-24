@@ -100,7 +100,7 @@ export default function Testimonials() {
         {
             name: "C.C.",
             location: "Miami Beach, FL",
-            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/C.C-profile.webp",
+            image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/C.C-profile.webp",
             rating: 5,
             text: "fantastic tour ! Enzo was amazing tour guide : knowledgeable , kind , and excellent English . AC van and the time spent at each site was timed perfectly! Highly recommend this tour of the South Easter Island .",
             date: "May 2024",
@@ -109,7 +109,7 @@ export default function Testimonials() {
         {
             name: "Olga S",
             location: "Miami Beach, FL",
-            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/OlgaS_profile.webp",
+            image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/OlgaS_profile.webp",
             rating: 5,
             text: "Amazing tour guide, very knowledgeable, pleasant, attentive. He answered every single question in full detail. Me and my wife were very happy with our guide!",
             date: "May 2024",
@@ -118,7 +118,7 @@ export default function Testimonials() {
         {
             name: "Sergio Ignacio A",
             location: "Miami Beach, FL",
-            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/default-avatar-2020-44.webp",
+            image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/default-avatar-2020-44.webp",
             rating: 5,
             text: "I went with my partner and we received an excellent welcome from Hotumatur and Hotel Tupa. They showed us the most impressive places on the island, always in a close and personal manner, making you appreciate the place in a way that stays with you forever in your memory. I recommend them 100%.",
             date: "May 2023",
@@ -127,7 +127,7 @@ export default function Testimonials() {
         {
             name: "Feñoño",
             location: "Santiago, Chile",
-            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/fenono-avatar.webp",
+            image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/fenono-avatar.webp",
             rating: 5,
             text: "Pretty friendly, excellent service!! From the very first day yhey have helped me a lot, we went there with any plan set, thanks to them we took advantage of the whole stay, knowing new places of the island every single day. Also, after the tours we have with them great moments and share good meals",
             date: "Oct 2023",
@@ -136,7 +136,7 @@ export default function Testimonials() {
         {
             name: "Cisternista",
             location: "Veniano, Italy",
-            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/cisternista.webp",
+            image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/cisternista.webp",
             rating: 5,
             text: "Full-day tour, from about 10am to 6pm, visiting the highlights of Easter Island. Small group of 13 people. The guide, Simon, a very prepared guy who puts great enthusiasm and professionalism in his work. Always ready to answer questions that were asked in both English and Spanish. Very good indeed. Excellent times spent in the different sites. The driver of the vehicle is also professional.",
             date: "December 11, 2024",
@@ -145,7 +145,7 @@ export default function Testimonials() {
         {
             name: "Mario B",
             location: "Berlin, Germany",
-            image: "https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/mario-b.webp",
+            image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/mario-b.webp",
             rating: 5,
             text: "Perfect day with Simon and our driver: What else can I write about that? Punctual pick-up at the port. Perfect tour. All seen. Everywhere enough time to enjoy and slow down.",
             date: "December 4, 2024",

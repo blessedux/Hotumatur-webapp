@@ -9,7 +9,7 @@ export default function NewsletterSection() {
         <section
             className="bg-zinc-900 py-16 px-4 relative bg-cover bg-center mx-4 my-8 rounded-2xl overflow-hidden"
             style={{
-                backgroundImage: `url('https://hotumatur.thefullstack.digital/wp-content/uploads/2024/12/54748532.webp')`,
+                backgroundImage: `url('https://backend.hotumatur.com/wp-content/uploads/2024/12/54748532.webp')`,
 
             }}
         >
