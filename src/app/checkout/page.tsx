@@ -173,7 +173,7 @@ export default function CheckoutPage() {
                     description: "Redirigiendo a WebPay..."
                 });
 
-                const paymentResponse = await fetch('https://flow.cl/api/payments/flow', {
+                const paymentResponse = await fetch('api/payments/flow', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -15,7 +15,7 @@ export async function POST(request: Request) {
         // Flow API Endpoint
         const flowApiUrl = 'https://flow.cl/api/payments/flow';
 
-        // Make the request to the Flow API
+        // Proxy the request to the Flow API
         const flowResponse = await fetch(flowApiUrl, {
             method: 'POST',
             headers: {
