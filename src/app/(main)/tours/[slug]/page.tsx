@@ -8,7 +8,7 @@ import SingleTourSelector from "@/components/SingleTourSelector";
 import { Metadata } from "next";
 
 async function getProduct(slug: string) {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_WC_API_URL || 'http://backend.hotumatur.com';
     const response = await fetch(`${baseUrl}/api/products/${slug}`, {
         next: { revalidate: 60 }
     });
