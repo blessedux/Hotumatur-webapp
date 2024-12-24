@@ -181,12 +181,21 @@ export default function CheckoutPage() {
                     body: JSON.stringify({ orderId: orderResult.order.id })
                 });
 
+                if (!paymentResponse.ok) {
+                    const errorData = await paymentResponse.json();
+                    throw new Error(errorData.error || 'Error al procesar el pago');
+                }
+
                 const paymentData = await paymentResponse.json();
                 console.log('Payment Data:', paymentData);
 
-                if (!paymentResponse.ok) {
-                    throw new Error(paymentData.error || 'Error al procesar el pago');
+                if (paymentData.paymentUrl && paymentData.token) {
+                    // Redirect to the Flow payment page using the returned paymentUrl and token
+                    setRedirectUrl(`${paymentData.paymentUrl}?token=${paymentData.token}`);
+                } else {
+                    throw new Error('Missing payment URL or token in Flow response.');
                 }
+
 
                 setRedirectUrl(paymentData.paymentUrl + '?token=' + paymentData.token);
             } else {
