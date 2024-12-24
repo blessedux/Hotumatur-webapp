@@ -422,7 +422,7 @@ export default function CheckoutPage() {
                                     <span>${total.toLocaleString('es-CL')}</span>
                                 </div>
                                 <p className="text-sm text-gray-500 mt-2">
-                                    * Precios incluyen 19% de IVA
+                                    * impuestos incluidos
                                 </p>
                             </div>
 
