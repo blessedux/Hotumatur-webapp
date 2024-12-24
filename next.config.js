@@ -21,7 +21,9 @@ const nextConfig = {
     reactStrictMode: true,
 }
 
+// Add environment variables without overwriting existing configuration
 module.exports = {
+    ...nextConfig, // Spread existing config
     env: {
         NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
         NEXT_PUBLIC_WC_API_URL: process.env.NEXT_PUBLIC_WC_API_URL,
