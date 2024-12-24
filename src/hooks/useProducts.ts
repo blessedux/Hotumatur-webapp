@@ -9,7 +9,11 @@ export function useProducts() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('/api/products');
+                const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'; // Use the correct base URL
+                const response = await fetch(`${baseUrl}/api/products`); // Absolute URL
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
                 setProducts(data);
             } catch (err) {
