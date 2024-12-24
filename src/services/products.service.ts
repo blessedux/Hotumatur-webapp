@@ -3,18 +3,29 @@ import { Product } from '@/types/woocommerce';
 import { AxiosError } from 'axios';
 
 export class ProductsService {
-    private readonly basePath = '/wp-json/wc/v3/products';
+    private readonly basePath: string;
+
+    constructor() {
+        const baseUrl = process.env.NEXT_PUBLIC_WC_API_URL;
+
+        if (!baseUrl) {
+            throw new Error('NEXT_PUBLIC_WC_API_URL is not defined');
+        }
+
+        // Ensure the base path is properly constructed without double slashes
+        this.basePath = `${baseUrl.replace(/\/$/, '')}/wp-json/wc/v3/products`;
+    }
 
     async getAll(): Promise<Product[]> {
         try {
             const response = await api.get(this.basePath, {
                 params: {
-                    per_page: 100
-                }
+                    per_page: 100, // Adjust per_page as needed
+                },
             });
             return response.data;
         } catch (error) {
-            throw this.handleError(error as AxiosError);
+            this.handleError(error as AxiosError);
         }
     }
 
@@ -23,18 +34,18 @@ export class ProductsService {
             const response = await api.get(this.basePath, {
                 params: {
                     slug: slug,
-                    per_page: 1
-                }
+                    per_page: 1, // Fetch a single product by slug
+                },
             });
             return response.data[0];
         } catch (error) {
-            throw this.handleError(error as AxiosError);
+            this.handleError(error as AxiosError);
         }
     }
 
-    private handleError(error: AxiosError): Error {
-        console.error('ProductsService Error:', error);
-        return new Error('Error in ProductsService');
+    private handleError(error: AxiosError): never {
+        console.error('ProductsService Error:', error.message);
+        throw new Error('Error in ProductsService');
     }
 }
 
