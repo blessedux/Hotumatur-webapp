@@ -3,30 +3,21 @@ import { productsService } from '@/services/products.service';
 
 type Params = Promise<{ slug: string }>;
 
-export async function GET(
-    request: Request,
-    { params }: { params: Params }
-) {
+export async function GET(request: Request, { params }: { params: { slug: string } }) {
     try {
-        const resolvedParams = await params;
-        console.log('Resolved Params:', resolvedParams); // Log the slug
-        const product = await productsService.getBySlug(resolvedParams.slug);
+        console.log('API Route: Received slug:', params.slug);
+
+        const product = await productsService.getBySlug(params.slug);
+        console.log('Fetched product:', product);
 
         if (!product) {
-            console.error('Product not found:', resolvedParams.slug);
-            return NextResponse.json(
-                { error: 'Product not found' },
-                { status: 404 }
-            );
+            console.error('Product not found for slug:', params.slug);
+            return NextResponse.json({ error: 'Product not found' }, { status: 404 });
         }
 
-        console.log('Product fetched successfully:', product);
         return NextResponse.json(product);
     } catch (error) {
-        console.error('Error in API Route GET:', error.message, error.stack);
-        return NextResponse.json(
-            { error: `Failed to fetch product: ${(error as Error).message}` },
-            { status: 500 }
-        );
+        console.error('Error in API route:', error.message, error.stack);
+        return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 });
     }
 }

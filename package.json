@@ -43,6 +43,7 @@
     "libphonenumber-js": "^1.11.16",
     "lucide-react": "^0.468.0",
     "next": "^15.1.2",
+    "node": "^23.5.0",
     "nodemailer": "^6.9.16",
     "react": "^18.2.0",
     "react-country-flag": "^3.1.0",
