@@ -13,8 +13,6 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'backend.hotumatur.com',
                 pathname: '/wp-content/uploads/**',
-                port: '',
-                search: '',
             },
         ],
     },
