@@ -12,7 +12,7 @@ export function middleware(req: Request) {
             "style-src 'self' 'unsafe-inline';",
             "img-src 'self' data: https://backend.hotumatur.com https://vumbnail.com;",
             "font-src 'self';",
-            "connect-src 'self';",
+            "connect-src 'self' https://backend.hotumatur.com;",
             "frame-src 'self' https://player.vimeo.com;"
         ]
             .join(' ')
