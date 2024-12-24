@@ -21,4 +21,11 @@ const nextConfig = {
     reactStrictMode: true,
 }
 
-module.exports = nextConfig 
+module.exports = {
+    env: {
+        NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+        NEXT_PUBLIC_WC_API_URL: process.env.NEXT_PUBLIC_WC_API_URL,
+        WC_CONSUMER_KEY: process.env.WC_CONSUMER_KEY,
+        WC_CONSUMER_SECRET: process.env.WC_CONSUMER_SECRET,
+    },
+};
