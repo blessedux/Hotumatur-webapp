@@ -46,7 +46,7 @@ const rentals: Rental[] = [
         id: 5,
         title: 'Paseo en bote',
         description: 'Relájate y contempla los paisajes con nuestros serenos paseos en barco.',
-        image: '/images/Motu-tours.webp', // Replace with your image path
+        image: '/images/Motu-Tours.webp',
         whatsappText: 'Hola, me gustaría reservar un Paseo en Barco. ¿Me pueden dar más detalles?',
     },
 ];
