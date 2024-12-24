@@ -5,7 +5,7 @@ const nextConfig = {
         ignoreDuringBuilds: true,
     },
     typescript: {
-        ignoreBuildErrors: true
+        ignoreBuildErrors: true,
     },
     images: {
         remotePatterns: [
@@ -19,15 +19,14 @@ const nextConfig = {
     // Optimizaciones de producción
     poweredByHeader: false,
     reactStrictMode: true,
-}
-
-// Add environment variables without overwriting existing configuration
-module.exports = {
-    ...nextConfig, // Spread existing config
-    env: {
-        NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-        NEXT_PUBLIC_WC_API_URL: process.env.NEXT_PUBLIC_WC_API_URL,
-        WC_CONSUMER_KEY: process.env.WC_CONSUMER_KEY,
-        WC_CONSUMER_SECRET: process.env.WC_CONSUMER_SECRET,
+    async rewrites() {
+        return [
+            {
+                source: '/api/:path*',
+                destination: 'https://backend.hotumatur.com/wp-json/wc/v3/:path*',
+            },
+        ];
     },
 };
+
+module.exports = nextConfig;
