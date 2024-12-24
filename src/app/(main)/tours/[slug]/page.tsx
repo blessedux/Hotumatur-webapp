@@ -8,23 +8,39 @@ import SingleTourSelector from "@/components/SingleTourSelector";
 import { Metadata } from "next";
 
 async function getProduct(slug: string) {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const url = `${baseUrl}/api/products/${slug}`;
+    // Ensure the correct base URL is set for the backend
+    const baseUrl = process.env.NEXT_PUBLIC_WC_API_URL || 'http://backend.hotumatur.com';
+    const url = `${baseUrl}/wp-json/v3/api/products/${slug}`;
+
     console.log('Fetching product for slug:', slug);
     console.log('Constructed API URL:', url);
 
-    const response = await fetch(url);
+    try {
+        // Fetch the product data from the backend API
+        const response = await fetch(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                // Include authentication token if required
+                'Authorization': `Bearer ${process.env.WC_API_TOKEN || ''}`,
+            },
+        });
 
-    console.log('Response status:', response.status);
-    if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response text:', errorText);
-        throw new Error('Failed to fetch product');
+        console.log('Response status:', response.status);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error response text:', errorText);
+            throw new Error(`Failed to fetch product: ${response.status} - ${errorText}`);
+        }
+
+        const data = await response.json();
+        console.log('Fetched product data:', data);
+
+        return data;
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        throw new Error('Error fetching product data. Please check the API and configuration.');
     }
-
-    const data = await response.json();
-    console.log('Fetched product data:', data);
-    return data;
 }
 
 const iconConfig = {
