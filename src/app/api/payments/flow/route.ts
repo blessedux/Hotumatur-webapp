@@ -6,7 +6,6 @@ import { config } from '@/config';
 export async function POST(request: Request) {
     try {
         const { orderId } = await request.json();
-        console.log('orderId', orderId);
         const order = await wooCommerceService.getOrder(orderId);
 
         const payment = await flowService.createPayment({
