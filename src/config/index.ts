@@ -21,7 +21,7 @@ export const config: Config = {
     flow: {
         apiKey: process.env.FLOW_API_KEY,
         secretKey: process.env.FLOW_SECRET_KEY,
-        apiUrl: process.env.FLOW_API_URL
+        apiUrl: process.env.FLOW_API_URL || 'https://www.flow.cl/api'
     },
     woocommerce: {
         url: process.env.NEXT_PUBLIC_WC_API_URL || '',

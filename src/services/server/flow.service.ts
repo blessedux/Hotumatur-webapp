@@ -9,7 +9,7 @@ axiosRetry(axios, { retries: 3 });
 export class FlowService {
     private readonly apiKey: string;
     private readonly secretKey: string;
-    private readonly apiUrl = 'https://flow.cl/api'; // Hardcoded Flow API URL
+    private readonly apiUrl: string;
 
     constructor() {
         this.apiKey = config.flow.apiKey!;
