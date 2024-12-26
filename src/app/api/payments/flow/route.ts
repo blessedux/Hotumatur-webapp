@@ -20,7 +20,7 @@ export async function POST(request: Request) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.FLOW_API_KEY}`, // Replace with your actual Flow API Key
+                'Authorization': `Bearer ${process.env.FLOW_API_KEY}`, // Replace with your actual Flow API Key               
             },
             body: JSON.stringify({ orderId }), // Send the orderId as part of the body
         });
