@@ -23,6 +23,38 @@ import { SelectCountry } from '@/components/ui/select-country'
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Card, CardContent } from "@/components/ui/card"
 
+// Define the handlePayment function 
+const handlePayment = async (orderId: string) => {
+    try {
+        const paymentResponse = await fetch('/api/payments/flow', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ orderId })
+        });
+
+        if (!paymentResponse.ok) {
+            const errorData = await paymentResponse.json();
+            throw new Error(errorData.error || 'Error al procesar el pago');
+        }
+
+        const paymentData = await paymentResponse.json();
+        console.log('Payment Data:', paymentData);
+
+        if (paymentData.paymentUrl && paymentData.token) {
+            // Redirect to the Flow payment page using the returned paymentUrl and token
+            return `${paymentData.paymentUrl}?token=${paymentData.token}`;
+        } else {
+            throw new Error('Missing payment URL or token in Flow response.');
+        }
+    } catch (error) {
+        console.error('Error processing payment:', error);
+        throw error; // Re-throw error to handle it in onSubmit
+    }
+};
+
+
 const formSchema = z.object({
     firstName: z.string()
         .min(2, "El nombre debe tener al menos 2 caracteres")
@@ -122,7 +154,9 @@ export default function CheckoutPage() {
         setIsSubmitting(true);
 
         try {
-            const country = countryCodes.find(c => c.dial_code === formData.phone.countryCode)?.code || 'CL';
+            const country = countryCodes.find(
+                (c) => c.dial_code === formData.phone.countryCode
+            )?.code || 'CL';
 
             const orderData = {
                 customer: {
@@ -130,24 +164,30 @@ export default function CheckoutPage() {
                     last_name: formData.lastName,
                     email: formData.email,
                     phone: `${formData.phone.countryCode}${formData.phone.number}`,
-                    country: country
+                    country: country,
                 },
-                line_items: reservations.map(reservation => ({
+                line_items: reservations.map((reservation) => ({
                     product_id: reservation.productId,
                     quantity: reservation.quantity,
                     meta_data: [
                         {
                             key: "tour_date",
-                            value: format(parseISO(reservation.date), "d 'de' MMMM, yyyy", { locale: es })
-                        }
-                    ]
+                            value: format(
+                                parseISO(reservation.date),
+                                "d 'de' MMMM, yyyy",
+                                { locale: es }
+                            ),
+                        },
+                    ],
                 })),
-                meta_data: formData.specialRequests ? [
-                    {
-                        key: "special_requests",
-                        value: formData.specialRequests
-                    }
-                ] : []
+                meta_data: formData.specialRequests
+                    ? [
+                        {
+                            key: "special_requests",
+                            value: formData.specialRequests,
+                        },
+                    ]
+                    : [],
             };
 
             console.log('Order Data:', orderData);
@@ -157,7 +197,7 @@ export default function CheckoutPage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(orderData)
+                body: JSON.stringify(orderData),
             });
 
             if (!orderResponse.ok) {
@@ -170,46 +210,23 @@ export default function CheckoutPage() {
             if (formData.paymentMethod === 'webpay') {
                 showToast({
                     title: "Procesando pago",
-                    description: "Redirigiendo a WebPay..."
+                    description: "Redirigiendo a WebPay...",
                 });
 
-                const paymentResponse = await fetch('/api/payments/flow', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ orderId: orderResult.order.id })
-                });
-
-                if (!paymentResponse.ok) {
-                    const errorData = await paymentResponse.json();
-                    throw new Error(errorData.error || 'Error al procesar el pago');
-                }
-
-                const paymentData = await paymentResponse.json();
-                console.log('Payment Data:', paymentData);
-
-                if (paymentData.paymentUrl && paymentData.token) {
-                    // Redirect to the Flow payment page using the returned paymentUrl and token
-                    setRedirectUrl(`${paymentData.paymentUrl}?token=${paymentData.token}`);
-                } else {
-                    throw new Error('Missing payment URL or token in Flow response.');
-                }
-
-
-                setRedirectUrl(paymentData.paymentUrl + '?token=' + paymentData.token);
+                const paymentUrl = await handlePayment(orderResult.order.id);
+                setRedirectUrl(paymentUrl);
             } else {
                 // PayPal placeholder
                 showToast({
                     title: "Error",
-                    description: "PayPal estará disponible próximamente"
+                    description: "PayPal estará disponible próximamente",
                 });
             }
         } catch (error) {
             console.error('Error processing order:', error);
             showToast({
                 title: "Error",
-                description: "No se pudo procesar tu orden. Por favor intenta nuevamente."
+                description: "No se pudo procesar tu orden. Por favor intenta nuevamente.",
             });
         } finally {
             setIsSubmitting(false);
