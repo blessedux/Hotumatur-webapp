@@ -75,7 +75,7 @@ const ContactPage: React.FC = () => {
                         <div className="relative bg-[#2159E2] text-white overflow-hidden h-full">
                             <div className="absolute inset-0">
                                 <iframe
-                                    src="https://player.vimeo.com/video/1040474331?autoplay=1&muted=1&loop=1&background=1"
+                                    src="https://player.vimeo.com/video/1040474331?autoplay=1&muted=1&loop=1&background=1&dnt=1"
                                     style={{
                                         position: 'absolute',
                                         top: '50%',

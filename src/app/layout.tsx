@@ -79,15 +79,16 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${GA_TRACKING_ID}', {
-                page_path: window.location.pathname,
-              });
-            `,
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${GA_TRACKING_ID}', {
+        page_path: window.location.pathname,
+      });
+    `,
           }}
         />
+
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}>
         <ReservationProvider>
