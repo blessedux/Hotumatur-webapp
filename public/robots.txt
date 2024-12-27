@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://hotumatur.com
+
+# Sitemaps
+Sitemap: https://hotumatur.com/sitemap.xml

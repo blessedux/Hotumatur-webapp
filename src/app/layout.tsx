@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+// Google Analytics Tracking ID 
+const GA_TRACKING_ID = 'G-T13Z87RDDN';
+
 export const metadata: Metadata = {
   title: 'Hotumatur: Rapa Nui',
   description: 'Agencia de turismo en Rapa Nui',
@@ -70,6 +73,21 @@ export default function RootLayout({
         <meta name="twitter:image" content={metadata.twitter?.images?.[0] || '/default-image.png'} />
         <meta name="twitter:image:alt" content={metadata.twitter.imageAlt} />
         <link rel="icon" href="/favicon.ico" />
+
+        {/* Google Analytics */}
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_TRACKING_ID}', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}>
         <ReservationProvider>
