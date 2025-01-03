@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TourSelector from "@/components/TourSelector";
@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
     const heroRef = useRef<HTMLDivElement>(null);
+    const [videoLoaded, setVideoLoaded] = useState(false);
 
     useEffect(() => {
         const hero = heroRef.current;
@@ -57,6 +58,13 @@ export default function HeroSection() {
             ref={heroRef}
             className="relative h-screen w-full overflow-hidden z-[1]"
         >
+            {/* Placeholder Image (Initially Visible) */}
+            {!videoLoaded && (
+                <div
+                    className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
+                    style={{ backgroundImage: "url('https://backend.hotumatur.com/wp-content/uploads/2025/01/Hero_Placeholder.webp')" }}
+                />
+            )}
             {/* Video Background */}
             <div className="absolute top-0 left-0 w-full h-full z-[0]">
                 <iframe
