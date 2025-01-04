@@ -1,7 +1,7 @@
 import { FaWhatsapp } from 'react-icons/fa';
 
 const WhatsAppButton = () => {
-    const whatsappNumber = '+56962064520'; // Replace with your WhatsApp number
+    const whatsappNumber = '+56998897762'; // Replace with your WhatsApp number
     const message = 'Hola! Me gustaría conocer más sobre Rapa Nui y reservar un Tour con Ustedes! me pueden dar más información?'; // Default message
 
     const whatsappLink = `https://wa.me/${whatsappNumber.replace(
