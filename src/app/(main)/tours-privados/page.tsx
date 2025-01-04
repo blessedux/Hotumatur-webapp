@@ -1,30 +1,19 @@
-'use client'
+"use client";
 
 import NewsletterSection from "@/components/NewsletterSection";
 import { BlogCard } from "@/components/nosotros/blog-card";
 import { SpecialTripsSection } from "@/components/nosotros/special-trips";
 import ProductSection from "@/components/ProductSection";
 
-const heroImage = "https://backend.hotumatur.com/wp-content/uploads/2024/12/Nosotoro-Bio-image.webp";
-
 export default function ToursPrivadosPage() {
     return (
         <div className="min-h-screen">
-            {/* Hero Section */}
-            <ProductSection />
+            {/* Pass the correct WooCommerce category ID */}
+            <ProductSection categoryId={24} />
 
-
-
-
-
-
-            {/* Special Trips */}
             <SpecialTripsSection />
 
-
-
-            {/* Blog Section */}
-            <section className=" flex justify-center">
+            <section className="flex justify-center">
                 <div className="container">
                     <h2 className="text-3xl font-bold text-center mt-12 mb-12">Últimas Novedades</h2>
                     <div className="grid md:grid-cols-3 gap-8 mx-auto">
@@ -50,9 +39,7 @@ export default function ToursPrivadosPage() {
                 </div>
             </section>
 
-            {/* Newsletter Section */}
             <NewsletterSection />
-
-        </div >
+        </div>
     );
 }

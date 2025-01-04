@@ -15,7 +15,7 @@ export default function Home() {
         <HeroSection />
         <div>
           <Suspense fallback={<div>Loading...</div>}>
-            <ProductSection />
+          <ProductSection categoryId={undefined} />
           </Suspense>
           <Gallery />
           <ServicesSection />

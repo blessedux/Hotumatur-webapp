@@ -10,7 +10,7 @@ export default function ToursEspecialesPage() {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <ProductSection />
+            <ProductSection categoryId={26} />
 
 
 
