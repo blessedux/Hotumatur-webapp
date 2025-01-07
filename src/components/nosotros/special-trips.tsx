@@ -43,10 +43,10 @@ export function SpecialTripsSection() {
                     </CardContent>
                     <CardFooter className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <Button asChild>
-                            <Link href="/contact">Solicitar Cotización</Link>
+                            <Link href="/contacto">Solicitar Cotización</Link>
                         </Button>
                         <Link
-                            href="/contact"
+                            href="/contacto"
                             className="text-sm text-muted-foreground hover:underline"
                         >
                             Contáctanos para más información
