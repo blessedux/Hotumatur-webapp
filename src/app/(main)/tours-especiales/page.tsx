@@ -8,19 +8,12 @@ const heroImage = "https://backend.hotumatur.com/wp-content/uploads/2024/12/Noso
 
 export default function ToursEspecialesPage() {
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen pt-20">
             {/* Hero Section */}
             <ProductSection categoryId={26} />
 
-
-
-
-
-
             {/* Special Trips */}
             <SpecialTripsSection />
-
-
 
             {/* Blog Section */}
             <section className=" flex justify-center">

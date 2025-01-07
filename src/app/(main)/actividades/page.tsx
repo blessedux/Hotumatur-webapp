@@ -20,17 +20,9 @@ export default function ActividadesPage() {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <ProductSection />
-
-
-
-
-
-
+            <ProductSection className="mt-20" />
             {/* Special Trips */}
             <SpecialTripsSection />
-
-
 
             {/* Blog Section */}
             <section className=" flex justify-center">

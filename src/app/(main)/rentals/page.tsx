@@ -53,7 +53,7 @@ const rentals: Rental[] = [
 
 const RentalsPage: React.FC = () => {
     const openWhatsApp = (text: string): void => {
-        const phoneNumber = '+56962064520'; // Replace with your WhatsApp phone number
+        const phoneNumber = '+56998897762';
         const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
         window.open(url, '_blank');
     };

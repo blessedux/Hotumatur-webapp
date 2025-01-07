@@ -7,6 +7,7 @@ import { ChevronDown, MenuIcon, X } from "lucide-react";
 import Image from "next/image";
 import { useSpring, animated } from "@react-spring/web";
 import ReservationIcon from "@/components/ReservationIcon";
+import { usePathname } from "next/navigation";
 
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false);

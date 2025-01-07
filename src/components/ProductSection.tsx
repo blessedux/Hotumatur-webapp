@@ -31,7 +31,7 @@ export default function ProductSection({ categoryId }: ProductSectionProps) {
     if (error) return <p className="text-red-500">Error: {error}</p>;
 
     // Get category name from ID, fallback to "Unknown Category"
-    const categoryTitle = categoryNames[categoryId] || "Unknown Category";
+    const categoryTitle = categoryNames[categoryId];
 
     console.log("🚀 Selected Category ID:", categoryId);
     console.log("✅ Filtered Products Displayed:", products);
