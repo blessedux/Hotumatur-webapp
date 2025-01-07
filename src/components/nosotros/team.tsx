@@ -15,7 +15,7 @@ interface TeamMember {
 
 const team: TeamMember[] = [
     {
-        name: "Ana Pakarati",
+        name: "Franco",
         role: "Guía Turística",
         image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/Team-member1.webp",
         bio: "Ana Pakarati es una experta en la historia y cultura de Rapa Nui. Con más de 15 años de experiencia como guía, Ana ha desarrollado un profundo conocimiento de los sitios arqueológicos y las tradiciones locales. Su pasión por compartir la rica herencia de la isla se refleja en cada tour que lidera.",
@@ -23,33 +23,41 @@ const team: TeamMember[] = [
         languages: ["Español", "Inglés", "Rapanui"]
     },
     {
-        name: "Juan Tepano",
+        name: "Javi",
         role: "Guía Turístico",
-        image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/Team-member1.webp",
+        image: "https://backend.hotumatur.com/wp-content/uploads/2025/01/team-member2.webp",
         bio: "Juan Tepano, nacido y criado en Rapa Nui, es un apasionado narrador de historias y experto en ecoturismo. Con una formación en biología marina, Juan ofrece una perspectiva única sobre la ecología de la isla y su importancia en el ecosistema del Pacífico.",
         specialties: ["Ecoturismo", "Snorkel y buceo", "Conservación marina"],
         languages: ["Español", "Inglés", "Francés"]
     },
     {
-        name: "María Tuki",
+        name: "Simón",
         role: "Guía Turística",
-        image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/Team-member1.webp",
+        image: "https://backend.hotumatur.com/wp-content/uploads/2025/01/team-member3.webp",
         bio: "María Tuki es una talentosa artista y guía cultural. Su conocimiento de las artes tradicionales de Rapa Nui, incluyendo el tallado en madera y la danza, añade una dimensión única a sus tours. María se especializa en experiencias inmersivas que permiten a los visitantes conectar profundamente con la cultura viva de la isla.",
         specialties: ["Artes tradicionales", "Danza y música", "Gastronomía local"],
         languages: ["Español", "Inglés", "Alemán"]
     },
     {
-        name: "Carlos Huke",
+        name: "Tete",
         role: "Guía de Aventuras",
-        image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/Team-member1.webp",
+        image: "https://backend.hotumatur.com/wp-content/uploads/2025/01/team-member4.webp",
         bio: "Carlos Huke es un experimentado guía de aventuras con un profundo amor por la naturaleza de Rapa Nui. Especializado en senderismo y exploración de cuevas, Carlos ofrece a los visitantes una perspectiva única de los paisajes menos conocidos de la isla.",
         specialties: ["Senderismo", "Exploración de cuevas", "Fotografía de naturaleza"],
         languages: ["Español", "Inglés", "Japonés"]
     },
     {
-        name: "Sofía Rapu",
+        name: "Pou",
         role: "Guía Cultural",
-        image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/Team-member1.webp",
+        image: "https://backend.hotumatur.com/wp-content/uploads/2025/01/team-memeber5.webp",
+        bio: "Sofía Rapu, descendiente de una antigua familia Rapa Nui, es una apasionada defensora de la preservación cultural. Como guía, Sofía se especializa en compartir las leyendas, mitos y tradiciones orales de la isla, ofreciendo a los visitantes una inmersión profunda en el rico patrimonio cultural de Rapa Nui.",
+        specialties: ["Leyendas y mitos", "Genealogía Rapa Nui", "Astronomía tradicional"],
+        languages: ["Español", "Inglés", "Rapanui"]
+    },
+    {
+        name: "Sergio Rapu",
+        role: "Arqueólogo",
+        image: "https://backend.hotumatur.com/wp-content/uploads/2025/01/team-member6.webp",
         bio: "Sofía Rapu, descendiente de una antigua familia Rapa Nui, es una apasionada defensora de la preservación cultural. Como guía, Sofía se especializa en compartir las leyendas, mitos y tradiciones orales de la isla, ofreciendo a los visitantes una inmersión profunda en el rico patrimonio cultural de Rapa Nui.",
         specialties: ["Leyendas y mitos", "Genealogía Rapa Nui", "Astronomía tradicional"],
         languages: ["Español", "Inglés", "Rapanui"]
