@@ -18,9 +18,9 @@ const heroImage = "https://backend.hotumatur.com/wp-content/uploads/2024/12/Noso
 
 export default function ActividadesPage() {
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen pt-[120px] md:pt-[140px] lg:pt-[160px]">
             {/* Hero Section */}
-            <ProductSection className="mt-20" />
+            <ProductSection />
             {/* Special Trips */}
             <SpecialTripsSection />
 

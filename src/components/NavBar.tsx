@@ -2,7 +2,7 @@
 
 import { useState, Fragment } from "react";
 import Link from "next/link";
-import { Menu, Transition, MenuItems, MenuButton, MenuItem } from "@headlessui/react";
+import { Menu, Transition, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDown, MenuIcon, X } from "lucide-react";
 import Image from "next/image";
 import { useSpring, animated } from "@react-spring/web";
@@ -11,6 +11,8 @@ import { usePathname } from "next/navigation";
 
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false);
+    const pathname = usePathname();
+    const isWhiteBackground = pathname !== "/"; // True for non-homepages
 
     // Static menu items for Tours
     const toursMenu = [
@@ -22,18 +24,16 @@ export default function NavBar() {
     const menuAnimation = useSpring({
         transform: isOpen ? "translateX(0%)" : "translateX(100%)",
         opacity: isOpen ? 1 : 0,
-        config: {
-            tension: 180,
-            friction: 20,
-        },
+        config: { tension: 180, friction: 20 },
     });
 
-    const tours = toursMenu || []; // Use toursMenu or an empty array as fallback
-
     return (
-        <nav className="bg-white/20 px-4 py-4 absolute top-0 left-0 right-0 z-[100]">
+        <nav
+            className={`px-4 py-4 absolute top-0 left-0 right-0 z-[100] transition-colors duration-300 ${isWhiteBackground ? "bg-white/80 shadow-md" : "bg-transparent"
+                }`}
+        >
             <div className="max-w-7xl mx-auto flex items-center justify-between">
-                <Link href="/" className="text-white text-2xl font-semibold">
+                <Link href="/" className="text-2xl font-semibold">
                     <Image
                         src="/hotumatur-logo.svg"
                         alt="Logo"
@@ -45,7 +45,7 @@ export default function NavBar() {
 
                 {/* Mobile menu button */}
                 <button
-                    className="md:hidden text-white"
+                    className={`md:hidden ${isWhiteBackground ? "text-black" : "text-white"}`}
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     {isOpen ? <X size={24} /> : <MenuIcon size={24} />}
@@ -54,7 +54,10 @@ export default function NavBar() {
                 {/* Desktop menu */}
                 <div className="hidden md:flex items-center gap-10">
                     <Menu as="div" className="relative inline-block text-left">
-                        <MenuButton className="inline-flex items-center text-white hover:text-white/80">
+                        <MenuButton
+                            className={`inline-flex items-center transition-colors duration-300 ${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"
+                                }`}
+                        >
                             Tours
                             <ChevronDown className="ml-1 h-4 w-4" aria-hidden="true" />
                         </MenuButton>
@@ -74,7 +77,8 @@ export default function NavBar() {
                                             {({ active }) => (
                                                 <Link
                                                     href={tour.href}
-                                                    className={`${active ? "bg-gray-100 text-gray-900" : "text-gray-700"} block px-6 py-3 text-md`}
+                                                    className={`block px-6 py-3 text-md ${active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+                                                        }`}
                                                 >
                                                     {tour.name}
                                                 </Link>
@@ -85,16 +89,16 @@ export default function NavBar() {
                             </MenuItems>
                         </Transition>
                     </Menu>
-                    <Link href="/actividades" className="text-white hover:text-white/80">
+                    <Link href="/actividades" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
                         Actividades
                     </Link>
-                    <Link href="/rentals" className="text-white hover:text-white/80">
+                    <Link href="/rentals" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
                         Rentals
                     </Link>
-                    <Link href="/nosotros" className="text-white hover:text-white/80">
+                    <Link href="/nosotros" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
                         Nosotros
                     </Link>
-                    <Link href="/contacto" className="text-white hover:text-white/80">
+                    <Link href="/contacto" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
                         Contáctanos
                     </Link>
                     <ReservationIcon />
@@ -108,7 +112,7 @@ export default function NavBar() {
                     <div className="flex flex-col gap-6">
                         <Link
                             href="/"
-                            className="text-white hover:text-white/80 text-xl"
+                            className={`${isWhiteBackground ? "text-black" : "text-white"} text-xl`}
                             onClick={() => setIsOpen(false)}
                         >
                             Inicio
@@ -116,7 +120,7 @@ export default function NavBar() {
 
                         <div className="relative z-[200]">
                             <button
-                                className="text-white hover:text-white/80 flex items-center text-xl"
+                                className={`${isWhiteBackground ? "text-black" : "text-white"} flex items-center text-xl`}
                                 onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
@@ -130,7 +134,7 @@ export default function NavBar() {
                                     <Link
                                         key={tour.name}
                                         href={tour.href}
-                                        className="block text-white hover:text-white/80 text-lg"
+                                        className={`block text-lg ${isWhiteBackground ? "text-black" : "text-white"}`}
                                         onClick={() => setIsOpen(false)}
                                     >
                                         {tour.name}
@@ -138,32 +142,16 @@ export default function NavBar() {
                                 ))}
                             </div>
                         </div>
-                        <Link
-                            href="/actividades"
-                            className="text-white hover:text-white/80 text-lg"
-                            onClick={() => setIsOpen(false)}
-                        >
+                        <Link href="/actividades" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
                             Actividades
                         </Link>
-                        <Link
-                            href="/rentals"
-                            className="text-white hover:text-white/80 text-lg"
-                            onClick={() => setIsOpen(false)}
-                        >
+                        <Link href="/rentals" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
                             Rentals
                         </Link>
-                        <Link
-                            href="/nosotros"
-                            className="text-white hover:text-white/80 text-lg"
-                            onClick={() => setIsOpen(false)}
-                        >
+                        <Link href="/nosotros" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
                             Nosotros
                         </Link>
-                        <Link
-                            href="/contacto"
-                            className="text-white hover:text-white/80 text-lg"
-                            onClick={() => setIsOpen(false)}
-                        >
+                        <Link href="/contacto" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
                             Contáctanos
                         </Link>
                     </div>
