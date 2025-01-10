@@ -27,7 +27,7 @@ export default function HeroSection() {
 
             // Default animation for desktop
             tl.to(hero, {
-                y: 130,
+                y: 30,
                 borderRadius: "3%",
                 padding: "5%",
                 duration: 1,
