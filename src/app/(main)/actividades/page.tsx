@@ -20,7 +20,7 @@ export default function ActividadesPage() {
     return (
         <div className="min-h-screen pt-[120px] md:pt-[140px] lg:pt-[160px]">
             {/* Hero Section */}
-            <ProductSection />
+            <ProductSection categoryId={23} />
             {/* Special Trips */}
             <SpecialTripsSection />
 
