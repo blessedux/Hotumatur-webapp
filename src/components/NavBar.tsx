@@ -146,7 +146,7 @@ export default function NavBar() {
                             Actividades
                         </Link>
                         <Link href="/rentals" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
-                            Rentals
+                            Arriendos
                         </Link>
                         <Link href="/nosotros" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
                             Nosotros

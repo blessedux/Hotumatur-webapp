@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CalendarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -13,7 +13,7 @@ import { useProducts } from '@/hooks/useProducts';
 import { useReservations } from '@/context/ReservationContext';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import SkeletonForm from '@/components/SkeletonForm';
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 const TourSelector = () => {
     const [date, setDate] = useState<Date>();
@@ -23,6 +23,12 @@ const TourSelector = () => {
     const { addReservation } = useReservations();
     const { toast } = useToast();
     const router = useRouter();
+
+    useEffect(() => {
+        if (tours) {
+            console.log("Tours loaded:", tours);
+        }
+    }, [tours]);
 
     const handleReservation = () => {
         if (!date || !selectedTourId) {
@@ -92,7 +98,7 @@ const TourSelector = () => {
     };
 
     if (loading) {
-        return <SkeletonForm />; // Keep SkeletonForm for loading state
+        return <LoadingSpinner />;
     }
 
     if (error) {
