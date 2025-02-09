@@ -93,7 +93,7 @@ export default function NavBar() {
                         Actividades
                     </Link>
                     <Link href="/rentals" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
-                        Rentals
+                        Arriendos
                     </Link>
                     <Link href="/nosotros" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
                         Nosotros

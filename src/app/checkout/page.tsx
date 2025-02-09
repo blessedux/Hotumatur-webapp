@@ -212,15 +212,42 @@ export default function CheckoutPage() {
                     title: "Procesando pago",
                     description: "Redirigiendo a WebPay...",
                 });
-
+            
                 const paymentUrl = await handlePayment(orderResult.order.id);
                 setRedirectUrl(paymentUrl);
-            } else {
-                // PayPal placeholder
+            } else if (formData.paymentMethod === 'paypal') {
                 showToast({
-                    title: "Error",
-                    description: "PayPal estará disponible próximamente",
+                    title: "Procesando pago",
+                    description: "Redirigiendo a PayPal...",
                 });
+            
+                try {
+                    const paypalResponse = await fetch('/api/payments/paypal', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ orderId: orderResult.order.id })
+                    });
+            
+                    if (!paypalResponse.ok) {
+                        throw new Error("Error procesando el pago con PayPal.");
+                    }
+            
+                    const { approvalUrl } = await paypalResponse.json();
+            
+                    if (approvalUrl) {
+                        window.location.href = approvalUrl;
+                    } else {
+                        throw new Error("No se recibió una URL de aprobación de PayPal.");
+                    }
+                } catch (error) {
+                    console.error('Error processing PayPal payment:', error);
+                    showToast({
+                        title: "Error",
+                        description: "No se pudo procesar el pago con PayPal. Inténtalo nuevamente.",
+                    });
+                }
             }
         } catch (error) {
             console.error('Error processing order:', error);
@@ -384,22 +411,22 @@ export default function CheckoutPage() {
                                     </CardContent>
                                 </Card>
 
-                                <Card className="cursor-pointer relative opacity-50">
-                                    <CardContent className="flex items-center gap-4 p-4">
-                                        <RadioGroupItem value="paypal" id="paypal" disabled />
-                                        <Image
-                                            src="/logos/paypal.png"
-                                            alt="PayPal"
-                                            width={80}
-                                            height={40}
-                                            className="object-contain h-auto w-[90px]"
-                                        />
-                                        <div>
-                                            <Label htmlFor="paypal">PayPal</Label>
-                                            <p className="text-sm text-gray-500">Próximamente disponible</p>
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                <Card className="cursor-pointer relative">
+                            <CardContent className="flex items-center gap-4 p-4">
+                                <RadioGroupItem value="paypal" id="paypal" />
+                                <Image
+                                    src="/logos/paypal.png"
+                                    alt="PayPal"
+                                    width={80}
+                                    height={40}
+                                    className="object-contain h-auto w-[90px]"
+                                />
+                                <div>
+                                    <Label htmlFor="paypal">PayPal</Label>
+                                    <p className="text-sm text-gray-500">Paga con tu cuenta PayPal</p>
+                                </div>
+                            </CardContent>
+                        </Card>
                             </RadioGroup>
                         </div>
                     </div>

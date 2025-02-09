@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 
 export function SpecialTripsSection() {
     return (
+
         <section className="relative w-full py-12 md:py-24 lg:py-32 bg-muted overflow-hidden">
             {/* Background Image */}
             <div className="absolute inset-0 -z-10">

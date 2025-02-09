@@ -6,9 +6,10 @@ import { SpecialTripsSection } from "@/components/nosotros/special-trips";
 import ProductSection from "@/components/ProductSection";
 import { usePathname } from "next/navigation";
 
+
 export default function ToursPrivadosPage() {
     return (
-        <div className="min-h-screen pt-20">
+        <div className="min-h-screen pt-32">
             {/* Pass the correct WooCommerce category ID */}
             <ProductSection categoryId={24} />
 
