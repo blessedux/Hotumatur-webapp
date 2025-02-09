@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+
     output: 'standalone',
     eslint: {
         ignoreDuringBuilds: true,
@@ -27,6 +28,21 @@ const nextConfig = {
             },
         ];
     },
-};
+    async headers() {
+        return [
+            {
+                source: '/:path*',
+                headers: [
+                    {
+                        key: 'Content-Security-Policy',
+                        value: "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data: https:; media-src 'self' data: https:;"
+                    }
+                ]
+            }
+        ]
+    }
+}
 
 module.exports = nextConfig;
+
+

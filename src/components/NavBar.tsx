@@ -16,8 +16,8 @@ export default function NavBar() {
 
     // Static menu items for Tours
     const toursMenu = [
-        { name: "Tours Privados", href: "/tours-privados" },
         { name: "Tours Grupales", href: "/tours-grupales" },
+        { name: "Tours Privados", href: "/tours-privados" },
         { name: "Tours Especiales", href: "/tours-especiales" },
     ];
 
