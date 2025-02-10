@@ -18,49 +18,49 @@ const team: TeamMember[] = [
         name: "Franco",
         role: "Guía Turística",
         image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/Team-member1.webp",
-        bio: "Ana Pakarati es una experta en la historia y cultura de Rapa Nui. Con más de 15 años de experiencia como guía, Ana ha desarrollado un profundo conocimiento de los sitios arqueológicos y las tradiciones locales. Su pasión por compartir la rica herencia de la isla se refleja en cada tour que lidera.",
-        specialties: ["Sitios arqueológicos", "Tradiciones culturales", "Flora y fauna local"],
-        languages: ["Español", "Inglés", "Rapanui"]
+        bio: "Franco, con su profundo conocimiento de la arqueología de Rapa Nui, ha dedicado los últimos 8 años a compartir la fascinante historia de la isla. Su pasión por la fotografía y su habilidad para encontrar los mejores ángulos hacen que cada tour sea una experiencia única y memorable.",
+        specialties: ["Fotografía", "Arqueología", "Historia local"],
+        languages: ["Español", "Inglés", "Portugués"]
     },
     {
         name: "Javi",
         role: "Guía Turístico",
         image: "https://backend.hotumatur.com/wp-content/uploads/2025/01/team-member2.webp",
-        bio: "Juan Tepano, nacido y criado en Rapa Nui, es un apasionado narrador de historias y experto en ecoturismo. Con una formación en biología marina, Juan ofrece una perspectiva única sobre la ecología de la isla y su importancia en el ecosistema del Pacífico.",
-        specialties: ["Ecoturismo", "Snorkel y buceo", "Conservación marina"],
+        bio: "Javi, nacida y criada en Rapa Nui, es una apasionada del mar y experta en snorkel. Su experiencia como instructor de buceo y su conocimiento de la vida marina local hacen que sus tours de snorkel sean experiencias educativas y emocionantes. Su energía contagiosa y su amor por la conservación marina inspiran a todos los visitantes.",
+        specialties: ["Snorkel", "Vida marina", "Conservación"],
         languages: ["Español", "Inglés", "Francés"]
     },
     {
         name: "Simón",
         role: "Guía Turística",
         image: "https://backend.hotumatur.com/wp-content/uploads/2025/01/team-member3.webp",
-        bio: "María Tuki es una talentosa artista y guía cultural. Su conocimiento de las artes tradicionales de Rapa Nui, incluyendo el tallado en madera y la danza, añade una dimensión única a sus tours. María se especializa en experiencias inmersivas que permiten a los visitantes conectar profundamente con la cultura viva de la isla.",
-        specialties: ["Artes tradicionales", "Danza y música", "Gastronomía local"],
+        bio: "Simón combina su formación en antropología con un profundo conocimiento de las tradiciones orales de Rapa Nui. Especializado en tours culturales, comparte historias fascinantes sobre la mitología y las leyendas de la isla. Su capacidad para conectar el pasado con el presente hace que cada visita sea una experiencia enriquecedora.",
+        specialties: ["Antropología", "Tradiciones orales", "Mitología"],
         languages: ["Español", "Inglés", "Alemán"]
     },
     {
         name: "Tete",
         role: "Guía de Aventuras",
         image: "https://backend.hotumatur.com/wp-content/uploads/2025/01/team-member4.webp",
-        bio: "Carlos Huke es un experimentado guía de aventuras con un profundo amor por la naturaleza de Rapa Nui. Especializado en senderismo y exploración de cuevas, Carlos ofrece a los visitantes una perspectiva única de los paisajes menos conocidos de la isla.",
-        specialties: ["Senderismo", "Exploración de cuevas", "Fotografía de naturaleza"],
-        languages: ["Español", "Inglés", "Japonés"]
+        bio: "Tete es nuestro experto en aventuras al aire libre. Con más de una década de experiencia en senderismo y exploración, conoce cada rincón de la isla. Su especialidad es guiar excursiones al amanecer y atardecer, ofreciendo perspectivas únicas de los moai y el paisaje volcánico de Rapa Nui.",
+        specialties: ["Senderismo", "Fotografía paisajística", "Geología"],
+        languages: ["Español", "Inglés", "Rapanui"]
     },
     {
         name: "Pou",
         role: "Guía Cultural",
         image: "https://backend.hotumatur.com/wp-content/uploads/2025/01/team-memeber5.webp",
-        bio: "Sofía Rapu, descendiente de una antigua familia Rapa Nui, es una apasionada defensora de la preservación cultural. Como guía, Sofía se especializa en compartir las leyendas, mitos y tradiciones orales de la isla, ofreciendo a los visitantes una inmersión profunda en el rico patrimonio cultural de Rapa Nui.",
-        specialties: ["Leyendas y mitos", "Genealogía Rapa Nui", "Astronomía tradicional"],
+        bio: "Pou, descendiente de una antigua familia Rapa Nui, es un guardián de las tradiciones culturales de la isla. Su profundo conocimiento de la danza, música y artesanía tradicional enriquece cada tour con demostraciones prácticas y relatos personales. Su conexión con la comunidad local ofrece a los visitantes una perspectiva auténtica de la vida isleña.",
+        specialties: ["Danza tradicional", "Artesanía", "Historia familiar"],
         languages: ["Español", "Inglés", "Rapanui"]
     },
     {
         name: "Sergio Rapu",
         role: "Arqueólogo",
         image: "https://backend.hotumatur.com/wp-content/uploads/2025/01/team-member6.webp",
-        bio: "Sofía Rapu, descendiente de una antigua familia Rapa Nui, es una apasionada defensora de la preservación cultural. Como guía, Sofía se especializa en compartir las leyendas, mitos y tradiciones orales de la isla, ofreciendo a los visitantes una inmersión profunda en el rico patrimonio cultural de Rapa Nui.",
-        specialties: ["Leyendas y mitos", "Genealogía Rapa Nui", "Astronomía tradicional"],
-        languages: ["Español", "Inglés", "Rapanui"]
+        bio: "Sergio Rapu, reconocido arqueólogo y experto en la cultura Rapa Nui, ha participado en numerosas investigaciones y proyectos de conservación en la isla. Su extensa experiencia y conocimiento académico, combinados con su capacidad para explicar conceptos complejos de manera accesible, hacen que sus tours sean verdaderas clases magistrales sobre la historia y arqueología de la isla.",
+        specialties: ["Arqueología", "Conservación", "Investigación"],
+        languages: ["Español", "Inglés", "Rapanui", "Francés"]
     }
 ]
 
