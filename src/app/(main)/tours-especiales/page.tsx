@@ -12,8 +12,6 @@ export default function ToursEspecialesPage() {
             {/* Hero Section */}
             <ProductSection categoryId={26} />
 
-            {/* Special Trips */}
-            <SpecialTripsSection />
 
             {/* Blog Section */}
             <section className=" flex justify-center">

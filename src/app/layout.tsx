@@ -4,6 +4,8 @@ import './globals.css';
 import { ReservationProvider } from '@/context/ReservationContext'
 import { Toaster } from "@/components/ui/toaster"
 import 'flag-icons/css/flag-icons.min.css'
+import { PageTransition } from '@/components/ui/page-transition'
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -92,9 +94,11 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}>
         <ReservationProvider>
-          <div className="relative z-0">
-            {children}
-          </div>
+          <PageTransition>
+            <div className="relative z-0">
+              {children}
+            </div>
+          </PageTransition>
           <Toaster />
         </ReservationProvider>
       </body>

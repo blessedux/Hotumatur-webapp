@@ -77,8 +77,7 @@ export default function AboutPage() {
                     </div>
                 </div>
             </section>
-            {/* Special Trips */}
-            <SpecialTripsSection />
+
 
             {/* Team Section */}
             <Team />

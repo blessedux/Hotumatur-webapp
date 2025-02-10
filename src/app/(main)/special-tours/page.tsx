@@ -1,8 +1,8 @@
 import { SpecialTourSection } from '@/components/SpecialTourSection'
 
 const corporateTourImages = [
-    '/placeholder.svg?height=400&width=800&text=Corporate+Tour+1',
-    '/placeholder.svg?height=400&width=800&text=Corporate+Tour+2',
+    'https://backend.hotumatur.com/wp-content/uploads/2024/12/rear-view-man-standing-against-rock-formation-1-scaled-1-1.webp',
+    'https://backend.hotumatur.com/wp-content/uploads/2024/12/Ana-Te-Pahu2.webp',
     '/placeholder.svg?height=400&width=800&text=Corporate+Tour+3',
     '/placeholder.svg?height=400&width=800&text=Corporate+Tour+4',
 ]

@@ -13,6 +13,7 @@ import { useProducts } from '@/hooks/useProducts';
 import { useReservations } from '@/context/ReservationContext';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import SkeletonForm from '@/components/SkeletonForm';
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 const TourSelector = () => {
@@ -23,10 +24,15 @@ const TourSelector = () => {
     const { addReservation } = useReservations();
     const { toast } = useToast();
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
 
+    // Filter tours when data is loaded
     useEffect(() => {
         if (tours) {
-            console.log("Tours loaded:", tours);
+            const filtered = tours.filter((product) =>
+                product.categories.some((category) => category.name === "Tours")
+            );
+            setIsLoading(false);
         }
     }, [tours]);
 
@@ -98,11 +104,15 @@ const TourSelector = () => {
     };
 
     if (loading) {
-        return <LoadingSpinner />;
+        return <SkeletonForm />; // Keep SkeletonForm for loading state
     }
 
     if (error) {
         return <div>Error: {error}</div>;
+    }
+
+    if (isLoading) {
+        return <LoadingSpinner />;
     }
 
     const filteredTours = tours.filter((product) =>

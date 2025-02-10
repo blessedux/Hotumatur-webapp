@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Product } from '@/types/woocommerce';
 
-export function useProducts(categoryId?: number) {
+export function useProducts(categoryId?: number) { // Accept category ID directly
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        setLoading(true);
-
         const fetchProducts = async () => {
             try {
                 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+
+                // Use category ID directly in API call
                 let apiUrl = '/api/products';
                 if (categoryId) {
                     apiUrl += `?category=${categoryId}`;
@@ -47,7 +47,6 @@ export function useProducts(categoryId?: number) {
 
                 console.log("✅ Filtered Products:", filteredProducts);
                 setProducts(filteredProducts);
-                setError(null);
             } catch (err) {
                 setError(`Failed to fetch products: ${(err as Error).message}`);
                 console.error("❌ Fetch Error:", err);

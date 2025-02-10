@@ -1,6 +1,3 @@
-'use client'
-
-import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { MdAccessTime } from "react-icons/md";
@@ -9,7 +6,6 @@ import { CheckCircle } from 'lucide-react'
 import { VscError } from "react-icons/vsc";
 import SingleTourSelector from "@/components/SingleTourSelector";
 import { Metadata } from "next";
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
 
 async function getProduct(slug: string) {
     const baseUrl = 'https://backend.hotumatur.com/wp-json/wc/v3/products';
@@ -90,45 +86,33 @@ interface MappedAttribute {
 type Params = Promise<{ slug: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
-export default function Page({ params }: { params: { slug: string } }) {
-    const [tourData, setTourData] = useState<any>(null)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
+export default async function Page(props: {
+    params: Params
+    searchParams: SearchParams
+}) {
+    const params = await props.params
+    const slug = params.slug
 
-    useEffect(() => {
-        const fetchTourData = async () => {
-            try {
-                setLoading(true)
-                const response = await fetch(`/api/products?slug=${params.slug}`)
-                if (!response.ok) {
-                    throw new Error('Failed to fetch tour data')
-                }
-                const data = await response.json()
-                if (data && data[0]) {
-                    setTourData(data[0])
-                } else {
-                    setError('Tour not found')
-                }
-            } catch (err) {
-                setError((err as Error).message)
-            } finally {
-                setLoading(false)
-            }
+    const getData = async () => {
+        const product = await getProduct(slug)
+        if (!product) {
+            return null
         }
-
-        fetchTourData()
-    }, [params.slug])
-
-    if (loading) {
-        return <LoadingSpinner />
+        const subtitulo = product.meta_data.find((meta: MetaData) => meta.key === 'subtitulo')?.value
+        const productAttributes = product.attributes.map((attr: ProductAttribute) => ({
+            name: attr.name.charAt(0).toUpperCase() + attr.name.slice(1),
+            value: attr.options[0]
+        }))
+        return {
+            ...product,
+            subtitulo,
+            productAttributes
+        }
     }
 
-    if (error) {
-        return <div className="container mx-auto py-12 px-4">Error: {error}</div>
-    }
-
+    const tourData = await getData()
     if (!tourData) {
-        return <div className="container mx-auto py-12 px-4">Producto no encontrado</div>
+        return <div>Producto no encontrado</div>
     }
 
     return (
