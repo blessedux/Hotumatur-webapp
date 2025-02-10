@@ -64,7 +64,7 @@ export default function HotelCard() {
 
                     {/* Title */}
                     <h3 className="text-2xl font-bold hover:underline cursor-pointer">
-                        Tupa Hotel
+                        Hotel Tupa
                     </h3>
 
                     {/* Star Ratings and Reviews */}

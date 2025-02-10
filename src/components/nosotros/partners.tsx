@@ -12,7 +12,7 @@ export default function Partners() {
 
 
                     <section className="container py-24">
-                        <h2 className="text-3xl font-bold text-center mb-12">Nuestros Socios</h2>
+                        <h2 className="text-3xl font-bold text-center mb-12">Alianzas estratégicas</h2>
                         <HotelCard />
                     </section>
                     {/* Right Section: Content */}
