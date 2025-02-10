@@ -10,7 +10,7 @@ import Partners from "@/components/nosotros/partners";
 import Image from "next/image";
 import { FaUsers, FaSuitcase, FaChartBar, FaStar } from "react-icons/fa";
 
-const heroImage = "https://backend.hotumatur.com/wp-content/uploads/2024/12/Nosotoro-Bio-image.webp";
+const heroImage = "https://backend.hotumatur.com/wp-content/uploads/2025/02/playa-ovahe-seen-from.webp";
 
 export default function AboutPage() {
     return (
