@@ -4,16 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 
 const gallery = [
     {
-        src: 'https://backend.hotumatur.com/wp-content/uploads/2024/12/835481a75410efaac35d2a4593bef8f8.webp',
-        alt: 'Vista panorámica de Rapa Nui',
-    },
-    {
         src: 'https://backend.hotumatur.com/wp-content/uploads/2024/12/viaje-a-ios-motus.webp',
         alt: 'Viaje a los Motus',
-    },
-    {
-        src: 'https://backend.hotumatur.com/wp-content/uploads/2024/12/1000039572.jpg',
-        alt: 'Moai al atardecer',
     },
     {
         src: 'https://backend.hotumatur.com/wp-content/uploads/2024/12/poike-volcano-view-from-1.webp',
@@ -24,11 +16,11 @@ const gallery = [
         alt: 'Palmeras en la playa Anakena',
     },
     {
-        src: '',
-        alt: 'Vista de Orongo',
+        src: 'https://backend.hotumatur.com/wp-content/uploads/2025/02/Vista-Orongo-Motus-1-scaled.webp',
+        alt: 'Vista de los Motus desde Orongo',
     },
     {
-        src: '',
+        src: 'https://backend.hotumatur.com/wp-content/uploads/2025/02/Ahu-Akivi-3-scaled.webp',
         alt: 'Majestuosos Moais en la isla de pascua',
     },
     {
@@ -36,8 +28,8 @@ const gallery = [
         alt: 'Buzos explorando las playas de Rapa Nui',
     },
     {
-        src: '',
-        alt: 'Grupo de turistas a caballo recorriendo la Isla de Pascua',
+        src: 'https://backend.hotumatur.com/wp-content/uploads/2025/02/WhatsApp-Image-2024-01-05-at-00.01.55.webp',
+        alt: 'Grupo de turistas recorriendo la Isla de Pascua',
     },
     {
         src: 'https://backend.hotumatur.com/wp-content/uploads/2024/12/rano-kau-prin-min.webp',
@@ -48,12 +40,32 @@ const gallery = [
         alt: 'Escena cultural de Rapa Nui',
     },
     {
-        src: '',
-        alt: 'Entrada del Hotel Tupa en Rapa Nui',
+        src: 'https://backend.hotumatur.com/wp-content/uploads/2025/02/WhatsApp-Image-2023-12-16-at-17.50.04.webp',
+        alt: 'Turistas con turismo hotumatur en Rapa Nui',
     },
     {
-        src: '',
-        alt: 'Pesca de orilla en la costa de Rapa Nui',
+        src: 'https://backend.hotumatur.com/wp-content/uploads/2025/02/Panoramica-Orongo-scaled.jpg',
+        alt: 'Vista panormica desde el volcan Orongo',
+    },
+    {
+        src: 'https://backend.hotumatur.com/wp-content/uploads/2025/02/WhatsApp-Image-2024-01-29-at-19.59.25.webp',
+        alt: 'Turistas en el volcan Orongo',
+    },
+    {
+        src: 'https://backend.hotumatur.com/wp-content/uploads/2025/02/WhatsApp-Image-2024-01-29-at-19.59.27.webp',
+        alt: 'Visita guiada en Rapa Nui',
+    },
+    {
+        src: 'https://backend.hotumatur.com/wp-content/uploads/2025/02/Hare-Keho-Orongo-4-1-scaled.webp',
+        alt: 'Hare Keho en Orongo',
+    },
+    {
+        src: 'https://backend.hotumatur.com/wp-content/uploads/2025/02/Ahu-Akivi-2-scaled.webp',
+        alt: 'Ahu Akivi en Rapa Nui',
+    },
+    {
+        src: 'https://backend.hotumatur.com/wp-content/uploads/2025/02/Vinapu-2.webp',
+        alt: 'Visita guiada en Rapa Nui',
     },
 
 ];
