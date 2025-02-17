@@ -4,29 +4,35 @@ import nodemailer from 'nodemailer';
 export async function POST(req: Request) {
     try {
         console.log("📥 Received API Request");
-        console.log("🔍 Method:", req.method);
-        console.log("🔍 Headers:", JSON.stringify([...req.headers.entries()]));
 
-        // Read the body **only once**
+        // Read and log the complete request body
         const body = await req.json();
-        console.log("📤 Parsed JSON Body:", body);
+        console.log("📤 Complete Form Submission:", body);
 
-        // Normalize field names (Map frontend fields to expected API fields)
+        // Normalize all fields
         const normalizedBody = {
-            name: body.nombre || body.name,  // Support both "nombre" and "name"
+            firstName: body.nombre || body.firstName,
+            lastName: body.apellido || body.lastName,
             email: body.email,
-            message: body.message || body.dudas, // "message" should take priority, fallback to "dudas"
+            phone: body.telefono || body.phone,
+            inquiryType: body.inquiryType || body.type,
+            message: body.message || body.dudas,
         };
 
-        console.log("✅ Normalized Request Body:", normalizedBody);
+        console.log("✅ Normalized Form Data:", normalizedBody);
 
-        // Validate required fields
-        if (!normalizedBody.name || !normalizedBody.email || !normalizedBody.message) {
+        // Validate all required fields
+        if (!normalizedBody.firstName ||
+            !normalizedBody.lastName ||
+            !normalizedBody.email ||
+            !normalizedBody.phone ||
+            !normalizedBody.message) {
             console.error("❌ Missing required fields:", normalizedBody);
-            return NextResponse.json({ message: "All fields are required." }, { status: 400 });
+            return NextResponse.json({
+                message: "All fields are required.",
+                receivedData: normalizedBody
+            }, { status: 400 });
         }
-
-        console.log("✅ Valid request. Proceeding to send email...");
 
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -40,17 +46,44 @@ export async function POST(req: Request) {
         });
 
         const info = await transporter.sendMail({
-            from: `"${normalizedBody.name}" <${normalizedBody.email}>`,
+            from: process.env.GMAIL_USER,
             to: process.env.EMAIL_RECEIVER,
-            subject: "New Contact Form Submission",
-            text: normalizedBody.message,
+            replyTo: normalizedBody.email,
+            subject: `New Contact Form Submission from ${normalizedBody.firstName} ${normalizedBody.lastName}`,
+            text: `
+Contact Form Details:
+-------------------
+Name: ${normalizedBody.firstName} ${normalizedBody.lastName}
+Email: ${normalizedBody.email}
+Phone: ${normalizedBody.phone}
+Type of Inquiry: ${normalizedBody.inquiryType}
+
+Message:
+${normalizedBody.message}
+            `,
+            html: `
+                <h2>New Contact Form Submission</h2>
+                <p><strong>Name:</strong> ${normalizedBody.firstName} ${normalizedBody.lastName}</p>
+                <p><strong>Email:</strong> ${normalizedBody.email}</p>
+                <p><strong>Phone:</strong> ${normalizedBody.phone}</p>
+                <p><strong>Type of Inquiry:</strong> ${normalizedBody.inquiryType}</p>
+                <h3>Message:</h3>
+                <p>${normalizedBody.message}</p>
+            `
         });
 
         console.log("✅ Email sent successfully:", info.response);
-        return NextResponse.json({ message: "Email sent successfully!" }, { status: 200 });
+        return NextResponse.json({
+            message: "Email sent successfully!",
+            sentData: normalizedBody  // Include what was actually sent
+        }, { status: 200 });
 
     } catch (error: any) {
         console.error("❌ Error in API:", error.message);
-        return NextResponse.json({ message: "Internal Server Error", error: error.message }, { status: 500 });
+        return NextResponse.json({
+            message: "Internal Server Error",
+            error: error.message,
+            receivedData: body  // Include what was received when error occurs
+        }, { status: 500 });
     }
 }
