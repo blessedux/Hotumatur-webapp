@@ -6,11 +6,13 @@ import dynamic from 'next/dynamic';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { useTransition, animated } from '@react-spring/web';
 import Preloader from '@/components/Preloader';
+import React from 'react';
+import Script from 'next/script';
+import { Toaster } from "@/components/ui/toaster";
 
 const Footer = dynamic(() => import('@/components/Footer'), {
     loading: () => <div>Loading...</div>,
 });
-
 
 export default function MainLayout({
     children,
@@ -44,23 +46,27 @@ export default function MainLayout({
                 <Preloader />
             ) : (
                 <>
-                    <div className="relative z-50">
-                        <NavBar />
+                    <div className="flex flex-col min-h-screen">
+                        <div className="relative z-50">
+                            <NavBar />
+                        </div>
+
+                        <main className="flex-grow relative">
+                            {transitions((style, item) =>
+                                item ? (
+                                    <animated.div key="content" style={style}>
+                                        {children}
+                                    </animated.div>
+                                ) : null
+                            )}
+                        </main>
+
+                        <Footer />
                     </div>
 
-                    {/* Page transitions */}
-                    <div className="relative">
-                        {transitions((style, item) =>
-                            item ? (
-                                <animated.div key="content" style={style} className="min-h-screen">
-                                    {children}
-                                </animated.div>
-                            ) : null
-                        )}
-                    </div>
-
+                    {/* WhatsApp button is now rendered via portal */}
                     <WhatsAppButton />
-                    <Footer />
+                    <Toaster />
                 </>
             )}
         </>
