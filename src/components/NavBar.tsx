@@ -7,14 +7,17 @@ import { ChevronDown, MenuIcon, X } from "lucide-react";
 import Image from "next/image";
 import { useSpring, animated } from "@react-spring/web";
 import ReservationIcon from "@/components/ReservationIcon";
+import { GiMoai } from "react-icons/gi";
 import { usePathname } from "next/navigation";
 import { useTranslation } from 'react-i18next';
+import { useCart } from '@/context/CartContext';
 
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
     const isWhiteBackground = pathname !== "/"; // True for non-homepages
     const { t } = useTranslation();
+    const { toggleCart } = useCart();
 
     // Static menu items for Tours
     const toursMenu = [
@@ -31,19 +34,29 @@ export default function NavBar() {
 
     return (
         <nav
-            className={`px-4 py-4 absolute top-0 left-0 right-0 z-[100] transition-colors duration-300 ${isWhiteBackground ? "bg-white/80 shadow-md" : "bg-transparent"
+            className={`px-4 py-4 fixed top-0 left-0 right-0 z-[100] transition-colors duration-300 backdrop-blur-xl ${isWhiteBackground ? "bg-white/60 shadow-md" : "bg-black/40 backdrop-filter"
                 }`}
+            style={{
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)'
+            }}
         >
             <div className="max-w-7xl mx-auto flex items-center justify-between">
-                <Link href="/" className="text-2xl font-semibold">
-                    <Image
-                        src="/hotumatur-logo.svg"
-                        alt="Logo"
-                        width={100}
-                        height={100}
-                        className="md:w-[160px] md:h-auto"
-                    />
-                </Link>
+                <div className="flex items-center gap-2">
+                    <Link href="/" className="text-2xl font-semibold">
+                        <Image
+                            src="/hotumatur-logo.svg"
+                            alt="Logo"
+                            width={100}
+                            height={100}
+                            className="md:w-[160px] md:h-auto"
+                        />
+                    </Link>
+                    {/* Mobile Reservation Icon - Next to Logo */}
+                    <div className="md:hidden">
+                        <ReservationIcon />
+                    </div>
+                </div>
 
                 {/* Mobile menu button */}
                 <button
@@ -157,6 +170,20 @@ export default function NavBar() {
                         <Link href="/contacto" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
                             {t('contact')}
                         </Link>
+
+                        {/* Mobile Reservation Link in Menu */}
+                        <div className="mt-4 pt-4 border-t border-white/20">
+                            <button
+                                className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg flex items-center gap-2`}
+                                onClick={() => {
+                                    toggleCart();
+                                    setIsOpen(false);
+                                }}
+                            >
+                                <span>{t('booking.viewReservations')}</span>
+                                <GiMoai className="w-6 h-6 transform scale-x-[-1] text-gray-800/90" />
+                            </button>
+                        </div>
                     </div>
                 </animated.div>
             </div>
