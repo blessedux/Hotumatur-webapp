@@ -6,6 +6,7 @@ import { Product } from "@/types/woocommerce";
 import Link from 'next/link';
 import { useState } from 'react';
 import FadeIn from "./FadeIn";
+import { useTranslation } from 'react-i18next';
 
 interface ProductCardProps {
     product: Product;
@@ -23,15 +24,22 @@ function truncateHTML(html: string, maxLength: number = 250): { text: string; is
     };
 }
 
-function formatPrice(price: string | number): string {
-    return Number(price).toLocaleString('es-CL');
+function formatPrice(price: string): string {
+    return parseInt(price).toLocaleString('es-CL');
 }
 
 export function ProductCard({ product }: ProductCardProps) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const { text, isTruncated } = truncateHTML(product.short_description);
+    const { t, i18n } = useTranslation();
+
+    // Get the appropriate description based on language
+    const descriptionText = i18n.language === 'en' && product.short_description_en
+        ? product.short_description_en
+        : product.short_description;
+
+    const { text, isTruncated } = truncateHTML(descriptionText);
     const description = isExpanded
-        ? (product.short_description ? document.createElement('div').textContent = product.short_description : '')
+        ? (descriptionText || '')
         : text;
 
     return (
@@ -63,17 +71,17 @@ export function ProductCard({ product }: ProductCardProps) {
                                     }}
                                     className="text-blue-500 hover:text-blue-600 mt-1 text-sm font-medium"
                                 >
-                                    {isExpanded ? 'Ver menos' : 'Ver más'}
+                                    {isExpanded ? t('common.showLess') : t('common.showMore')}
                                 </button>
                             )}
                         </div>
                         <div className="mt-4 flex items-center justify-between">
                             <div className="flex items-baseline gap-1">
                                 <span className="text-xl font-bold">${formatPrice(product.price)}</span>
-                                <span className="text-sm text-muted-foreground">/Persona</span>
+                                <span className="text-sm text-muted-foreground">/{t('common.perPerson')}</span>
                             </div>
                             <Button variant="default" size="sm">
-                                Ver Detalles
+                                {t('common.viewDetails')}
                             </Button>
                         </div>
                     </div>

@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { FaTripadvisor } from "react-icons/fa"
 import FadeIn from './FadeIn'
+import { useTranslation } from 'react-i18next'
 
 interface TestimonialProps {
     name: string;
@@ -80,6 +81,7 @@ export default function Testimonials() {
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [AutoPlay()])
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
+    const { t } = useTranslation()
 
     const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
     const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
@@ -99,55 +101,55 @@ export default function Testimonials() {
     const testimonials = [
         {
             name: "C.C.",
-            location: "Miami Beach, FL",
+            location: t('testimonials.reviews.cc.location'),
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/C.C-profile.webp",
             rating: 5,
-            text: "fantastic tour ! Enzo was amazing tour guide : knowledgeable , kind , and excellent English . AC van and the time spent at each site was timed perfectly! Highly recommend this tour of the South Easter Island .",
+            text: t('testimonials.reviews.cc.text'),
             date: "May 2024",
             tripAdvisorLink: "https://www.tripadvisor.com/Profile/S3091BKchrisc",
         },
         {
             name: "Olga S",
-            location: "Miami Beach, FL",
+            location: t('testimonials.reviews.olga.location'),
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/OlgaS_profile.webp",
             rating: 5,
-            text: "Amazing tour guide, very knowledgeable, pleasant, attentive. He answered every single question in full detail. Me and my wife were very happy with our guide!",
+            text: t('testimonials.reviews.olga.text'),
             date: "May 2024",
             tripAdvisorLink: "https://www.tripadvisor.com/Profile/D3506MZolgas",
         },
         {
             name: "Sergio Ignacio A",
-            location: "Miami Beach, FL",
+            location: t('testimonials.reviews.sergio.location'),
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/default-avatar-2020-44.webp",
             rating: 5,
-            text: "I went with my partner and we received an excellent welcome from Hotumatur and Hotel Tupa. They showed us the most impressive places on the island, always in a close and personal manner, making you appreciate the place in a way that stays with you forever in your memory. I recommend them 100%.",
+            text: t('testimonials.reviews.sergio.text'),
             date: "May 2023",
             tripAdvisorLink: "https://www.tripadvisor.com/Profile/sergioignacioa",
         },
         {
             name: "Feñoño",
-            location: "Santiago, Chile",
+            location: t('testimonials.reviews.fenono.location'),
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/fenono-avatar.webp",
             rating: 5,
-            text: "Pretty friendly, excellent service!! From the very first day yhey have helped me a lot, we went there with any plan set, thanks to them we took advantage of the whole stay, knowing new places of the island every single day. Also, after the tours we have with them great moments and share good meals",
+            text: t('testimonials.reviews.fenono.text'),
             date: "Oct 2023",
             tripAdvisorLink: "https://www.tripadvisor.com/ShowUserReviews-g316040-d26626022-r920889084-Hotumatur_RapaNui-Easter_Island.html",
         },
         {
             name: "Cisternista",
-            location: "Veniano, Italy",
+            location: t('testimonials.reviews.cisternista.location'),
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/cisternista.webp",
             rating: 5,
-            text: "Full-day tour, from about 10am to 6pm, visiting the highlights of Easter Island. Small group of 13 people. The guide, Simon, a very prepared guy who puts great enthusiasm and professionalism in his work. Always ready to answer questions that were asked in both English and Spanish. Very good indeed. Excellent times spent in the different sites. The driver of the vehicle is also professional.",
+            text: t('testimonials.reviews.cisternista.text'),
             date: "December 11, 2024",
             tripAdvisorLink: "https://www.tripadvisor.com/AttractionProductReview-g1049073-d26766354-Full_Day_Tour_in_Rapa_Nui-Hanga_Roa_Easter_Island.html",
         },
         {
             name: "Mario B",
-            location: "Berlin, Germany",
+            location: t('testimonials.reviews.mario.location'),
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/mario-b.webp",
             rating: 5,
-            text: "Perfect day with Simon and our driver: What else can I write about that? Punctual pick-up at the port. Perfect tour. All seen. Everywhere enough time to enjoy and slow down.",
+            text: t('testimonials.reviews.mario.text'),
             date: "December 4, 2024",
         },
     ]
@@ -158,13 +160,10 @@ export default function Testimonials() {
                 <FadeIn>
                     <div className="text-center space-y-4">
                         <h2 className="text-3xl md:text-5xl font-bold text-black">
-                            Experiencias Reales:
+                            {t('testimonials.title')}
                         </h2>
                         <p className="text-2xl md:text-4xl font-bold font-satisfy text-black">
-
-                            Opiniones de Nuestros Clientes
-
-
+                            {t('testimonials.subtitle')}
                         </p>
                     </div>
                 </FadeIn>
@@ -186,7 +185,7 @@ export default function Testimonials() {
                         disabled={!prevBtnEnabled}
                     >
                         <ChevronLeft className="h-4 w-4" />
-                        <span className="sr-only">Previous slide</span>
+                        <span className="sr-only">{t('testimonials.prev')}</span>
                     </Button>
                     <Button
                         variant="outline"
@@ -196,7 +195,7 @@ export default function Testimonials() {
                         disabled={!nextBtnEnabled}
                     >
                         <ChevronRight className="h-4 w-4" />
-                        <span className="sr-only">Next slide</span>
+                        <span className="sr-only">{t('testimonials.next')}</span>
                     </Button>
                 </div>
             </div>

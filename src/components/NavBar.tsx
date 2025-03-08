@@ -8,11 +8,13 @@ import Image from "next/image";
 import { useSpring, animated } from "@react-spring/web";
 import ReservationIcon from "@/components/ReservationIcon";
 import { usePathname } from "next/navigation";
+import { useTranslation } from 'react-i18next';
 
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
     const isWhiteBackground = pathname !== "/"; // True for non-homepages
+    const { t } = useTranslation();
 
     // Static menu items for Tours
     const toursMenu = [
@@ -53,14 +55,15 @@ export default function NavBar() {
 
                 {/* Desktop menu */}
                 <div className="hidden md:flex items-center gap-10">
-                    <Menu as="div" className="relative inline-block text-left">
+                    <Menu as="div" className="relative">
                         <MenuButton
-                            className={`inline-flex items-center transition-colors duration-300 ${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"
-                                }`}
+                            className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"} 
+                            flex items-center border-2 border-current rounded-full px-4 py-1.5 transition-all duration-300 hover:border-blue-500 hover:text-blue-500`}
                         >
-                            Tours
+                            <span>{t('tours')}</span>
                             <ChevronDown className="ml-1 h-4 w-4" aria-hidden="true" />
                         </MenuButton>
+
                         <Transition
                             as={Fragment}
                             enter="transition ease-out duration-100"
@@ -90,16 +93,16 @@ export default function NavBar() {
                         </Transition>
                     </Menu>
                     <Link href="/actividades" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
-                        Actividades
+                        {t('activities')}
                     </Link>
                     <Link href="/rentals" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
-                        Arriendos
+                        {t('rentals')}
                     </Link>
                     <Link href="/nosotros" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
-                        Nosotros
+                        {t('about')}
                     </Link>
                     <Link href="/contacto" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
-                        Contáctanos
+                        {t('contact')}
                     </Link>
                     <ReservationIcon />
                 </div>
@@ -115,7 +118,7 @@ export default function NavBar() {
                             className={`${isWhiteBackground ? "text-black" : "text-white"} text-xl`}
                             onClick={() => setIsOpen(false)}
                         >
-                            Inicio
+                            {t('home')}
                         </Link>
 
                         <div className="relative z-[200]">
@@ -126,7 +129,7 @@ export default function NavBar() {
                                     e.stopPropagation();
                                 }}
                             >
-                                Tours
+                                {t('tours')}
                                 <ChevronDown className="ml-1 h-4 w-4" aria-hidden="true" />
                             </button>
                             <div className="mt-2 space-y-2 p-4">
@@ -143,16 +146,16 @@ export default function NavBar() {
                             </div>
                         </div>
                         <Link href="/actividades" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
-                            Actividades
+                            {t('activities')}
                         </Link>
                         <Link href="/rentals" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
-                            Arriendos
+                            {t('rentals')}
                         </Link>
                         <Link href="/nosotros" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
-                            Nosotros
+                            {t('about')}
                         </Link>
                         <Link href="/contacto" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
-                            Contáctanos
+                            {t('contact')}
                         </Link>
                     </div>
                 </animated.div>

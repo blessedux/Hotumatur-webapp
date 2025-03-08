@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import NavBar from "@/components/NavBar";
 import dynamic from 'next/dynamic';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import LanguageToggle from '@/components/LanguageToggle';
 import { useTransition, animated } from '@react-spring/web';
 import Preloader from '@/components/Preloader';
 import React from 'react';
@@ -66,6 +67,7 @@ export default function MainLayout({
 
                     {/* WhatsApp button is now rendered via portal */}
                     <WhatsAppButton />
+                    <LanguageToggle />
                     <Toaster />
                 </>
             )}

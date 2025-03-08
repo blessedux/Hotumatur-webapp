@@ -8,13 +8,14 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn, generateFlightLikeId } from '@/lib/utils';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { es, enUS } from 'date-fns/locale';
 import { useProducts } from '@/hooks/useProducts';
 import { useReservations } from '@/context/ReservationContext';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import SkeletonForm from '@/components/SkeletonForm';
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { useTranslation } from 'react-i18next';
 
 const TourSelector = () => {
     const [date, setDate] = useState<Date>();
@@ -25,6 +26,7 @@ const TourSelector = () => {
     const { toast } = useToast();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
+    const { t, i18n } = useTranslation();
 
     // Filter tours when data is loaded
     useEffect(() => {
@@ -39,8 +41,8 @@ const TourSelector = () => {
     const handleReservation = () => {
         if (!date || !selectedTourId) {
             toast({
-                title: "Error",
-                description: "Por favor selecciona una fecha y un tour",
+                title: t('common.error'),
+                description: t('booking.errors.selectDateAndTour'),
                 variant: "destructive",
             });
             return;
@@ -51,8 +53,8 @@ const TourSelector = () => {
 
         if (date < today) {
             toast({
-                title: "Error",
-                description: "La fecha seleccionada debe ser posterior a hoy",
+                title: t('common.error'),
+                description: t('booking.errors.futureDateRequired'),
                 variant: "destructive",
             });
             return;
@@ -62,8 +64,8 @@ const TourSelector = () => {
 
         if (!selectedTour) {
             toast({
-                title: "Error",
-                description: "Tour no encontrado",
+                title: t('common.error'),
+                description: t('booking.errors.tourNotFound'),
                 variant: "destructive",
             });
             return;
@@ -83,16 +85,16 @@ const TourSelector = () => {
 
         toast({
             variant: 'success',
-            title: '¡Reserva exitosa!',
+            title: t('booking.success'),
             description: (
                 <div className="space-y-2 flex flex-col">
-                    <p>{`Has reservado ${selectedTour.name} para ${people} personas`}</p>
+                    <p>{t('booking.confirmationMessage', { tour: selectedTour.name, people })}</p>
                     <Button
                         variant="default"
                         size="default"
                         onClick={() => router.push('/checkout')}
                     >
-                        Continuar la compra
+                        {t('booking.continue')}
                     </Button>
                 </div>
             ),
@@ -108,7 +110,7 @@ const TourSelector = () => {
     }
 
     if (error) {
-        return <div>Error: {error}</div>;
+        return <div>{t('common.error')}: {error}</div>;
     }
 
     if (isLoading) {
@@ -119,10 +121,12 @@ const TourSelector = () => {
         product.categories.some((category) => category.name === "Tours")
     );
 
+    const dateLocale = i18n.language === 'en' ? enUS : es;
+
     return (
         <div className="grid gap-4 md:grid-cols-[1fr_1.5fr_1fr_auto] items-end">
             <div className="space-y-2">
-                <label className="text-lg text-white/80">Fecha:</label>
+                <label className="text-lg text-white/80">{t('booking.date')}:</label>
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button
@@ -133,7 +137,7 @@ const TourSelector = () => {
                             )}
                         >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {date ? format(date, 'PPP', { locale: es }) : 'Fecha del tour'}
+                            {date ? format(date, 'PPP', { locale: dateLocale }) : t('booking.selectDate')}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
@@ -142,7 +146,7 @@ const TourSelector = () => {
                             selected={date}
                             onSelect={setDate}
                             initialFocus
-                            locale={es}
+                            locale={dateLocale}
                             disabled={(date) => {
                                 const today = new Date();
                                 today.setHours(0, 0, 0, 0);
@@ -154,10 +158,10 @@ const TourSelector = () => {
             </div>
 
             <div className="space-y-2">
-                <label className="text-lg text-white/80">Tour:</label>
+                <label className="text-lg text-white/80">{t('tour_section.title')}:</label>
                 <Select value={selectedTourId} onValueChange={setSelectedTourId}>
                     <SelectTrigger className="bg-white/10 border-white/20 text-white [&>span]:text-white/80 hover:bg-white/20">
-                        <SelectValue placeholder="Selecciona tu aventura" />
+                        <SelectValue placeholder={t('booking.selectTour')} />
                     </SelectTrigger>
                     <SelectContent>
                         {filteredTours.map((tour) => (
@@ -170,10 +174,10 @@ const TourSelector = () => {
             </div>
 
             <div className="space-y-2">
-                <label className="text-lg text-white/80">Personas:</label>
+                <label className="text-lg text-white/80">{t('booking.people')}:</label>
                 <Select value={people} onValueChange={setPeople}>
                     <SelectTrigger className="bg-white/10 border-white/20 text-white hover:bg-white/20">
-                        <SelectValue placeholder="Número de personas" />
+                        <SelectValue placeholder={t('booking.selectPeople')} />
                     </SelectTrigger>
                     <SelectContent>
                         {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
@@ -189,7 +193,7 @@ const TourSelector = () => {
                 className="bg-hotumatur-primary text-white/80 hover:bg-hotumatur-primary/80 self-end"
                 onClick={handleReservation}
             >
-                Reservar
+                {t('booking.reserve')}
             </Button>
         </div>
     );

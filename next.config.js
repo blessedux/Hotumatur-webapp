@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-
     output: 'standalone',
     eslint: {
         ignoreDuringBuilds: true,
@@ -20,14 +19,6 @@ const nextConfig = {
     // Optimizaciones de producción
     poweredByHeader: false,
     reactStrictMode: true,
-    async rewrites() {
-        return [
-            {
-                source: '/api/:path*',
-                destination: 'https://backend.hotumatur.com/wp-json/wc/v3/:path*',
-            },
-        ];
-    },
     async headers() {
         return [
             {

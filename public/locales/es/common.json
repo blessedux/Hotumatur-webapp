@@ -1,0 +1,168 @@
+{
+    "home": "Inicio",
+    "about": "Nosotros",
+    "tours": "Tours",
+    "activities": "Actividades",
+    "rentals": "Arriendos",
+    "contact": "Contacto",
+    "footer": {
+        "rights": "Todos los derechos reservados",
+        "privacy": "Política de Privacidad",
+        "location": {
+            "title": "Ubicados en",
+            "rapanui": "Taniera Teave, Rapa Nui",
+            "santiago": "Santiago, Chile",
+            "viewMap": "Ver en mapa"
+        },
+        "social": {
+            "followUs": "Síguenos"
+        }
+    },
+    "pre_footer": {
+        "title": "Reserva tu Aventura",
+        "description": "Vive momentos inolvidables en Rapa Nui, con experiencias diseñadas a tu medida"
+    },
+    "testimonials": {
+        "title": "Experiencias Reales",
+        "subtitle": "Opiniones de Nuestros Clientes",
+        "prev": "Anterior",
+        "next": "Siguiente",
+        "reviews": {
+            "cc": {
+                "text": "¡Tour fantástico! Enzo fue un guía increíble: conocedor, amable y con excelente inglés. La van con aire acondicionado y el tiempo dedicado a cada sitio fue perfectamente cronometrado. Recomiendo totalmente este tour del sur de Isla de Pascua.",
+                "location": "Miami Beach, FL"
+            },
+            "olga": {
+                "text": "Guía turístico increíble, muy conocedor, agradable y atento. Respondió cada pregunta con todo detalle. ¡Mi esposa y yo estuvimos muy contentos con nuestro guía!",
+                "location": "Miami Beach, FL"
+            },
+            "sergio": {
+                "text": "Fui con mi pareja y recibimos una excelente bienvenida de Hotumatur y Hotel Tupa. Nos mostraron los lugares más impresionantes de la isla, siempre de manera cercana y personal, haciéndote apreciar el lugar de una manera que se queda para siempre en tu memoria. Los recomiendo 100%.",
+                "location": "Miami Beach, FL"
+            },
+            "fenono": {
+                "text": "¡Muy amables, excelente servicio! Desde el primer día nos ayudaron mucho, fuimos sin ningún plan establecido, gracias a ellos aprovechamos toda la estadía, conociendo nuevos lugares de la isla cada día. Además, después de los tours tuvimos grandes momentos y compartimos buenas comidas.",
+                "location": "Santiago, Chile"
+            },
+            "cisternista": {
+                "text": "Tour de día completo, desde las 10am hasta las 6pm, visitando los puntos destacados de Isla de Pascua. Grupo pequeño de 13 personas. El guía, Simón, un chico muy preparado que pone gran entusiasmo y profesionalismo en su trabajo. Siempre listo para responder preguntas tanto en inglés como en español. Muy bueno de verdad. Excelentes tiempos en los diferentes sitios. El conductor del vehículo también es profesional.",
+                "location": "Veniano, Italia"
+            },
+            "mario": {
+                "text": "Día perfecto con Simón y nuestro conductor: ¿Qué más puedo escribir sobre eso? Recogida puntual en el puerto. Tour perfecto. Todo visto. En todas partes tiempo suficiente para disfrutar y relajarse.",
+                "location": "Berlín, Alemania"
+            }
+        }
+    },
+    "contact_form": {
+        "title": "Contáctanos",
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "message": "Mensaje",
+        "send": "Enviar",
+        "success": "Mensaje enviado exitosamente",
+        "error": "Error al enviar el mensaje"
+    },
+    "booking": {
+        "reserve": "Reservar Ahora",
+        "selectDate": "Seleccionar Fecha",
+        "date": "Fecha",
+        "selectTour": "Selecciona tu aventura",
+        "selectPeople": "Número de personas",
+        "people": "Personas",
+        "success": "¡Reserva exitosa!",
+        "continue": "Continuar al pago",
+        "total": "Total a pagar",
+        "perPerson": "por persona",
+        "confirmationMessage": "Has reservado {{tour}} para {{people}} personas",
+        "errors": {
+            "selectDateAndTour": "Por favor selecciona una fecha y un tour",
+            "futureDateRequired": "La fecha seleccionada debe ser posterior a hoy",
+            "tourNotFound": "Tour no encontrado"
+        }
+    },
+    "common": {
+        "readMore": "Leer Más",
+        "seeAll": "Ver Todo",
+        "loading": "Cargando...",
+        "error": "Ha ocurrido un error",
+        "back": "Volver",
+        "next": "Siguiente",
+        "previous": "Anterior",
+        "showMore": "Ver más",
+        "showLess": "Ver menos",
+        "viewDetails": "Ver Detalles",
+        "perPerson": "por persona",
+        "noProducts": "No hay productos en esta categoría.",
+        "loadingProducts": "Cargando productos..."
+    },
+    "hero": {
+        "welcome": "Bienvenidos a Isla de Pascua",
+        "subtitle": "Descubre la magia de Rapa Nui",
+        "cta": "Explorar Tours"
+    },
+    "about_section": {
+        "title": "Sobre Hotumatur",
+        "description": "Embajadores oficiales de Rapa Nui. Ofrecemos experiencias culturales auténticas, alquiler de vehículos y aventuras inolvidables que te conectan con el corazón de esta isla legendaria.",
+        "mission": "Nuestra misión es compartir la cultura auténtica y la belleza de Isla de Pascua mientras preservamos su patrimonio único.",
+        "values": {
+            "title": "Nuestros Valores",
+            "culture": "Preservación Cultural",
+            "sustainability": "Sostenibilidad",
+            "experience": "Experiencia Auténtica"
+        }
+    },
+    "services_section": {
+        "title": "Rapa Nui a tu ritmo",
+        "description": "Vive tu experiencia en Isla de Pascua a tu propio ritmo. Disfruta de la aventura y la libertad de moverte por la isla.",
+        "rentals": {
+            "car": "Arriendo de autos",
+            "atv": "Arriendo de cuatrimotos",
+            "bike": "Arriendo de bicicletas",
+            "snorkel": "Arriendo de snorkel"
+        }
+    },
+    "tour_section": {
+        "title": "Tour",
+        "group": "Tours Grupales",
+        "private": "Tours Privados",
+        "special": "Tours Especiales",
+        "duration": "Duración",
+        "difficulty": "Dificultad",
+        "includes": "Incluye",
+        "notIncludes": "No Incluye",
+        "requirements": "Requisitos",
+        "schedule": "Horario",
+        "bookNow": "Reservar Ahora",
+        "hours": "horas",
+        "days": "días",
+        "categories": {
+            "24": "Tours Privados",
+            "25": "Tours Grupales",
+            "26": "Tours Especiales"
+        }
+    },
+    "rental_section": {
+        "title": "Alquiler de Vehículos",
+        "subtitle": "Explora la isla a tu ritmo",
+        "perDay": "por día",
+        "includes": "Incluye seguro",
+        "requirements": "Requisitos del conductor"
+    },
+    "gallery": {
+        "title": "Galería de Rapa Nui"
+    },
+    "blog": {
+        "title": "Últimas Novedades",
+        "categories": {
+            "education": "Educación",
+            "corporate": "Corporativo",
+            "testimonials": "Testimonios"
+        },
+        "posts": {
+            "educational": "Viajes Educativos: Explorando Rapa Nui con Estudiantes",
+            "corporate": "Paquetes Corporativos: Una Experiencia Única para Empresas",
+            "testimonials": "Testimonios de Nuestros Viajeros: La Magia de Rapa Nui"
+        }
+    }
+}

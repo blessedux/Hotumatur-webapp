@@ -1,0 +1,168 @@
+{
+    "home": "Home",
+    "about": "About",
+    "tours": "Tours",
+    "activities": "Activities",
+    "rentals": "Rentals",
+    "contact": "Contact",
+    "footer": {
+        "rights": "All rights reserved",
+        "privacy": "Privacy Policy",
+        "location": {
+            "title": "Located in",
+            "rapanui": "Taniera Teave, Rapa Nui",
+            "santiago": "Santiago, Chile",
+            "viewMap": "View on map"
+        },
+        "social": {
+            "followUs": "Follow us"
+        }
+    },
+    "pre_footer": {
+        "title": "Book Your Adventure",
+        "description": "Experience unforgettable moments in Rapa Nui, with experiences tailored to you"
+    },
+    "testimonials": {
+        "title": "Real Experiences",
+        "subtitle": "What Our Clients Say",
+        "prev": "Previous slide",
+        "next": "Next slide",
+        "reviews": {
+            "cc": {
+                "text": "Fantastic tour! Enzo was an amazing tour guide: knowledgeable, kind, and excellent English. AC van and the time spent at each site was timed perfectly! Highly recommend this tour of the South Easter Island.",
+                "location": "Miami Beach, FL"
+            },
+            "olga": {
+                "text": "Amazing tour guide, very knowledgeable, pleasant, attentive. He answered every single question in full detail. Me and my wife were very happy with our guide!",
+                "location": "Miami Beach, FL"
+            },
+            "sergio": {
+                "text": "I went with my partner and we received an excellent welcome from Hotumatur and Hotel Tupa. They showed us the most impressive places on the island, always in a close and personal manner, making you appreciate the place in a way that stays with you forever in your memory. I recommend them 100%.",
+                "location": "Miami Beach, FL"
+            },
+            "fenono": {
+                "text": "Pretty friendly, excellent service!! From the very first day they have helped me a lot, we went there with no plan set, thanks to them we took advantage of the whole stay, knowing new places of the island every single day. Also, after the tours we had great moments and shared good meals.",
+                "location": "Santiago, Chile"
+            },
+            "cisternista": {
+                "text": "Full-day tour, from about 10am to 6pm, visiting the highlights of Easter Island. Small group of 13 people. The guide, Simon, a very prepared guy who puts great enthusiasm and professionalism in his work. Always ready to answer questions that were asked in both English and Spanish. Very good indeed. Excellent times spent in the different sites. The driver of the vehicle is also professional.",
+                "location": "Veniano, Italy"
+            },
+            "mario": {
+                "text": "Perfect day with Simon and our driver: What else can I write about that? Punctual pick-up at the port. Perfect tour. All seen. Everywhere enough time to enjoy and slow down.",
+                "location": "Berlin, Germany"
+            }
+        }
+    },
+    "contact_form": {
+        "title": "Contact Us",
+        "name": "Name",
+        "email": "Email",
+        "message": "Message",
+        "send": "Send",
+        "success": "Message sent successfully",
+        "error": "Error sending message"
+    },
+    "booking": {
+        "reserve": "Book Now",
+        "selectDate": "Select Date",
+        "date": "Date",
+        "selectTour": "Select your adventure",
+        "selectPeople": "Number of people",
+        "people": "People",
+        "success": "Booking successful!",
+        "continue": "Continue to checkout",
+        "total": "Total to pay",
+        "perPerson": "per person",
+        "confirmationMessage": "You have booked {{tour}} for {{people}} people",
+        "errors": {
+            "selectDateAndTour": "Please select a date and tour",
+            "futureDateRequired": "The selected date must be in the future",
+            "tourNotFound": "Tour not found"
+        }
+    },
+    "common": {
+        "readMore": "Read More",
+        "seeAll": "See All",
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "back": "Back",
+        "next": "Next",
+        "previous": "Previous",
+        "showMore": "Show more",
+        "showLess": "Show less",
+        "viewDetails": "View Details",
+        "perPerson": "per person",
+        "noProducts": "No products found in this category.",
+        "loadingProducts": "Loading products..."
+    },
+    "hero": {
+        "welcome": "Welcome to Easter Island",
+        "subtitle": "Discover the magic of Rapa Nui",
+        "cta": "Explore Tours"
+    },
+    "about_section": {
+        "title": "About Hotumatur",
+        "description": "Official ambassadors of Rapa Nui. We offer authentic cultural experiences, vehicle rentals, and unforgettable adventures that connect you with the heart of this legendary island.",
+        "mission": "Our mission is to share the authentic culture and beauty of Easter Island while preserving its unique heritage.",
+        "values": {
+            "title": "Our Values",
+            "culture": "Cultural Preservation",
+            "sustainability": "Sustainability",
+            "experience": "Authentic Experience"
+        }
+    },
+    "services_section": {
+        "title": "Rapa Nui at your own pace",
+        "description": "Experience Easter Island at your own rhythm. Enjoy the adventure and freedom to move around the island.",
+        "rentals": {
+            "car": "Car rental",
+            "atv": "ATV rental",
+            "bike": "Bicycle rental",
+            "snorkel": "Snorkel gear rental"
+        }
+    },
+    "tour_section": {
+        "title": "Tour",
+        "group": "Group Tours",
+        "private": "Private Tours",
+        "special": "Special Tours",
+        "duration": "Duration",
+        "difficulty": "Difficulty",
+        "includes": "Includes",
+        "notIncludes": "Not Included",
+        "requirements": "Requirements",
+        "schedule": "Schedule",
+        "bookNow": "Book Now",
+        "hours": "hours",
+        "days": "days",
+        "categories": {
+            "24": "Private Tours",
+            "25": "Group Tours",
+            "26": "Special Tours"
+        }
+    },
+    "rental_section": {
+        "title": "Vehicle Rentals",
+        "subtitle": "Explore the island at your own pace",
+        "perDay": "per day",
+        "includes": "Includes insurance",
+        "requirements": "Driver requirements"
+    },
+    "gallery": {
+        "title": "Rapa Nui Gallery"
+    },
+    "blog": {
+        "title": "Latest News",
+        "categories": {
+            "education": "Education",
+            "corporate": "Corporate",
+            "testimonials": "Testimonials"
+        },
+        "posts": {
+            "educational": "Educational Trips: Exploring Rapa Nui with Students",
+            "corporate": "Corporate Packages: A Unique Experience for Companies",
+            "testimonials": "Traveler Testimonials: The Magic of Rapa Nui"
+        }
+    }
+}

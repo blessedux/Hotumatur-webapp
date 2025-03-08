@@ -7,6 +7,8 @@ export interface Product {
   regular_price: string;
   description: string;
   short_description: string;
+  description_en?: string;
+  short_description_en?: string;
   images: ProductImage[];
   categories: ProductCategory[];
   meta_data: {
@@ -67,8 +69,7 @@ export interface Order {
     email: string;
     phone: string;
   };
-  line_items: LineItem[
-  ];
+  line_items: LineItem[];
   meta_data: Array<{
     key: string;
     value: string;

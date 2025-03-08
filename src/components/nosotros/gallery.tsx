@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const gallery = [
     {
@@ -82,6 +83,7 @@ export default function AutoSlidingGallery() {
     const [scrollLeft, setScrollLeft] = useState(0);
     const scrolling = useRef(false);
     const lastScrollPosition = useRef(0);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const slider = sliderRef.current;
@@ -176,7 +178,7 @@ export default function AutoSlidingGallery() {
         <section className="py-20 bg-gray-900">
             <div className="container mx-auto px-4">
                 <h2 className="text-3xl font-bold text-center text-white mb-12">
-                    Galería de Rapa Nui
+                    {t('gallery.title')}
                 </h2>
                 <div
                     ref={sliderRef}

@@ -1,3 +1,5 @@
+'use client';
+
 import { Waves } from 'lucide-react'
 import Image from 'next/image'
 
@@ -6,10 +8,13 @@ import { FaMotorcycle } from "react-icons/fa6";
 import { BsBicycle } from "react-icons/bs";
 import { MdOutlineDirectionsCar } from "react-icons/md";
 import FadeIn from './FadeIn';
+import { useTranslation } from 'react-i18next';
 
 
 
 export default function ServicesSection() {
+    const { t } = useTranslation();
+
     return (
         <div className="grid lg:grid-cols-2 gap-8 items-center p-6 lg:p-8 bg-white text-black max-w-6xl mx-auto">
             {/* Left Column - Services */}
@@ -18,11 +23,11 @@ export default function ServicesSection() {
                     <div className="space-y-4">
 
                         <h2 className="text-3xl lg:text-4xl font-bold font-satisfy leading-tight">
-                            Rapa Nui a tu ritmo
+                            {t('services_section.title')}
                         </h2>
 
                         <p className="text-lg text-gray-600">
-                            Vive tu expericia en Isla de Pascua a tu propio ritmo. Disfruta de la aventura y la libertad de moverte por la isla.
+                            {t('services_section.description')}
                         </p>
                     </div>
                 </FadeIn>
@@ -35,7 +40,7 @@ export default function ServicesSection() {
                                 <MdOutlineDirectionsCar className="w-6 h-6 text-gray-600" />
                             </div>
 
-                            <span>Arriendo de autos</span>
+                            <span>{t('services_section.rentals.car')}</span>
 
                         </div>
                     </FadeIn>
@@ -44,7 +49,7 @@ export default function ServicesSection() {
                             <div className="p-2 rounded-lg">
                                 <FaMotorcycle className="w-6 h-6 text-gray-600" />
                             </div>
-                            <span>Arriendo de cuatrimotos</span>
+                            <span>{t('services_section.rentals.atv')}</span>
                         </div>
                     </FadeIn>
                     <FadeIn>
@@ -52,7 +57,7 @@ export default function ServicesSection() {
                             <div className="p-2 rounded-lg">
                                 <BsBicycle className="w-6 h-6 text-gray-600" />
                             </div>
-                            <span>Arriendo de bicicletas</span>
+                            <span>{t('services_section.rentals.bike')}</span>
                         </div>
                     </FadeIn>
 
@@ -61,7 +66,7 @@ export default function ServicesSection() {
                             <div className="p-2 rounded-lg">
                                 <Waves className="w-6 h-6 text-gray-600" />
                             </div>
-                            <span>Arriendo de snorkel</span>
+                            <span>{t('services_section.rentals.snorkel')}</span>
                         </div>
                     </FadeIn>
                 </div>
