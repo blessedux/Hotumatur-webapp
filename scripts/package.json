@@ -1,0 +1,19 @@
+{
+    "name": "wordpress-product-translation-scripts",
+    "version": "1.0.0",
+    "description": "Scripts to extract, translate, and upload translations for WooCommerce products",
+    "main": "extract-product-content.js",
+    "scripts": {
+        "extract": "node extract-product-content.js",
+        "upload": "node upload-translations.js"
+    },
+    "dependencies": {
+        "csv-parser": "^3.0.0",
+        "csv-writer": "^1.6.0",
+        "node-fetch": "^2.7.0"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "private": true
+}

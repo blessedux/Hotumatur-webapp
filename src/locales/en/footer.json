@@ -1,0 +1,13 @@
+{
+    "location": {
+        "title": "Location",
+        "rapanui": "Easter Island",
+        "santiago": "Santiago",
+        "viewMap": "View map"
+    },
+    "social": {
+        "followUs": "Follow Us"
+    },
+    "privacy": "Privacy Policy",
+    "rights": "All rights reserved."
+}

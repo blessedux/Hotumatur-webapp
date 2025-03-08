@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['common', 'footer']);
     return (
         <footer className='relative text-white overflow-hidden min-h-[600px] w-full'>
             {/* Video Background */}
@@ -30,32 +30,32 @@ export default function Footer() {
                     {/* Location */}
                     <div className='text-center'>
                         <p className='text-sm tracking-wider uppercase'>
-                            {t('footer.location.title')} {t('footer.location.rapanui')}{' '}
+                            {t('location.title', { ns: 'footer' })} {t('location.rapanui', { ns: 'footer' })}{' '}
                             <Link
                                 href='https://www.google.com/maps/place/Tupa+Hotel/@-27.1515662,-109.4370361,17z/data=!4m9!3m8!1s0x9947fba94090a167:0xfd3431160668fffd!5m2!4m1!1i2!8m2!3d-27.1515662!4d-109.4344612!16s%2Fg%2F1v6p5hyc?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D'
                                 className='underline underline-offset-4 hover:text-emerald-300'
                                 target='_blank'
                                 rel='noopener noreferrer'
                             >
-                                {t('footer.location.viewMap')}
+                                {t('location.viewMap', { ns: 'footer' })}
                             </Link>
                         </p>
                         <p className='text-sm tracking-wider uppercase'>
-                            {t('footer.location.title')} {t('footer.location.santiago')}{' '}
+                            {t('location.title', { ns: 'footer' })} {t('location.santiago', { ns: 'footer' })}{' '}
                             <Link
                                 href='https://www.google.com/maps/place/Alonso+de+C%C3%B3rdova+2600,+7630440+Vitacura,+Regi%C3%B3n+Metropolitana/@-33.4016931,-70.601458,17z/data=!3m1!4b1!4m6!3m5!1s0x9662cf3636629089:0x8f498ebdd6e4cecf!8m2!3d-33.4016932!4d-70.5965871!16s%2Fg%2F11dftyq91l?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D'
                                 className='underline underline-offset-4 hover:text-emerald-300'
                                 target='_blank'
                                 rel='noopener noreferrer'
                             >
-                                {t('footer.location.viewMap')}
+                                {t('location.viewMap', { ns: 'footer' })}
                             </Link>
                         </p>
                     </div>
 
                     {/* Social Media */}
                     <div className='flex flex-col items-center space-y-4'>
-                        <h3 className='text-sm uppercase tracking-wider'>{t('footer.social.followUs')}</h3>
+                        <h3 className='text-sm uppercase tracking-wider'>{t('social.followUs', { ns: 'footer' })}</h3>
                         <div className='flex space-x-6'>
                             <Link
                                 href='https://www.tripadvisor.cl/Attraction_Review-g316040-d26626022-Reviews-Hotumatur_RapaNui-Easter_Island.html'
@@ -144,32 +144,32 @@ export default function Footer() {
                             href='/contacto'
                             className='text-sm uppercase tracking-wider hover:text-emerald-300 transition-colors'
                         >
-                            {t('contact')}
+                            {t('contact', { ns: 'common' })}
                         </Link>
                         <Link
                             href='/nosotros'
                             className='text-sm uppercase tracking-wider hover:text-emerald-300 transition-colors'
                         >
-                            {t('about')}
+                            {t('about', { ns: 'common' })}
                         </Link>
                         <Link
                             href='/#'
                             className='text-sm uppercase tracking-wider hover:text-emerald-300 transition-colors'
                         >
-                            {t('tours')}
+                            {t('tours', { ns: 'common' })}
                         </Link>
                         <Link
                             href='/privacidad'
                             className='text-sm uppercase tracking-wider hover:text-emerald-300 transition-colors'
                         >
-                            {t('footer.privacy')}
+                            {t('privacy', { ns: 'footer' })}
                         </Link>
                     </nav>
                 </div>
 
                 {/* Copyright - Moved to bottom */}
                 <div className='text-sm text-center mt-8 pt-8 border-t border-white/10'>
-                    <p>&copy; {new Date().getFullYear()} Hotumatur. {t('footer.rights')}</p>
+                    <p>&copy; {new Date().getFullYear()} Hotumatur. {t('rights', { ns: 'footer' })}</p>
                 </div>
             </div>
         </footer>

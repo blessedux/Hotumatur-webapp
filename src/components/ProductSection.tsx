@@ -19,18 +19,18 @@ interface ProductSectionProps {
 export default function ProductSection({ categoryId }: ProductSectionProps) {
     const { products, loading, error } = useProducts(categoryId);
     const [client, setClient] = useState(false);
-    const { t } = useTranslation();
+    const { t } = useTranslation(['common']);
 
     useEffect(() => {
         setClient(true);
     }, []);
 
     if (!client) {
-        return <p>{t('common.loading')}</p>;
+        return <p>{t('loading', { ns: 'common' })}</p>;
     }
 
-    if (loading) return <p>{t('common.loadingProducts')}</p>;
-    if (error) return <p className="text-red-500">{t('common.error')}: {error}</p>;
+    if (loading) return <p>{t('loadingProducts', { ns: 'common' })}</p>;
+    if (error) return <p className="text-red-500">{t('error', { ns: 'common' })}: {error}</p>;
 
     console.log("🚀 Selected Category ID:", categoryId);
     console.log("✅ Filtered Products Displayed:", products);
@@ -43,7 +43,7 @@ export default function ProductSection({ categoryId }: ProductSectionProps) {
                         <ProductCard key={product.id} product={product} />
                     ))
                 ) : (
-                    <p className="text-center text-gray-500">{t('common.noProducts')}</p>
+                    <p className="text-center text-gray-500">{t('noProducts', { ns: 'common' })}</p>
                 )}
             </div>
         </section>

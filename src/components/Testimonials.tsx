@@ -81,7 +81,7 @@ export default function Testimonials() {
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [AutoPlay()])
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
-    const { t } = useTranslation()
+    const { t } = useTranslation('common')
 
     const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
     const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
@@ -153,6 +153,12 @@ export default function Testimonials() {
             date: "December 4, 2024",
         },
     ]
+
+    // For debugging
+    console.log('Testimonials title translation key:', 'testimonials.title');
+    console.log('Testimonials title translation value:', t('testimonials.title'));
+    console.log('Testimonials subtitle translation key:', 'testimonials.subtitle');
+    console.log('Testimonials subtitle translation value:', t('testimonials.subtitle'));
 
     return (
         <div className="bg-primary-900 px-4 py-16 md:py-24">

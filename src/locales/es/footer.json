@@ -1,0 +1,13 @@
+{
+    "location": {
+        "title": "Ubicación",
+        "rapanui": "Rapa Nui",
+        "santiago": "Santiago",
+        "viewMap": "Ver mapa"
+    },
+    "social": {
+        "followUs": "Síguenos"
+    },
+    "privacy": "Política de Privacidad",
+    "rights": "Todos los derechos reservados."
+}

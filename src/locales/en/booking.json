@@ -5,6 +5,7 @@
     "enterEmail": "Enter your email",
     "selectDate": "Select date",
     "selectPeople": "Select number of people",
+    "selectTour": "Select tour",
     "reserve": "Book now",
     "success": "Booking initiated!",
     "confirmationMessage": "You have selected {{tour}} for {{people}} people",
@@ -17,9 +18,11 @@
     "people": "people",
     "totalToPay": "Total to pay",
     "continueToPay": "Continue to payment",
+    "removeReservation": "Remove reservation",
     "errors": {
         "selectDateAndTour": "Please select a date and tour",
         "futureDateRequired": "Date must be in the future",
-        "emailRequired": "Please enter your email"
+        "emailRequired": "Please enter your email",
+        "tourNotFound": "Tour not found"
     }
 }

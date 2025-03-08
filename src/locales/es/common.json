@@ -1,0 +1,33 @@
+{
+    "close": "Cerrar",
+    "loading": "Cargando...",
+    "loadingProducts": "Cargando productos...",
+    "error": "Error",
+    "noProducts": "No se encontraron productos",
+    "showMore": "Mostrar más",
+    "showLess": "Mostrar menos",
+    "perPerson": "por persona",
+    "viewDetails": "Ver detalles",
+    "contact": "Contacto",
+    "about": "Nosotros",
+    "tours": "Tours",
+    "hero": {
+        "welcome": "Bienvenidos a Isla de Pascua",
+        "subtitle": "Descubre la magia de Rapa Nui",
+        "cta": "Explorar Tours"
+    },
+    "about_section": {
+        "title": "Sobre Hotumatur",
+        "description": "Embajadores oficiales de Rapa Nui. Ofrecemos experiencias culturales auténticas, alquiler de vehículos y aventuras inolvidables que te conectan con el corazón de esta isla legendaria.",
+        "mission": "Nuestra misión es compartir la cultura auténtica y la belleza de Isla de Pascua mientras preservamos su patrimonio único.",
+        "values": {
+            "title": "Nuestros Valores",
+            "culture": "Preservación Cultural",
+            "sustainability": "Sostenibilidad",
+            "experience": "Experiencia Auténtica"
+        }
+    },
+    "gallery": {
+        "title": "Galería de Rapa Nui"
+    }
+}

@@ -16,7 +16,7 @@ export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
     const isWhiteBackground = pathname !== "/"; // True for non-homepages
-    const { t } = useTranslation();
+    const { t } = useTranslation(['common', 'booking']);
     const { toggleCart } = useCart();
 
     // Static menu items for Tours
@@ -180,7 +180,7 @@ export default function NavBar() {
                                     setIsOpen(false);
                                 }}
                             >
-                                <span>{t('booking.viewReservations')}</span>
+                                <span>{t('viewReservations', { ns: 'booking' })}</span>
                                 <GiMoai className="w-6 h-6 transform scale-x-[-1] text-gray-800/90" />
                             </button>
                         </div>

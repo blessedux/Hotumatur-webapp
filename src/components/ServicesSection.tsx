@@ -13,7 +13,14 @@ import { useTranslation } from 'react-i18next';
 
 
 export default function ServicesSection() {
-    const { t } = useTranslation();
+    // Specify 'common' as the namespace
+    const { t } = useTranslation('common');
+
+    // For debugging
+    console.log('Services title translation key:', 'services_section.title');
+    console.log('Services title translation value:', t('services_section.title'));
+    console.log('Services description translation key:', 'services_section.description');
+    console.log('Services description translation value:', t('services_section.description'));
 
     return (
         <div className="grid lg:grid-cols-2 gap-8 items-center p-6 lg:p-8 bg-white text-black max-w-6xl mx-auto">

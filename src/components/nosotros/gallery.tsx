@@ -83,7 +83,11 @@ export default function AutoSlidingGallery() {
     const [scrollLeft, setScrollLeft] = useState(0);
     const scrolling = useRef(false);
     const lastScrollPosition = useRef(0);
-    const { t } = useTranslation();
+    const { t } = useTranslation('common');
+
+    // For debugging
+    console.log('Gallery title translation key:', 'gallery.title');
+    console.log('Gallery title translation value:', t('gallery.title'));
 
     useEffect(() => {
         const slider = sliderRef.current;

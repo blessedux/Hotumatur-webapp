@@ -11,8 +11,283 @@ import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { Product } from "@/types/woocommerce";
 
+// Add direct translations for content that isn't being translated properly
+const DIRECT_TRANSLATIONS: Record<string, Record<string, string>> = {
+    // Tour names
+    "Tour de Isla Completo": {
+        en: "Complete Island Tour",
+        es: "Tour de Isla Completo"
+    },
+    "Amanecer en Tongariki": {
+        en: "Sunrise at Tongariki",
+        es: "Amanecer en Tongariki"
+    },
+    "Atardecer en Tahai": {
+        en: "Sunset at Tahai",
+        es: "Atardecer en Tahai"
+    },
+    "Tour Arqueológico": {
+        en: "Archaeological Tour",
+        es: "Tour Arqueológico"
+    },
+    "Tour de Anakena": {
+        en: "Anakena Tour",
+        es: "Tour de Anakena"
+    },
+    // Common attributes
+    "Duración": {
+        en: "Duration",
+        es: "Duración"
+    },
+    "Dificultad": {
+        en: "Difficulty",
+        es: "Dificultad"
+    },
+    "Incluye": {
+        en: "Includes",
+        es: "Incluye"
+    },
+    "No Incluye": {
+        en: "Not Included",
+        es: "No Incluye"
+    },
+    // Difficulty levels
+    "Fácil": {
+        en: "Easy",
+        es: "Fácil"
+    },
+    "Moderado": {
+        en: "Moderate",
+        es: "Moderado"
+    },
+    "Difícil": {
+        en: "Difficult",
+        es: "Difícil"
+    },
+    // Duration values
+    "3 horas": {
+        en: "3 hours",
+        es: "3 horas"
+    },
+    "4 horas": {
+        en: "4 hours",
+        es: "4 horas"
+    },
+    "5 horas": {
+        en: "5 hours",
+        es: "5 horas"
+    },
+    "6 horas": {
+        en: "6 hours",
+        es: "6 horas"
+    },
+    "8 horas": {
+        en: "8 hours",
+        es: "8 horas"
+    },
+    // Common includes
+    "Transporte": {
+        en: "Transportation",
+        es: "Transporte"
+    },
+    "Guía turístico": {
+        en: "Tour guide",
+        es: "Guía turístico"
+    },
+    "Entrada al parque": {
+        en: "Park entrance fee",
+        es: "Entrada al parque"
+    },
+    "Agua": {
+        en: "Water",
+        es: "Agua"
+    },
+    "Snacks": {
+        en: "Snacks",
+        es: "Snacks"
+    },
+    "Almuerzo": {
+        en: "Lunch",
+        es: "Almuerzo"
+    },
+    // Common not includes
+    "Propinas": {
+        en: "Tips",
+        es: "Propinas"
+    },
+    "Seguro de viaje": {
+        en: "Travel insurance",
+        es: "Seguro de viaje"
+    }
+};
+
+// Function to translate text directly
+function directTranslate(text: string, language: string): string {
+    if (!text) return '';
+
+    // Check if we have a direct translation for this text
+    if (DIRECT_TRANSLATIONS[text] && DIRECT_TRANSLATIONS[text][language]) {
+        return DIRECT_TRANSLATIONS[text][language];
+    }
+
+    // Check if we have a direct translation for this text (case insensitive)
+    const lowerText = text.toLowerCase();
+    for (const key in DIRECT_TRANSLATIONS) {
+        if (key.toLowerCase() === lowerText && DIRECT_TRANSLATIONS[key][language]) {
+            return DIRECT_TRANSLATIONS[key][language];
+        }
+    }
+
+    // Check if the text contains any of our translatable phrases
+    for (const key in DIRECT_TRANSLATIONS) {
+        if (text.includes(key) && DIRECT_TRANSLATIONS[key][language]) {
+            return text.replace(key, DIRECT_TRANSLATIONS[key][language]);
+        }
+    }
+
+    // If no translation found, return the original text
+    return text;
+}
+
+// Function to translate HTML content
+function translateHtml(html: string, language: string): string {
+    if (!html || language === 'es') return html;
+
+    try {
+        // Create a temporary div to parse the HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+
+        // Process all elements recursively
+        processNode(tempDiv, language);
+
+        return tempDiv.innerHTML;
+    } catch (error) {
+        console.error('Error translating HTML:', error);
+        return html; // Return original HTML if there's an error
+    }
+}
+
+// Process nodes recursively
+function processNode(node: Node, language: string) {
+    // Skip script and style tags
+    if (node.nodeName === 'SCRIPT' || node.nodeName === 'STYLE') {
+        return;
+    }
+
+    // If it's a text node, translate its content
+    if (node.nodeType === Node.TEXT_NODE && node.textContent) {
+        const text = node.textContent.trim();
+        if (text) {
+            // Translate the text content
+            node.textContent = translateText(text, language);
+        }
+    }
+
+    // Process child nodes recursively
+    const childNodes = Array.from(node.childNodes);
+    childNodes.forEach(child => processNode(child, language));
+}
+
+// Translate text content word by word or phrase by phrase
+function translateText(text: string, language: string): string {
+    if (!text || language === 'es') return text;
+
+    // First check if we have a direct translation for the entire text
+    const directTranslation = directTranslate(text, language);
+    if (directTranslation !== text) {
+        return directTranslation;
+    }
+
+    // Common Spanish words and their English translations
+    const commonWords: Record<string, string> = {
+        // Articles
+        "el": "the", "la": "the", "los": "the", "las": "the", "un": "a", "una": "a", "unos": "some", "unas": "some",
+
+        // Prepositions
+        "de": "of", "en": "in", "con": "with", "por": "by", "para": "for", "sin": "without",
+        "sobre": "on", "bajo": "under", "entre": "between", "hasta": "until", "desde": "from",
+
+        // Conjunctions
+        "y": "and", "o": "or", "pero": "but", "porque": "because", "si": "if", "cuando": "when",
+
+        // Common verbs
+        "es": "is", "son": "are", "está": "is", "están": "are", "fue": "was", "fueron": "were",
+        "ha": "has", "han": "have", "había": "had", "habían": "had", "tendrá": "will have",
+        "ver": "see", "visitar": "visit", "conocer": "know", "explorar": "explore", "disfrutar": "enjoy",
+
+        // Common adjectives
+        "grande": "big", "pequeño": "small", "hermoso": "beautiful", "bonito": "pretty",
+        "increíble": "incredible", "impresionante": "impressive", "antiguo": "ancient",
+        "histórico": "historical", "arqueológico": "archaeological", "cultural": "cultural",
+
+        // Common nouns
+        "isla": "island", "tour": "tour", "playa": "beach", "volcán": "volcano", "montaña": "mountain",
+        "estatua": "statue", "moai": "moai", "océano": "ocean", "mar": "sea", "guía": "guide",
+        "experiencia": "experience", "aventura": "adventure", "viaje": "journey", "camino": "path",
+        "sitio": "site", "lugar": "place", "punto": "point", "vista": "view", "paisaje": "landscape",
+
+        // Time-related
+        "día": "day", "noche": "night", "mañana": "morning", "tarde": "afternoon",
+        "hora": "hour", "minuto": "minute", "amanecer": "sunrise", "atardecer": "sunset",
+
+        // Tourism-related
+        "turista": "tourist", "visitante": "visitor", "grupo": "group", "fotografía": "photography",
+        "cámara": "camera", "recuerdo": "souvenir", "historia": "history", "cultura": "culture",
+        "tradición": "tradition", "nativo": "native", "local": "local", "transporte": "transportation",
+
+        // Easter Island specific
+        "Rapa Nui": "Easter Island", "Hanga Roa": "Hanga Roa", "Tongariki": "Tongariki",
+        "Anakena": "Anakena", "Tahai": "Tahai", "Rano Kau": "Rano Kau", "Rano Raraku": "Rano Raraku",
+        "Orongo": "Orongo", "Ahu": "Ahu", "Puna Pau": "Puna Pau", "Vinapu": "Vinapu",
+
+        // Numbers
+        "uno": "one", "dos": "two", "tres": "three", "cuatro": "four", "cinco": "five",
+        "seis": "six", "siete": "seven", "ocho": "eight", "nueve": "nine", "diez": "ten",
+        "primero": "first", "segundo": "second", "tercero": "third", "último": "last"
+    };
+
+    // Split the text into words and translate each word
+    const words = text.split(/(\s+)/); // Split by whitespace but keep the separators
+
+    return words.map(word => {
+        // Skip empty words and whitespace
+        if (!word.trim()) return word;
+
+        // Check for punctuation
+        const punctuationPrefix = word.match(/^[.,;:!?¡¿()"']+/)?.[0] || '';
+        const punctuationSuffix = word.match(/[.,;:!?¡¿()"']+$/)?.[0] || '';
+
+        // Remove punctuation for translation
+        const cleanWord = word
+            .substring(punctuationPrefix.length)
+            .substring(0, word.length - punctuationPrefix.length - punctuationSuffix.length);
+
+        // Skip translation if the word is empty after removing punctuation
+        if (!cleanWord) return word;
+
+        // Check if we have a direct translation for this word
+        let translatedWord = directTranslate(cleanWord, language);
+
+        // If no direct translation, check common words dictionary
+        if (translatedWord === cleanWord) {
+            const lowerWord = cleanWord.toLowerCase();
+            translatedWord = commonWords[lowerWord] || cleanWord;
+
+            // Preserve capitalization
+            if (cleanWord[0] === cleanWord[0].toUpperCase()) {
+                translatedWord = translatedWord.charAt(0).toUpperCase() + translatedWord.slice(1);
+            }
+        }
+
+        // Reattach punctuation
+        return punctuationPrefix + translatedWord + punctuationSuffix;
+    }).join('');
+}
+
 interface ProductWithAttributes extends Product {
     subtitulo?: string;
+    name_en?: string;
     productAttributes: {
         name: string;
         value: string;
@@ -45,6 +320,42 @@ const iconConfig = {
         color: 'text-red-500',
         translation: 'tour_section.notIncludes'
     }
+} as const;
+
+// English version of the icon config for when the language is English
+const iconConfigEn = {
+    'duration': {
+        icon: MdAccessTime,
+        size: 'h-6 w-6',
+        color: 'text-blue-500',
+        translation: 'tour_section.duration'
+    },
+    'difficulty': {
+        icon: RiBatteryChargeLine,
+        size: 'h-6 w-6',
+        color: 'text-green-500',
+        translation: 'tour_section.difficulty'
+    },
+    'includes': {
+        icon: CheckCircle,
+        size: 'h-6 w-6',
+        color: 'text-emerald-500',
+        translation: 'tour_section.includes'
+    },
+    'not included': {
+        icon: VscError,
+        size: 'h-6 w-6',
+        color: 'text-red-500',
+        translation: 'tour_section.notIncludes'
+    }
+} as const;
+
+// Define the type for the icon config
+type IconConfig = {
+    icon: React.ElementType;
+    size: string;
+    color: string;
+    translation: string;
 };
 
 interface TourContentProps {
@@ -52,10 +363,22 @@ interface TourContentProps {
 }
 
 export default function TourContent({ slug }: TourContentProps) {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation(['common', 'tour_section']);
     const [product, setProduct] = useState<ProductWithAttributes | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const currentLanguage = i18n.language;
+    const [translationDebug, setTranslationDebug] = useState<any>(null);
+
+    // Force re-render when language changes
+    useEffect(() => {
+        // Log language change
+        console.log('Language changed to:', currentLanguage);
+
+        // Clear product state when language changes to force a clean re-render
+        setProduct(null);
+        setLoading(true);
+    }, [currentLanguage]);
 
     useEffect(() => {
         async function fetchProduct() {
@@ -63,7 +386,17 @@ export default function TourContent({ slug }: TourContentProps) {
                 setLoading(true);
                 setError(null);
 
-                const response = await fetch(`/api/products?slug=${encodeURIComponent(slug)}`);
+                console.log(`Fetching product with slug: ${slug}, language: ${currentLanguage}`);
+
+                // First, fetch the product from the WooCommerce API
+                const response = await fetch(`/api/products?slug=${encodeURIComponent(slug)}`, {
+                    // Add cache control headers to prevent caching
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    }
+                });
 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch product: ${response.status}`);
@@ -75,7 +408,62 @@ export default function TourContent({ slug }: TourContentProps) {
                     throw new Error('Product not found');
                 }
 
-                const productData = products[0];
+                let productData = products[0];
+
+                // Log the raw product data for debugging
+                console.log('Raw product data:', productData);
+
+                // If the language is not Spanish, translate the product
+                if (currentLanguage !== 'es') {
+                    console.log('Translating product to:', currentLanguage);
+                    try {
+                        // First try using our translation service
+                        console.log('Sending translation request to /api/translate');
+                        const translateResponse = await fetch('/api/translate', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                                'Pragma': 'no-cache',
+                                'Expires': '0'
+                            },
+                            body: JSON.stringify({
+                                product: productData,
+                                type: 'product',
+                                targetLang: currentLanguage,
+                                sourceLang: 'es'
+                            })
+                        });
+
+                        console.log('Translation response status:', translateResponse.status);
+
+                        if (translateResponse.ok) {
+                            const translatedData = await translateResponse.json();
+                            console.log('Translation response received');
+
+                            if (translatedData.result) {
+                                productData = translatedData.result;
+                                console.log('Successfully translated product data');
+                            } else {
+                                console.warn('Translation response did not contain result:', translatedData);
+                                // Fallback to direct translation
+                                console.log('Falling back to direct translation');
+                                productData = directTranslateProduct(productData, currentLanguage);
+                            }
+                        } else {
+                            const errorText = await translateResponse.text();
+                            console.error('Translation request failed:', errorText);
+                            // Fallback to direct translation
+                            console.log('Falling back to direct translation after API error');
+                            productData = directTranslateProduct(productData, currentLanguage);
+                        }
+                    } catch (translateError) {
+                        console.error('Error translating product:', translateError);
+                        // Fallback to direct translation
+                        console.log('Falling back to direct translation after exception');
+                        productData = directTranslateProduct(productData, currentLanguage);
+                    }
+                }
 
                 // Process the product data
                 const processedProduct = {
@@ -83,24 +471,27 @@ export default function TourContent({ slug }: TourContentProps) {
                     productAttributes: productData.attributes.map((attr: any) => {
                         const name = attr.name.charAt(0).toUpperCase() + attr.name.slice(1);
                         const value = attr.options[0] || '';
-                        const value_en = productData.meta_data?.find((meta: any) =>
-                            meta.key === `${attr.name}_en` ||
-                            meta.key === `attribute_${attr.name}_en`
-                        )?.value || value;
 
                         return {
                             name,
-                            value,
-                            value_en
+                            value
                         };
                     }),
-                    name: i18n.language === 'en' && productData.meta_data?.find((meta: any) => meta.key === 'name_en')?.value
-                        ? productData.meta_data?.find((meta: any) => meta.key === 'name_en')?.value
-                        : productData.name,
-                    subtitulo: productData.meta_data?.find((meta: any) => meta.key === 'subtitulo')?.value || '',
-                    description_en: productData.meta_data?.find((meta: any) => meta.key === 'description_en')?.value || '',
-                    short_description_en: productData.meta_data?.find((meta: any) => meta.key === 'short_description_en')?.value || ''
+                    subtitulo: productData.meta_data?.find((meta: any) => meta.key === 'subtitulo')?.value || ''
                 };
+
+                // Store translation debug info
+                setTranslationDebug({
+                    language: currentLanguage,
+                    productName: productData.name,
+                    description: productData.description?.substring(0, 100) + '...',
+                    shortDescription: productData.short_description?.substring(0, 100) + '...',
+                    attributes: processedProduct.productAttributes,
+                    translationMethod: currentLanguage !== 'es' ? 'API Translation' : 'Original'
+                });
+
+                // Log the processed product for debugging
+                console.log('Processed product:', processedProduct);
 
                 setProduct(processedProduct);
             } catch (error) {
@@ -110,41 +501,140 @@ export default function TourContent({ slug }: TourContentProps) {
                 setLoading(false);
             }
         }
+
         fetchProduct();
-    }, [slug, i18n.language]);
+    }, [slug, currentLanguage]);
+
+    // Function to directly translate a product without using the API
+    function directTranslateProduct(product: any, language: string): any {
+        if (language === 'es') return product;
+
+        console.log('Using direct translation for product');
+
+        // Create a deep copy of the product
+        const translatedProduct = JSON.parse(JSON.stringify(product));
+
+        // Translate name
+        translatedProduct.name = directTranslate(product.name, language);
+
+        // Translate description (HTML content)
+        translatedProduct.description = translateHtml(product.description, language);
+
+        // Translate short description (HTML content)
+        translatedProduct.short_description = translateHtml(product.short_description, language);
+
+        // Translate attributes
+        if (product.attributes && Array.isArray(product.attributes)) {
+            for (let i = 0; i < product.attributes.length; i++) {
+                // Translate attribute name
+                translatedProduct.attributes[i].name = directTranslate(
+                    product.attributes[i].name,
+                    language
+                );
+
+                // Translate attribute options
+                if (product.attributes[i].options && Array.isArray(product.attributes[i].options)) {
+                    translatedProduct.attributes[i].options = product.attributes[i].options.map((option: string) =>
+                        directTranslate(option, language)
+                    );
+                }
+            }
+        }
+
+        // Translate meta data that might contain translatable content
+        if (product.meta_data && Array.isArray(product.meta_data)) {
+            for (let i = 0; i < product.meta_data.length; i++) {
+                const meta = product.meta_data[i];
+
+                // Only translate string values that look like they contain text
+                if (typeof meta.value === 'string' && meta.value.length > 3 && /[a-zA-Z]/.test(meta.value)) {
+                    translatedProduct.meta_data[i].value = directTranslate(
+                        meta.value,
+                        language
+                    );
+                }
+            }
+        }
+
+        return translatedProduct;
+    }
 
     if (loading) return (
         <div className="min-h-screen pt-[120px] flex items-center justify-center">
-            <p className="text-lg">{t('common.loading')}</p>
+            <p className="text-lg">{t('loading', { ns: 'common' })}</p>
         </div>
     );
 
     if (error) return (
         <div className="min-h-screen pt-[120px] flex items-center justify-center">
-            <p className="text-lg text-red-500">{t('common.error')}: {error}</p>
+            <p className="text-lg text-red-500">{t('error', { ns: 'common' })}: {error}</p>
         </div>
     );
 
     if (!product) return (
         <div className="min-h-screen pt-[120px] flex items-center justify-center">
-            <p className="text-lg">{t('common.noProducts')}</p>
+            <p className="text-lg">{t('noProducts', { ns: 'common' })}</p>
         </div>
     );
 
-    // Get the appropriate description based on language
-    const description = i18n.language === 'en' && product.description_en
-        ? product.description_en
-        : product.description;
+    // Get the appropriate content based on language
+    const isEnglish = currentLanguage === 'en';
 
-    // Log the description being used for debugging
-    console.log('Description being used:', {
-        language: i18n.language,
-        hasEnglishDescription: Boolean(product.description_en),
-        selectedDescription: description
+    // Log the content being used for debugging
+    console.log('Content being displayed:', {
+        language: currentLanguage,
+        name: product.name,
+        description: product.description?.substring(0, 100) + '...'
     });
+
+    // Debug component to show translation status (only visible in development)
+    const DebugTranslations = process.env.NODE_ENV === 'development' ? () => (
+        <div className="fixed bottom-4 right-4 bg-black/80 text-white p-4 rounded-lg text-xs max-w-xs z-50 max-h-[80vh] overflow-auto">
+            <h4 className="font-bold mb-2">Translation Debug</h4>
+            <div className="space-y-1">
+                <p>Language: <span className="font-mono">{currentLanguage}</span></p>
+                <p>Name: <span className="text-green-400">{product.name}</span></p>
+                <p>Description: <span className="text-green-400">✓</span></p>
+                <p>Short Description: <span className="text-green-400">✓</span></p>
+                <p>Translation Method: <span className="text-yellow-400">{translationDebug?.translationMethod || 'Unknown'}</span></p>
+
+                <div className="mt-2">
+                    <p className="font-bold">Attributes:</p>
+                    <div className="text-xs max-h-20 overflow-y-auto bg-gray-800 p-1 rounded mt-1">
+                        {product.productAttributes?.map((attr: any, index: number) => (
+                            <div key={index} className="mb-1">
+                                {attr.name}: {attr.value}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="mt-2">
+                    <p className="font-bold">Meta Data:</p>
+                    <div className="text-xs max-h-20 overflow-y-auto bg-gray-800 p-1 rounded mt-1">
+                        {product.meta_data?.map((meta: any, index: number) => (
+                            <div key={index} className="mb-1">
+                                {meta.key}: {typeof meta.value === 'string' ? meta.value.substring(0, 30) + '...' : '[non-string value]'}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <button
+                    className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs"
+                    onClick={() => console.log('Full product data:', product)}
+                >
+                    Log Full Product Data
+                </button>
+            </div>
+        </div>
+    ) : () => null;
 
     return (
         <div className="min-h-screen">
+            {/* Debug component */}
+            <DebugTranslations />
+
             {/* Hero Section */}
             <div className="relative h-[80vh] w-full">
                 {/* Background Image */}
@@ -169,11 +659,14 @@ export default function TourContent({ slug }: TourContentProps) {
                             <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
                                 {product.name}
                             </h1>
+                            {product.subtitulo && (
+                                <p className="text-xl text-white/90 mb-4">{product.subtitulo}</p>
+                            )}
                             <div className="flex items-baseline gap-2 mb-8">
                                 <span className="text-3xl font-bold text-white">
                                     ${parseInt(product.price).toLocaleString('es-CL')}
                                 </span>
-                                <span className="text-white/80">/{t('common.perPerson')}</span>
+                                <span className="text-white/80">/{t('perPerson', { ns: 'common' })}</span>
                             </div>
                             <div className="bg-white/10 backdrop-blur-md rounded-lg p-6">
                                 <SingleTourSelector
@@ -190,6 +683,12 @@ export default function TourContent({ slug }: TourContentProps) {
 
             {/* Content Section */}
             <div className="container mx-auto py-12 px-4 max-w-[1200px]">
+                {product.short_description && (
+                    <div className="mb-8 text-xl text-gray-700 font-medium">
+                        <div dangerouslySetInnerHTML={{ __html: product.short_description }} />
+                    </div>
+                )}
+
                 <div
                     className="prose prose-lg max-w-none
                             prose-headings:font-bold prose-headings:text-gray-900
@@ -198,24 +697,39 @@ export default function TourContent({ slug }: TourContentProps) {
                             prose-ul:mt-4 prose-ul:list-disc prose-ul:pl-6
                             prose-li:text-gray-600 prose-li:mb-2
                             prose-strong:text-gray-900 prose-strong:font-semibold"
-                    dangerouslySetInnerHTML={{ __html: description }}
+                    dangerouslySetInnerHTML={{ __html: product.description }}
                 />
                 <Card className="mt-10">
                     <CardContent className="p-10">
-                        <h3 className="text-2xl font-bold mb-6">{t('tour_section.title')}</h3>
+                        <h3 className="text-2xl font-bold mb-6">{t('title', { ns: 'tour_section' })}</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {product.productAttributes.map((attr) => {
-                                const config = iconConfig[attr.name.toLowerCase() as keyof typeof iconConfig] || {
-                                    icon: CheckCircle,
-                                    size: 'h-5 w-5',
-                                    color: 'text-gray-600',
-                                    translation: attr.name
-                                };
+                                // Use the appropriate icon config based on language
+                                const configs = isEnglish ? iconConfigEn : iconConfig;
+                                const attrNameLower = attr.name.toLowerCase();
+
+                                // Try to find the config in the current language
+                                let config: IconConfig = (configs as any)[attrNameLower];
+
+                                // If not found, use a default config
+                                if (!config) {
+                                    config = {
+                                        icon: CheckCircle,
+                                        size: 'h-5 w-5',
+                                        color: 'text-gray-600',
+                                        translation: attr.name
+                                    };
+                                }
+
                                 const Icon = config.icon;
 
-                                if (attr.name.toLowerCase() === 'incluye' || attr.name.toLowerCase() === 'no incluye') {
-                                    const value = i18n.language === 'en' && attr.value_en ? attr.value_en : attr.value;
-                                    const items = value
+                                if (
+                                    attrNameLower === 'incluye' ||
+                                    attrNameLower === 'no incluye' ||
+                                    attrNameLower === 'includes' ||
+                                    attrNameLower === 'not included'
+                                ) {
+                                    const items = attr.value
                                         .split('•')
                                         .map(item => item.trim())
                                         .filter(item => item !== '');
@@ -224,7 +738,11 @@ export default function TourContent({ slug }: TourContentProps) {
                                         <div key={attr.name} className="space-y-2">
                                             <div className="flex items-center gap-2 font-semibold">
                                                 <Icon className={`${config.size} ${config.color}`} />
-                                                <span>{t(config.translation)}</span>
+                                                <span>{
+                                                    typeof config.translation === 'string' && config.translation.includes('.')
+                                                        ? t(config.translation.split('.')[1], { ns: 'tour_section' })
+                                                        : attr.name
+                                                }</span>
                                             </div>
                                             <ul className="list-disc list-inside space-y-1 ml-8 text-sm text-gray-600">
                                                 {items.map((item, index) => (
@@ -236,34 +754,38 @@ export default function TourContent({ slug }: TourContentProps) {
                                 }
 
                                 // Special handling for duration
-                                if (attr.name.toLowerCase() === 'duración') {
-                                    // Get the appropriate value based on language
-                                    const value = i18n.language === 'en' && attr.value_en ? attr.value_en : attr.value;
-
+                                if (attrNameLower === 'duración' || attrNameLower === 'duration') {
                                     // Extract numeric part and determine unit
-                                    const numericPart = value.match(/\d+/)?.[0] || '';
-                                    const isHours = value.toLowerCase().includes('hora') || value.toLowerCase().includes('hour');
+                                    const numericPart = attr.value.match(/\d+/)?.[0] || '';
+                                    const isHours = attr.value.toLowerCase().includes('hora') || attr.value.toLowerCase().includes('hour');
                                     const unit = isHours ? 'hours' : 'days';
 
                                     // Create translated value
-                                    const translatedValue = `${numericPart} ${t(`tour_section.${unit}`)}`;
+                                    const translatedValue = `${numericPart} ${t(unit, { ns: 'tour_section' })}`;
 
                                     return (
                                         <div key={attr.name} className="flex items-center gap-2">
                                             <Icon className={`${config.size} ${config.color}`} />
-                                            <span className="font-semibold">{t(config.translation)}:</span>
+                                            <span className="font-semibold">{
+                                                typeof config.translation === 'string' && config.translation.includes('.')
+                                                    ? t(config.translation.split('.')[1], { ns: 'tour_section' })
+                                                    : attr.name
+                                            }:</span>
                                             <span>{translatedValue}</span>
                                         </div>
                                     );
                                 }
 
                                 // For all other attributes
-                                const value = i18n.language === 'en' && attr.value_en ? attr.value_en : attr.value;
                                 return (
                                     <div key={attr.name} className="flex items-center gap-2">
                                         <Icon className={`${config.size} ${config.color}`} />
-                                        <span className="font-semibold">{t(config.translation)}:</span>
-                                        <span>{value}</span>
+                                        <span className="font-semibold">{
+                                            typeof config.translation === 'string' && config.translation.includes('.')
+                                                ? t(config.translation.split('.')[1], { ns: 'tour_section' })
+                                                : attr.name
+                                        }:</span>
+                                        <span>{attr.value}</span>
                                     </div>
                                 );
                             })}

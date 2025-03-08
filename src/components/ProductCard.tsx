@@ -30,7 +30,7 @@ function formatPrice(price: string): string {
 
 export function ProductCard({ product }: ProductCardProps) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation(['common']);
 
     // Get the appropriate description based on language
     const descriptionText = i18n.language === 'en' && product.short_description_en
@@ -71,17 +71,17 @@ export function ProductCard({ product }: ProductCardProps) {
                                     }}
                                     className="text-blue-500 hover:text-blue-600 mt-1 text-sm font-medium"
                                 >
-                                    {isExpanded ? t('common.showLess') : t('common.showMore')}
+                                    {isExpanded ? t('showLess', { ns: 'common' }) : t('showMore', { ns: 'common' })}
                                 </button>
                             )}
                         </div>
                         <div className="mt-4 flex items-center justify-between">
                             <div className="flex items-baseline gap-1">
                                 <span className="text-xl font-bold">${formatPrice(product.price)}</span>
-                                <span className="text-sm text-muted-foreground">/{t('common.perPerson')}</span>
+                                <span className="text-sm text-muted-foreground">/{t('perPerson', { ns: 'common' })}</span>
                             </div>
                             <Button variant="default" size="sm">
-                                {t('common.viewDetails')}
+                                {t('viewDetails', { ns: 'common' })}
                             </Button>
                         </div>
                     </div>

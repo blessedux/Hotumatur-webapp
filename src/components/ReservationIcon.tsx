@@ -10,15 +10,29 @@ import { PiTrashLight } from "react-icons/pi";
 import { X } from 'lucide-react'
 import { GiMoai } from "react-icons/gi";
 import { format, parseISO } from 'date-fns'
-import { es } from 'date-fns/locale'
+import { es, enUS } from 'date-fns/locale'
 import { useTranslation } from 'react-i18next'
 
 export default function ReservationIcon() {
     const { reservations, removeReservation } = useReservations()
     const { isCartOpen, openCart, closeCart, toggleCart } = useCart()
     const dropdownRef = useRef<HTMLDivElement>(null)
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation(['booking', 'common'])
     const [isMobile, setIsMobile] = useState(false)
+    const [currentLanguage, setCurrentLanguage] = useState(i18n.language)
+
+    // Get the appropriate date locale based on language
+    const dateLocale = i18n.language === 'en' ? enUS : es;
+
+    // Date format pattern based on language
+    const dateFormatPattern = i18n.language === 'en' ? "MMMM d, yyyy" : "d 'de' MMMM, yyyy";
+
+    // Force re-render when language changes
+    useEffect(() => {
+        if (currentLanguage !== i18n.language) {
+            setCurrentLanguage(i18n.language)
+        }
+    }, [i18n.language, currentLanguage])
 
     useEffect(() => {
         const checkMobile = () => {
@@ -67,15 +81,18 @@ export default function ReservationIcon() {
         }, 0);
     };
 
+    // For debugging
+    console.log("Current language in ReservationIcon:", i18n.language);
+
     return reservations.length > 0 ? (
         <div className="relative" ref={dropdownRef}>
             <animated.div style={iconAnimation}>
                 <button
                     onClick={() => toggleCart()}
                     className="relative inline-flex items-center text-white text-black/80"
-                    aria-label={`Ver ${reservations.length} reservas`}
+                    aria-label={t('viewReservations', { ns: 'booking' })}
                 >
-                    <span className="hidden md:inline-block mr-1">{t('Book')}</span>
+                    <span className="hidden md:inline-block mr-1">{t('reservations', { ns: 'booking' })}</span>
                     <GiMoai className="w-8 h-8 transform scale-x-[-1] text-gray-800/90" />
                     {reservations.length > 0 && (
                         <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -103,10 +120,11 @@ export default function ReservationIcon() {
                 >
                     <Card className="p-4 shadow-lg">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="font-semibold">{t('Book your Adventure')}:</h3>
+                            <h3 className="font-semibold">{t('yourAdventures', { ns: 'booking' })}:</h3>
                             <button
                                 onClick={closeCart}
                                 className="text-gray-500/80 hover:text-gray-700"
+                                aria-label={t('close', { ns: 'common' })}
                             >
                                 <X size={16} />
                             </button>
@@ -122,14 +140,14 @@ export default function ReservationIcon() {
                                         <div className="flex justify-between items-center mt-1">
                                             <div className="space-y-1">
                                                 <p className="text-sm text-gray-500">
-                                                    {t('booking.for')} {reservation.quantity} {reservation.quantity === 1 ? t('booking.person') : t('booking.people')}
+                                                    {t('for', { ns: 'booking' })} {reservation.quantity} {reservation.quantity === 1 ? t('person', { ns: 'booking' }) : t('people', { ns: 'booking' })}
                                                 </p>
                                                 <p className="text-sm text-gray-500">
-                                                    {t('booking.date')}: {format(parseISO(reservation.date), "d 'de' MMMM, yyyy", { locale: es })}
+                                                    {t('date', { ns: 'booking' })}: {format(parseISO(reservation.date), dateFormatPattern, { locale: dateLocale })}
                                                 </p>
                                             </div>
                                             <p className="text-sm font-medium">
-                                                ${((Number(reservation.price) || 0) * reservation.quantity).toLocaleString('es-CL')}
+                                                ${((Number(reservation.price) || 0) * reservation.quantity).toLocaleString(i18n.language === 'en' ? 'en-US' : 'es-CL')}
                                             </p>
                                         </div>
                                     </div>
@@ -137,6 +155,7 @@ export default function ReservationIcon() {
                                         <button
                                             onClick={() => removeReservation(reservation.id)}
                                             className="ml-4 text-red-500/80 hover:text-red-600"
+                                            aria-label={t('removeReservation', { ns: 'booking' })}
                                         >
                                             <PiTrashLight size={16} />
                                         </button>
@@ -146,9 +165,9 @@ export default function ReservationIcon() {
                         </div>
                         <div className="mt-4 pt-4 border-t border-gray-200">
                             <div className="flex justify-between items-center mb-4">
-                                <span className="font-semibold">{t('Total to pay')}:</span>
+                                <span className="font-semibold">{t('totalToPay', { ns: 'booking' })}:</span>
                                 <span className="font-bold text-lg">
-                                    ${calculateTotal().toLocaleString('es-CL')}
+                                    ${calculateTotal().toLocaleString(i18n.language === 'en' ? 'en-US' : 'es-CL')}
                                 </span>
                             </div>
                             <Link
@@ -156,7 +175,7 @@ export default function ReservationIcon() {
                                 className="w-full bg-hotumatur-primary text-white py-2 px-4 rounded-md text-center block hover:bg-hotumatur-primary/90"
                                 onClick={closeCart}
                             >
-                                {t('Continue to payment')}
+                                {t('continueToPay', { ns: 'booking' })}
                             </Link>
                         </div>
                     </Card>

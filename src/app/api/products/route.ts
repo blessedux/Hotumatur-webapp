@@ -1,3 +1,4 @@
+// src/app/api/products/route.ts
 import { NextResponse } from 'next/server';
 import { config } from '@/config';
 
@@ -6,8 +7,11 @@ export async function GET(request: Request) {
         const { searchParams } = new URL(request.url);
         const slug = searchParams.get('slug');
 
+        console.log(`API route: Fetching products with slug: ${slug || 'all'}`);
+
         const wcAuth = Buffer.from(`${config.woocommerce.consumerKey}:${config.woocommerce.consumerSecret}`).toString('base64');
 
+        // Fetch the product data from WordPress
         const response = await fetch(
             `https://backend.hotumatur.com/wp-json/wc/v3/products${slug ? `?slug=${slug}` : ''}`,
             {
@@ -15,14 +19,18 @@ export async function GET(request: Request) {
                     'Authorization': `Basic ${wcAuth}`,
                     'Content-Type': 'application/json',
                 },
+                cache: 'no-store' // Disable caching to ensure fresh data
             }
         );
 
         if (!response.ok) {
+            console.error(`WooCommerce API error: ${response.status}`);
             throw new Error(`WooCommerce API error: ${response.status}`);
         }
 
         const data = await response.json();
+
+        // Return the data without translation - we'll handle translation in the client
         return NextResponse.json(data);
     } catch (error) {
         console.error('Products API error:', error);

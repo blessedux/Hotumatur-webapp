@@ -5,6 +5,7 @@
     "enterEmail": "Ingresa tu correo electrónico",
     "selectDate": "Seleccionar fecha",
     "selectPeople": "Seleccionar cantidad",
+    "selectTour": "Seleccionar tour",
     "reserve": "Reservar ahora",
     "success": "¡Reserva iniciada!",
     "confirmationMessage": "Has seleccionado {{tour}} para {{people}} personas",
@@ -17,9 +18,11 @@
     "people": "personas",
     "totalToPay": "Total a pagar",
     "continueToPay": "Continuar la compra",
+    "removeReservation": "Eliminar reserva",
     "errors": {
         "selectDateAndTour": "Por favor selecciona una fecha y un tour",
         "futureDateRequired": "La fecha debe ser en el futuro",
-        "emailRequired": "Por favor ingresa tu correo electrónico"
+        "emailRequired": "Por favor ingresa tu correo electrónico",
+        "tourNotFound": "Tour no encontrado"
     }
 }

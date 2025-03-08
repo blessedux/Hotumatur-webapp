@@ -26,7 +26,7 @@ const TourSelector = () => {
     const { toast } = useToast();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation(['common', 'booking', 'tour_section']);
 
     // Filter tours when data is loaded
     useEffect(() => {
@@ -41,8 +41,8 @@ const TourSelector = () => {
     const handleReservation = () => {
         if (!date || !selectedTourId) {
             toast({
-                title: t('common.error'),
-                description: t('booking.errors.selectDateAndTour'),
+                title: t('error', { ns: 'common' }),
+                description: t('errors.selectDateAndTour', { ns: 'booking' }),
                 variant: "destructive",
             });
             return;
@@ -53,8 +53,8 @@ const TourSelector = () => {
 
         if (date < today) {
             toast({
-                title: t('common.error'),
-                description: t('booking.errors.futureDateRequired'),
+                title: t('error', { ns: 'common' }),
+                description: t('errors.futureDateRequired', { ns: 'booking' }),
                 variant: "destructive",
             });
             return;
@@ -64,8 +64,8 @@ const TourSelector = () => {
 
         if (!selectedTour) {
             toast({
-                title: t('common.error'),
-                description: t('booking.errors.tourNotFound'),
+                title: t('error', { ns: 'common' }),
+                description: t('errors.tourNotFound', { ns: 'booking' }),
                 variant: "destructive",
             });
             return;
@@ -85,16 +85,16 @@ const TourSelector = () => {
 
         toast({
             variant: 'success',
-            title: t('booking.success'),
+            title: t('success', { ns: 'booking' }),
             description: (
                 <div className="space-y-2 flex flex-col">
-                    <p>{t('booking.confirmationMessage', { tour: selectedTour.name, people })}</p>
+                    <p>{t('confirmationMessage', { ns: 'booking', tour: selectedTour.name, people })}</p>
                     <Button
                         variant="default"
                         size="default"
                         onClick={() => router.push('/checkout')}
                     >
-                        {t('booking.continue')}
+                        {t('continue', { ns: 'booking' })}
                     </Button>
                 </div>
             ),
@@ -110,7 +110,7 @@ const TourSelector = () => {
     }
 
     if (error) {
-        return <div>{t('common.error')}: {error}</div>;
+        return <div>{t('error', { ns: 'common' })}: {error}</div>;
     }
 
     if (isLoading) {
@@ -126,7 +126,7 @@ const TourSelector = () => {
     return (
         <div className="grid gap-4 md:grid-cols-[1fr_1.5fr_1fr_auto] items-end">
             <div className="space-y-2">
-                <label className="text-lg text-white/80">{t('booking.date')}:</label>
+                <label className="text-lg text-white/80">{t('date', { ns: 'booking' })}:</label>
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button
@@ -137,7 +137,7 @@ const TourSelector = () => {
                             )}
                         >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {date ? format(date, 'PPP', { locale: dateLocale }) : t('booking.selectDate')}
+                            {date ? format(date, 'PPP', { locale: dateLocale }) : t('selectDate', { ns: 'booking' })}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
@@ -158,10 +158,10 @@ const TourSelector = () => {
             </div>
 
             <div className="space-y-2">
-                <label className="text-lg text-white/80">{t('tour_section.title')}:</label>
+                <label className="text-lg text-white/80">{t('title', { ns: 'tour_section' })}:</label>
                 <Select value={selectedTourId} onValueChange={setSelectedTourId}>
                     <SelectTrigger className="bg-white/10 border-white/20 text-white [&>span]:text-white/80 hover:bg-white/20">
-                        <SelectValue placeholder={t('booking.selectTour')} />
+                        <SelectValue placeholder={t('selectTour', { ns: 'booking' })} />
                     </SelectTrigger>
                     <SelectContent>
                         {filteredTours.map((tour) => (
@@ -174,10 +174,10 @@ const TourSelector = () => {
             </div>
 
             <div className="space-y-2">
-                <label className="text-lg text-white/80">{t('booking.people')}:</label>
+                <label className="text-lg text-white/80">{t('people', { ns: 'booking' })}:</label>
                 <Select value={people} onValueChange={setPeople}>
                     <SelectTrigger className="bg-white/10 border-white/20 text-white hover:bg-white/20">
-                        <SelectValue placeholder={t('booking.selectPeople')} />
+                        <SelectValue placeholder={t('selectPeople', { ns: 'booking' })} />
                     </SelectTrigger>
                     <SelectContent>
                         {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
@@ -193,7 +193,7 @@ const TourSelector = () => {
                 className="bg-hotumatur-primary text-white/80 hover:bg-hotumatur-primary/80 self-end"
                 onClick={handleReservation}
             >
-                {t('booking.reserve')}
+                {t('reserve', { ns: 'booking' })}
             </Button>
         </div>
     );

@@ -1,0 +1,33 @@
+{
+    "close": "Close",
+    "loading": "Loading...",
+    "loadingProducts": "Loading products...",
+    "error": "Error",
+    "noProducts": "No products found",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "perPerson": "per person",
+    "viewDetails": "View details",
+    "contact": "Contact",
+    "about": "About Us",
+    "tours": "Tours",
+    "hero": {
+        "welcome": "Welcome to Easter Island",
+        "subtitle": "Discover the magic of Rapa Nui",
+        "cta": "Explore Tours"
+    },
+    "about_section": {
+        "title": "About Hotumatur",
+        "description": "Official ambassadors of Rapa Nui. We offer authentic cultural experiences, vehicle rentals, and unforgettable adventures that connect you with the heart of this legendary island.",
+        "mission": "Our mission is to share the authentic culture and beauty of Easter Island while preserving its unique heritage.",
+        "values": {
+            "title": "Our Values",
+            "culture": "Cultural Preservation",
+            "sustainability": "Sustainability",
+            "experience": "Authentic Experience"
+        }
+    },
+    "gallery": {
+        "title": "Rapa Nui Gallery"
+    }
+}

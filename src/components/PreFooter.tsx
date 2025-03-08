@@ -13,7 +13,14 @@ import { useTranslation } from 'react-i18next';
 // ]
 
 export default function BookingForm() {
-    const { t } = useTranslation();
+    // Specify 'common' as the namespace
+    const { t } = useTranslation('common');
+
+    // For debugging
+    console.log('PreFooter title translation key:', 'pre_footer.title');
+    console.log('PreFooter title translation value:', t('pre_footer.title'));
+    console.log('PreFooter description translation key:', 'pre_footer.description');
+    console.log('PreFooter description translation value:', t('pre_footer.description'));
 
     return (
         <div className="relative w-full bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center">
