@@ -1,0 +1,17 @@
+{
+    "date": "Fecha",
+    "people": "Personas",
+    "email": "Correo electrónico",
+    "enterEmail": "Ingresa tu correo electrónico",
+    "selectDate": "Seleccionar fecha",
+    "selectPeople": "Seleccionar cantidad",
+    "reserve": "Reservar ahora",
+    "success": "¡Reserva iniciada!",
+    "confirmationMessage": "Has seleccionado {{tour}} para {{people}} personas",
+    "continue": "Continuar al pago",
+    "errors": {
+        "selectDateAndTour": "Por favor selecciona una fecha y un tour",
+        "futureDateRequired": "La fecha debe ser en el futuro",
+        "emailRequired": "Por favor ingresa tu correo electrónico"
+    }
+}

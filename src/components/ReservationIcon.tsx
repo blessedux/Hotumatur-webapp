@@ -1,6 +1,7 @@
 'use client'
 
 import { useReservations } from '@/context/ReservationContext'
+import { useCart } from '@/context/CartContext'
 import Link from 'next/link'
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect, useState, useRef } from 'react'
@@ -14,7 +15,7 @@ import { es } from 'date-fns/locale'
 
 export default function ReservationIcon() {
     const { reservations, removeReservation } = useReservations()
-    const [isOpen, setIsOpen] = useState(false)
+    const { isCartOpen, openCart, closeCart, toggleCart } = useCart()
     const dropdownRef = useRef<HTMLDivElement>(null)
 
     // Animación para el ícono
@@ -26,8 +27,8 @@ export default function ReservationIcon() {
 
     // Animación para el dropdown
     const dropdownAnimation = useSpring({
-        opacity: isOpen ? 1 : 0,
-        transform: isOpen ? 'translateY(0)' : 'translateY(-20px)',
+        opacity: isCartOpen ? 1 : 0,
+        transform: isCartOpen ? 'translateY(0)' : 'translateY(-20px)',
         config: { tension: 300, friction: 20 }
     })
 
@@ -35,13 +36,13 @@ export default function ReservationIcon() {
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsOpen(false)
+                closeCart()
             }
         }
 
         document.addEventListener('mousedown', handleClickOutside)
         return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [])
+    }, [closeCart])
 
     const calculateTotal = () => {
         return reservations.reduce((total, reservation) => {
@@ -55,7 +56,7 @@ export default function ReservationIcon() {
         <div className="relative" ref={dropdownRef}>
             <animated.div style={iconAnimation}>
                 <button
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={toggleCart}
                     className="relative inline-flex items-center text-white hover:text-white/80"
                     aria-label={`Ver ${reservations.length} reservas`}
                 >
@@ -72,13 +73,13 @@ export default function ReservationIcon() {
             {/* Dropdown */}
             <animated.div
                 style={dropdownAnimation}
-                className={`absolute right-0 mt-2 w-96 z-50 ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+                className={`absolute right-0 mt-2 w-96 z-50 ${isCartOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
             >
                 <Card className="p-4 shadow-lg">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="font-semibold">Tus aventuras:</h3>
                         <button
-                            onClick={() => setIsOpen(false)}
+                            onClick={closeCart}
                             className="text-gray-500/80 hover:text-gray-700"
                         >
 
@@ -128,7 +129,7 @@ export default function ReservationIcon() {
                         <Link
                             href="/checkout"
                             className="w-full bg-hotumatur-primary text-white py-2 px-4 rounded-md text-center block hover:bg-hotumatur-primary/90"
-                            onClick={() => setIsOpen(false)}
+                            onClick={closeCart}
                         >
                             Continuar la compra
                         </Link>

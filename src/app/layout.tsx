@@ -3,6 +3,7 @@
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ReservationProvider } from '@/context/ReservationContext'
+import { CartProvider } from '@/context/CartContext'
 import { Toaster } from "@/components/ui/toaster"
 import 'flag-icons/css/flag-icons.min.css'
 import { PageTransition } from '@/components/ui/page-transition'
@@ -61,12 +62,14 @@ export default function RootLayout({
         <TranslationProvider>
           <LanguageProvider>
             <ReservationProvider>
-              <PageTransition>
-                <div className="relative z-0">
-                  {children}
-                </div>
-              </PageTransition>
-              <Toaster />
+              <CartProvider>
+                <PageTransition>
+                  <div className="relative z-0">
+                    {children}
+                  </div>
+                </PageTransition>
+                <Toaster />
+              </CartProvider>
             </ReservationProvider>
           </LanguageProvider>
         </TranslationProvider>

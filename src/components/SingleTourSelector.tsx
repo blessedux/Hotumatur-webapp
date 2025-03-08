@@ -10,9 +10,11 @@ import { cn, generateFlightLikeId } from '@/lib/utils'
 import { format } from 'date-fns'
 import { es, enUS } from 'date-fns/locale'
 import { useReservations } from '@/context/ReservationContext'
+import { useCart } from '@/context/CartContext'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
+import { Input } from '@/components/ui/input'
 
 interface SingleTourSelectorProps {
     tourId: number;
@@ -24,14 +26,16 @@ interface SingleTourSelectorProps {
 export default function SingleTourSelector({ tourId, tourName, tourPrice, tourImage }: SingleTourSelectorProps) {
     const [date, setDate] = useState<Date>()
     const [people, setPeople] = useState("2")
+    const [email, setEmail] = useState("")
     const { addReservation } = useReservations()
+    const { openCart } = useCart()
     const { toast } = useToast()
     const router = useRouter()
     const { t, i18n } = useTranslation()
 
     const dateLocale = i18n.language === 'en' ? enUS : es;
 
-    const handleReservation = () => {
+    const handleReservation = async () => {
         if (!date) {
             toast({
                 title: t('common.error'),
@@ -54,6 +58,39 @@ export default function SingleTourSelector({ tourId, tourName, tourPrice, tourIm
             return
         }
 
+        // Validate email
+        if (!email) {
+            toast({
+                title: t('common.error'),
+                description: t('booking.errors.emailRequired'),
+                variant: "destructive",
+            })
+            return
+        }
+
+        // Save lead first
+        try {
+            const leadResponse = await fetch('/api/leads', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                    tourId,
+                    tourName,
+                    date: date.toISOString(),
+                    people: parseInt(people)
+                })
+            });
+
+            if (!leadResponse.ok) {
+                console.error('Failed to save lead');
+            }
+        } catch (error) {
+            console.error('Error saving lead:', error);
+        }
+
         const reservationId = generateFlightLikeId();
 
         addReservation({
@@ -65,6 +102,9 @@ export default function SingleTourSelector({ tourId, tourName, tourPrice, tourIm
             date: date.toISOString(),
             image: tourImage
         })
+
+        // Open the cart automatically
+        openCart()
 
         toast({
             title: t('booking.success'),
@@ -85,10 +125,11 @@ export default function SingleTourSelector({ tourId, tourName, tourPrice, tourIm
         // Reset form
         setDate(undefined)
         setPeople("2")
+        setEmail("")
     }
 
     return (
-        <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto] items-end">
+        <div className="grid gap-4 md:grid-cols-[1fr_1fr_1fr_auto] items-end">
             <div className="space-y-2">
                 <label className="text-lg text-white/80">{t('booking.date')}:</label>
                 <Popover>
@@ -135,6 +176,19 @@ export default function SingleTourSelector({ tourId, tourName, tourPrice, tourIm
                         ))}
                     </SelectContent>
                 </Select>
+            </div>
+
+            <div className="space-y-2">
+                <label className="text-lg text-white/80">{t('Email')}:</label>
+                <div className="relative ">
+                    <Input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder={t('yo@gmail.com')}
+                        className="bg-white/10 border-white/20 text-white placeholder:text-white/60 hover:bg-white/20 h-[50px] w-full"
+                    />
+                </div>
             </div>
 
             <Button

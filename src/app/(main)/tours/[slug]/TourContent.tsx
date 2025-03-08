@@ -160,10 +160,10 @@ export default function TourContent({ slug }: TourContentProps) {
                 </div>
 
                 {/* Content */}
-                <div className="relative h-full flex flex-col justify-end">
-                    <div className="container mx-auto px-4 pb-20">
+                <div className="relative h-full flex flex-col mt-12 md:mt-20 justify-end">
+                    <div className="container mx-auto px-4 pb-12 md:pb-20">
                         <div className="max-w-4xl">
-                            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                            <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
                                 {product.name}
                             </h1>
                             <div className="flex items-baseline gap-2 mb-8">

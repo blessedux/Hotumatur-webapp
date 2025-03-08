@@ -1,0 +1,17 @@
+{
+    "date": "Date",
+    "people": "People",
+    "email": "Email",
+    "enterEmail": "Enter your email",
+    "selectDate": "Select date",
+    "selectPeople": "Select number of people",
+    "reserve": "Book now",
+    "success": "Booking initiated!",
+    "confirmationMessage": "You have selected {{tour}} for {{people}} people",
+    "continue": "Continue to payment",
+    "errors": {
+        "selectDateAndTour": "Please select a date and tour",
+        "futureDateRequired": "Date must be in the future",
+        "emailRequired": "Please enter your email"
+    }
+}
