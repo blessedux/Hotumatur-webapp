@@ -10,6 +10,7 @@ import SingleTourSelector from "@/components/SingleTourSelector";
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { Product } from "@/types/woocommerce";
+import { getCachedProduct, startBackgroundSync } from "@/services/translationCache.service";
 
 // Add direct translations for content that isn't being translated properly
 const DIRECT_TRANSLATIONS: Record<string, Record<string, string>> = {
@@ -370,6 +371,11 @@ export default function TourContent({ slug }: TourContentProps) {
     const currentLanguage = i18n.language;
     const [translationDebug, setTranslationDebug] = useState<any>(null);
 
+    // Start background sync on component mount
+    useEffect(() => {
+        startBackgroundSync();
+    }, []);
+
     // Force re-render when language changes
     useEffect(() => {
         // Log language change
@@ -388,82 +394,14 @@ export default function TourContent({ slug }: TourContentProps) {
 
                 console.log(`Fetching product with slug: ${slug}, language: ${currentLanguage}`);
 
-                // First, fetch the product from the WooCommerce API
-                const response = await fetch(`/api/products?slug=${encodeURIComponent(slug)}`, {
-                    // Add cache control headers to prevent caching
-                    headers: {
-                        'Cache-Control': 'no-cache, no-store, must-revalidate',
-                        'Pragma': 'no-cache',
-                        'Expires': '0'
-                    }
-                });
+                // Use the cached product service - this will return immediately if cached
+                const productData = await getCachedProduct(slug, currentLanguage);
 
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch product: ${response.status}`);
-                }
-
-                const products = await response.json();
-
-                if (!Array.isArray(products) || products.length === 0) {
+                if (!productData) {
                     throw new Error('Product not found');
                 }
 
-                let productData = products[0];
-
-                // Log the raw product data for debugging
-                console.log('Raw product data:', productData);
-
-                // If the language is not Spanish, translate the product
-                if (currentLanguage !== 'es') {
-                    console.log('Translating product to:', currentLanguage);
-                    try {
-                        // First try using our translation service
-                        console.log('Sending translation request to /api/translate');
-                        const translateResponse = await fetch('/api/translate', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                                'Pragma': 'no-cache',
-                                'Expires': '0'
-                            },
-                            body: JSON.stringify({
-                                product: productData,
-                                type: 'product',
-                                targetLang: currentLanguage,
-                                sourceLang: 'es'
-                            })
-                        });
-
-                        console.log('Translation response status:', translateResponse.status);
-
-                        if (translateResponse.ok) {
-                            const translatedData = await translateResponse.json();
-                            console.log('Translation response received');
-
-                            if (translatedData.result) {
-                                productData = translatedData.result;
-                                console.log('Successfully translated product data');
-                            } else {
-                                console.warn('Translation response did not contain result:', translatedData);
-                                // Fallback to direct translation
-                                console.log('Falling back to direct translation');
-                                productData = directTranslateProduct(productData, currentLanguage);
-                            }
-                        } else {
-                            const errorText = await translateResponse.text();
-                            console.error('Translation request failed:', errorText);
-                            // Fallback to direct translation
-                            console.log('Falling back to direct translation after API error');
-                            productData = directTranslateProduct(productData, currentLanguage);
-                        }
-                    } catch (translateError) {
-                        console.error('Error translating product:', translateError);
-                        // Fallback to direct translation
-                        console.log('Falling back to direct translation after exception');
-                        productData = directTranslateProduct(productData, currentLanguage);
-                    }
-                }
+                console.log(`Got product data for ${slug} in ${currentLanguage}:`, productData.name);
 
                 // Process the product data
                 const processedProduct = {
@@ -487,7 +425,7 @@ export default function TourContent({ slug }: TourContentProps) {
                     description: productData.description?.substring(0, 100) + '...',
                     shortDescription: productData.short_description?.substring(0, 100) + '...',
                     attributes: processedProduct.productAttributes,
-                    translationMethod: currentLanguage !== 'es' ? 'API Translation' : 'Original'
+                    translationMethod: currentLanguage !== 'es' ? 'Cached Translation' : 'Original'
                 });
 
                 // Log the processed product for debugging
@@ -505,59 +443,46 @@ export default function TourContent({ slug }: TourContentProps) {
         fetchProduct();
     }, [slug, currentLanguage]);
 
-    // Function to directly translate a product without using the API
-    function directTranslateProduct(product: any, language: string): any {
-        if (language === 'es') return product;
+    // Listen for translation updates
+    useEffect(() => {
+        const handleTranslationUpdate = (event: CustomEvent) => {
+            const { slug: updatedSlug, language } = event.detail;
+            if (updatedSlug === slug && language === currentLanguage) {
+                console.log(`Translation updated for ${slug}, refreshing product`);
+                // Refresh the product
+                getCachedProduct(slug, currentLanguage)
+                    .then(productData => {
+                        if (!productData) return;
 
-        console.log('Using direct translation for product');
+                        // Process the product data
+                        const processedProduct = {
+                            ...productData,
+                            productAttributes: productData.attributes.map((attr: any) => {
+                                const name = attr.name.charAt(0).toUpperCase() + attr.name.slice(1);
+                                const value = attr.options[0] || '';
 
-        // Create a deep copy of the product
-        const translatedProduct = JSON.parse(JSON.stringify(product));
+                                return {
+                                    name,
+                                    value
+                                };
+                            }),
+                            subtitulo: productData.meta_data?.find((meta: any) => meta.key === 'subtitulo')?.value || ''
+                        };
 
-        // Translate name
-        translatedProduct.name = directTranslate(product.name, language);
-
-        // Translate description (HTML content)
-        translatedProduct.description = translateHtml(product.description, language);
-
-        // Translate short description (HTML content)
-        translatedProduct.short_description = translateHtml(product.short_description, language);
-
-        // Translate attributes
-        if (product.attributes && Array.isArray(product.attributes)) {
-            for (let i = 0; i < product.attributes.length; i++) {
-                // Translate attribute name
-                translatedProduct.attributes[i].name = directTranslate(
-                    product.attributes[i].name,
-                    language
-                );
-
-                // Translate attribute options
-                if (product.attributes[i].options && Array.isArray(product.attributes[i].options)) {
-                    translatedProduct.attributes[i].options = product.attributes[i].options.map((option: string) =>
-                        directTranslate(option, language)
-                    );
-                }
+                        setProduct(processedProduct);
+                    })
+                    .catch(error => {
+                        console.error('Error refreshing product:', error);
+                    });
             }
-        }
+        };
 
-        // Translate meta data that might contain translatable content
-        if (product.meta_data && Array.isArray(product.meta_data)) {
-            for (let i = 0; i < product.meta_data.length; i++) {
-                const meta = product.meta_data[i];
+        window.addEventListener('translation-updated', handleTranslationUpdate as EventListener);
 
-                // Only translate string values that look like they contain text
-                if (typeof meta.value === 'string' && meta.value.length > 3 && /[a-zA-Z]/.test(meta.value)) {
-                    translatedProduct.meta_data[i].value = directTranslate(
-                        meta.value,
-                        language
-                    );
-                }
-            }
-        }
-
-        return translatedProduct;
-    }
+        return () => {
+            window.removeEventListener('translation-updated', handleTranslationUpdate as EventListener);
+        };
+    }, [slug, currentLanguage]);
 
     if (loading) return (
         <div className="min-h-screen pt-[120px] flex items-center justify-center">

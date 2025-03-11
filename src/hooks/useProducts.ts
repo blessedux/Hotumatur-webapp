@@ -1,62 +1,123 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Product } from '@/types/woocommerce';
+import { useTranslation } from 'react-i18next';
+import { getCachedProducts, initCache, startBackgroundSync } from '@/services/translationCache.service';
 
-export function useProducts(categoryId?: number) { // Accept category ID directly
+export function useProducts(categoryId?: number, isMounted: boolean = true) {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const { i18n } = useTranslation();
+    const currentLanguage = i18n.language;
 
+    // Initialize translation cache
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        if (typeof window !== 'undefined' && isMounted) {
+            initCache();
+        }
+    }, [isMounted]);
 
-                // Use category ID directly in API call
-                let apiUrl = '/api/products';
-                if (categoryId) {
-                    apiUrl += `?category=${categoryId}`;
-                }
+    // Function to fetch products
+    const fetchProducts = useCallback(async () => {
+        if (!isMounted) {
+            setLoading(false);
+            return;
+        }
 
-                console.log("🔄 Fetching products from:", apiUrl);
+        setLoading(true);
+        setError(null);
 
-                const response = await fetch(apiUrl, {
-                    headers: {
-                        'Authorization': `Basic ${btoa('consumer_key:consumer_secret')}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
+        try {
+            // Build API URL with simple query parameters
+            let apiUrl = '/api/products';
+            const params = new URLSearchParams();
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+            // Add language parameter
+            params.append('lang', 'es'); // Always fetch Spanish first, we'll translate client-side
 
-                const data = await response.json();
-                console.log("📦 Raw API Response:", data);
-
-                if (!Array.isArray(data)) {
-                    console.error("❌ ERROR: API response is not an array!");
-                    return;
-                }
-
-                // Store all products or filter by category if categoryId is provided
-                const filteredProducts = categoryId
-                    ? data.filter((product: any) =>
-                        product.categories.some((c: any) => c.id === categoryId)
-                    )
-                    : data;
-
-                console.log("✅ Filtered Products:", filteredProducts);
-                setProducts(filteredProducts);
-            } catch (err) {
-                setError(`Failed to fetch products: ${(err as Error).message}`);
-                console.error("❌ Fetch Error:", err);
-            } finally {
-                setLoading(false);
+            // Add category parameter if provided
+            if (categoryId) {
+                params.append('category', categoryId.toString());
             }
+
+            // Add parameters to URL
+            if (params.toString()) {
+                apiUrl += `?${params.toString()}`;
+            }
+
+            console.log(`[useProducts] Fetching products from: ${apiUrl}`);
+
+            // Simple fetch with minimal options
+            const response = await fetch(apiUrl, {
+                cache: 'no-store'
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Validate the response format
+            if (!Array.isArray(data)) {
+                throw new Error('Invalid API response format');
+            }
+
+            console.log(`[useProducts] Successfully fetched ${data.length} products`);
+
+            // Use translation cache service to get translated products
+            const translatedProducts = await getCachedProducts(data, currentLanguage);
+
+            setProducts(translatedProducts);
+            setLoading(false);
+        } catch (err) {
+            console.error('[useProducts] Error fetching products:', err);
+            setError(err instanceof Error ? err.message : 'An unknown error occurred');
+            setLoading(false);
+        }
+    }, [categoryId, currentLanguage, isMounted]);
+
+    // Fetch products when component mounts or when dependencies change
+    useEffect(() => {
+        if (isMounted) {
+            fetchProducts();
+
+            // Safety timeout to prevent infinite loading
+            const safetyTimeout = setTimeout(() => {
+                setLoading(false);
+            }, 10000);
+
+            return () => clearTimeout(safetyTimeout);
+        } else {
+            setLoading(false);
+        }
+    }, [fetchProducts, isMounted]);
+
+    // Listen for translation updates
+    useEffect(() => {
+        if (!isMounted) return;
+
+        const handleTranslationUpdate = (event: Event) => {
+            const customEvent = event as CustomEvent;
+            console.log('[useProducts] Translation update event received:', customEvent.detail);
+
+            // Refetch products when translations are updated
+            fetchProducts();
         };
 
-        fetchProducts();
-    }, [categoryId]);
+        window.addEventListener('translation-updated', handleTranslationUpdate);
 
-    return { products, loading, error };
+        return () => {
+            window.removeEventListener('translation-updated', handleTranslationUpdate);
+        };
+    }, [fetchProducts, isMounted]);
+
+    // Start background sync for translations
+    useEffect(() => {
+        if (isMounted && typeof window !== 'undefined') {
+            startBackgroundSync();
+        }
+    }, [isMounted]);
+
+    return { products, loading, error, refetch: fetchProducts };
 }

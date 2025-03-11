@@ -1,6 +1,13 @@
 import { translate } from '@vitalets/google-translate-api';
 
-// Cache for translations to avoid repeated API calls
+// Type definitions
+type TranslationOptions = {
+    from?: string;
+    to?: string;
+    raw?: boolean;
+};
+
+// Cache for translations to avoid duplicate requests
 const translationCache: Record<string, string> = {};
 
 // Add retry mechanism for translation
@@ -35,65 +42,50 @@ function saveTranslationsToCache() {
 // Throttle translation requests to avoid rate limiting
 const pendingTranslations: Record<string, Promise<string>> = {};
 
-export async function translateText(text: string, targetLang: string = 'en', sourceLang: string = 'es'): Promise<string> {
-    if (!text || targetLang === sourceLang) return text;
+/**
+ * Translate text from one language to another
+ * @param text Text to translate
+ * @param targetLang Target language code (default: 'en')
+ * @param sourceLang Source language code (default: 'es')
+ * @returns Translated text
+ */
+export async function translateText(
+    text: string,
+    targetLang: string = 'en',
+    sourceLang: string = 'es'
+): Promise<string> {
+    if (!text || text.trim() === '') {
+        return text;
+    }
+
+    // If source and target languages are the same, return the original text
+    if (targetLang === sourceLang) {
+        return text;
+    }
 
     // Create a cache key
     const cacheKey = `${sourceLang}:${targetLang}:${text}`;
 
-    // Check if translation is already cached
+    // Check if translation is already in cache
     if (translationCache[cacheKey]) {
         return translationCache[cacheKey];
     }
 
-    // Check if there's already a pending translation for this text
-    if (pendingTranslations[cacheKey]) {
-        return pendingTranslations[cacheKey];
+    try {
+        // Translate the text
+        const result = await translate(text, {
+            from: sourceLang,
+            to: targetLang,
+        });
+
+        // Cache the result
+        translationCache[cacheKey] = result.text;
+
+        return result.text;
+    } catch (error) {
+        console.error('Translation error:', error);
+        return text; // Return original text on error
     }
-
-    // Create a new translation promise
-    const translationPromise = (async () => {
-        try {
-            // Use direct translation for short texts to avoid API calls
-            if (text.length < 5) {
-                return text;
-            }
-
-            const result = await translate(text, { from: sourceLang, to: targetLang });
-
-            // Cache the result
-            translationCache[cacheKey] = result.text;
-
-            // Save to localStorage every 10 new translations
-            if (Object.keys(translationCache).length % 10 === 0) {
-                saveTranslationsToCache();
-            }
-
-            return result.text;
-        } catch (error) {
-            console.error('Translation error:', error);
-
-            // Retry logic
-            if (retryCount < MAX_RETRIES) {
-                retryCount++;
-                await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
-                const result = await translateText(text, targetLang, sourceLang);
-                retryCount = 0; // Reset retry count on success
-                return result;
-            }
-
-            retryCount = 0; // Reset retry count
-            return text; // Return original text if translation fails
-        } finally {
-            // Remove from pending translations
-            delete pendingTranslations[cacheKey];
-        }
-    })();
-
-    // Store the promise
-    pendingTranslations[cacheKey] = translationPromise;
-
-    return translationPromise;
 }
 
 // Batch translation to reduce API calls
@@ -195,84 +187,205 @@ export async function translateHtml(html: string, targetLang: string = 'en', sou
     }
 }
 
-export async function translateProduct(product: any, targetLang: string = 'en', sourceLang: string = 'es'): Promise<any> {
-    if (!product || targetLang === sourceLang) return product;
-
-    try {
-        // Create a deep copy of the product
-        const translatedProduct = JSON.parse(JSON.stringify(product));
-
-        // Collect all texts to translate
-        const textsToTranslate: string[] = [];
-        const textPositions: { type: string; index?: number; field: string }[] = [];
-
-        // Add name
-        textsToTranslate.push(product.name);
-        textPositions.push({ type: 'main', field: 'name' });
-
-        // Add description and short description
-        if (product.description) {
-            textsToTranslate.push(product.description);
-            textPositions.push({ type: 'main', field: 'description' });
-        }
-
-        if (product.short_description) {
-            textsToTranslate.push(product.short_description);
-            textPositions.push({ type: 'main', field: 'short_description' });
-        }
-
-        // Add attributes
-        if (product.attributes && Array.isArray(product.attributes)) {
-            for (let i = 0; i < product.attributes.length; i++) {
-                // Add attribute name
-                textsToTranslate.push(product.attributes[i].name);
-                textPositions.push({ type: 'attribute', index: i, field: 'name' });
-
-                // Add attribute options
-                if (product.attributes[i].options && Array.isArray(product.attributes[i].options)) {
-                    for (let j = 0; j < product.attributes[i].options.length; j++) {
-                        textsToTranslate.push(product.attributes[i].options[j]);
-                        textPositions.push({ type: 'option', index: i, field: `options[${j}]` });
-                    }
-                }
-            }
-        }
-
-        // Add meta data
-        if (product.meta_data && Array.isArray(product.meta_data)) {
-            for (let i = 0; i < product.meta_data.length; i++) {
-                const meta = product.meta_data[i];
-                // Only translate string values that look like they contain text
-                if (typeof meta.value === 'string' && meta.value.length > 3 && /[a-zA-Z]/.test(meta.value)) {
-                    textsToTranslate.push(meta.value);
-                    textPositions.push({ type: 'meta', index: i, field: 'value' });
-                }
-            }
-        }
-
-        // Translate all texts in one batch
-        const translatedTexts = await batchTranslateText(textsToTranslate, targetLang, sourceLang);
-
-        // Apply translations
-        for (let i = 0; i < textPositions.length; i++) {
-            const pos = textPositions[i];
-            const translatedText = translatedTexts[i];
-
-            if (pos.type === 'main') {
-                translatedProduct[pos.field] = translatedText;
-            } else if (pos.type === 'attribute' && pos.index !== undefined) {
-                translatedProduct.attributes[pos.index].name = translatedText;
-            } else if (pos.type === 'option' && pos.index !== undefined) {
-                const optionIndex = parseInt(pos.field.match(/\[(\d+)\]/)?.[1] || '0');
-                translatedProduct.attributes[pos.index].options[optionIndex] = translatedText;
-            } else if (pos.type === 'meta' && pos.index !== undefined) {
-                translatedProduct.meta_data[pos.index].value = translatedText;
-            }
-        }
-
-        return translatedProduct;
-    } catch (error) {
-        console.error('Product translation error:', error);
-        return product; // Return original product if translation fails
+/**
+ * Translate a product object from one language to another
+ * @param product Product object to translate
+ * @param targetLang Target language code (default: 'en')
+ * @param sourceLang Source language code (default: 'es')
+ * @returns Translated product object
+ */
+export async function translateProduct(
+    product: any,
+    targetLang: string = 'en',
+    sourceLang: string = 'es'
+): Promise<any> {
+    if (!product) {
+        return product;
     }
+
+    // If source and target languages are the same, return the original product
+    if (targetLang === sourceLang) {
+        return product;
+    }
+
+    // Check if product already has translations in meta_data
+    const metaTranslations = getMetaTranslations(product, targetLang);
+
+    // Create a deep copy of the product to avoid modifying the original
+    const translatedProduct = JSON.parse(JSON.stringify(product));
+
+    // Apply meta translations if available
+    if (metaTranslations.hasTranslations) {
+        if (metaTranslations.name) {
+            translatedProduct.name = metaTranslations.name;
+        }
+
+        if (metaTranslations.description) {
+            translatedProduct.description = metaTranslations.description;
+        }
+
+        if (metaTranslations.shortDescription) {
+            translatedProduct.short_description = metaTranslations.shortDescription;
+        }
+
+        // Add translation source info
+        translatedProduct._translationSource = 'meta_data';
+    } else {
+        // Translate main product fields
+        try {
+            // Translate name
+            if (translatedProduct.name) {
+                translatedProduct.name = await translateText(
+                    translatedProduct.name,
+                    targetLang,
+                    sourceLang
+                );
+            }
+
+            // Translate description
+            if (translatedProduct.description) {
+                translatedProduct.description = await translateText(
+                    translatedProduct.description,
+                    targetLang,
+                    sourceLang
+                );
+            }
+
+            // Translate short description
+            if (translatedProduct.short_description) {
+                translatedProduct.short_description = await translateText(
+                    translatedProduct.short_description,
+                    targetLang,
+                    sourceLang
+                );
+            }
+
+            // Add translation source info
+            translatedProduct._translationSource = 'api';
+        } catch (error) {
+            console.error('Error translating product fields:', error);
+        }
+    }
+
+    // Translate attributes
+    if (Array.isArray(translatedProduct.attributes)) {
+        try {
+            for (let i = 0; i < translatedProduct.attributes.length; i++) {
+                const attribute = translatedProduct.attributes[i];
+
+                // Check if attribute has translation in meta_data
+                const attributeKey = `attribute_${attribute.name.toLowerCase()}_${targetLang}`;
+                const attributeTranslation = product.meta_data?.find(
+                    (meta: any) => meta.key === attributeKey
+                );
+
+                if (attributeTranslation?.value) {
+                    // Use translation from meta_data
+                    attribute.name = attributeTranslation.value;
+                } else if (attribute.name) {
+                    // Translate attribute name
+                    attribute.name = await translateText(
+                        attribute.name,
+                        targetLang,
+                        sourceLang
+                    );
+                }
+
+                // Translate attribute options
+                if (Array.isArray(attribute.options)) {
+                    const translatedOptions = [];
+
+                    for (const option of attribute.options) {
+                        // Check if option has translation in meta_data
+                        const optionKey = `attribute_option_${attribute.name.toLowerCase()}_${option.toLowerCase()}_${targetLang}`;
+                        const optionTranslation = product.meta_data?.find(
+                            (meta: any) => meta.key === optionKey
+                        );
+
+                        if (optionTranslation?.value) {
+                            // Use translation from meta_data
+                            translatedOptions.push(optionTranslation.value);
+                        } else {
+                            // Translate option
+                            const translatedOption = await translateText(
+                                option,
+                                targetLang,
+                                sourceLang
+                            );
+                            translatedOptions.push(translatedOption);
+                        }
+                    }
+
+                    attribute.options = translatedOptions;
+                }
+            }
+        } catch (error) {
+            console.error('Error translating product attributes:', error);
+        }
+    }
+
+    // Add debug info
+    translatedProduct._debug = {
+        ...(translatedProduct._debug || {}),
+        translatedAt: new Date().toISOString(),
+        translatedFrom: sourceLang,
+        translatedTo: targetLang
+    };
+
+    return translatedProduct;
+}
+
+/**
+ * Extract translations from product meta_data
+ * @param product Product object
+ * @param lang Target language code
+ * @returns Object with extracted translations
+ */
+function getMetaTranslations(product: any, lang: string): {
+    hasTranslations: boolean;
+    name?: string;
+    description?: string;
+    shortDescription?: string;
+} {
+    if (!product?.meta_data || !Array.isArray(product.meta_data)) {
+        return { hasTranslations: false };
+    }
+
+    const result = {
+        hasTranslations: false,
+        name: undefined as string | undefined,
+        description: undefined as string | undefined,
+        shortDescription: undefined as string | undefined,
+    };
+
+    // Check for name translation
+    const nameTranslation = product.meta_data.find(
+        (meta: any) => meta.key === `name_${lang}` || meta.key === `_name_${lang}`
+    );
+    if (nameTranslation?.value) {
+        result.name = nameTranslation.value;
+        result.hasTranslations = true;
+    }
+
+    // Check for description translation
+    const descriptionTranslation = product.meta_data.find(
+        (meta: any) => meta.key === `description_${lang}` || meta.key === `_description_${lang}`
+    );
+    if (descriptionTranslation?.value) {
+        result.description = descriptionTranslation.value;
+        result.hasTranslations = true;
+    }
+
+    // Check for short description translation
+    const shortDescriptionTranslation = product.meta_data.find(
+        (meta: any) =>
+            meta.key === `short_description_${lang}` ||
+            meta.key === `_short_description_${lang}`
+    );
+    if (shortDescriptionTranslation?.value) {
+        result.shortDescription = shortDescriptionTranslation.value;
+        result.hasTranslations = true;
+    }
+
+    return result;
 }

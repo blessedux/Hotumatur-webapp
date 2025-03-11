@@ -49,13 +49,14 @@ console.log('Merged translations:', {
     }
 });
 
+// Initialize i18n
 i18n
     .use(initReactI18next)
     .use(LanguageDetector)
     .use(Backend)
     .init({
         resources,
-        debug: process.env.NODE_ENV === 'development',
+        debug: false, // Set to false to avoid unnecessary console logs
         fallbackLng: 'es',
         supportedLngs: ['es', 'en'],
         defaultNS: 'common',
@@ -65,8 +66,9 @@ i18n
             escapeValue: false,
         },
         detection: {
-            order: ['localStorage', 'navigator'],
+            order: ['htmlTag', 'localStorage', 'navigator'],
             caches: ['localStorage'],
+            lookupLocalStorage: 'i18nextLng',
         },
         react: {
             useSuspense: false,
@@ -75,5 +77,13 @@ i18n
             loadPath: '/locales/{{lng}}/{{ns}}.json',
         }
     });
+
+// Force initial language to match HTML lang attribute to avoid hydration mismatch
+if (typeof document !== 'undefined') {
+    const htmlLang = document.documentElement.lang || 'es';
+    if (i18n.language !== htmlLang) {
+        i18n.changeLanguage(htmlLang);
+    }
+}
 
 export default i18n; 

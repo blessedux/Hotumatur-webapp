@@ -129,7 +129,7 @@ export default function SingleTourSelector({ tourId, tourName, tourPrice, tourIm
     }
 
     return (
-        <div className="grid gap-4 md:grid-cols-[1fr_1fr_1fr_auto] items-end">
+        <div className="grid gap-4 md:grid-cols-[0.5fr_0.5fr_1fr] items-end">
             <div className="space-y-2">
                 <label className="text-lg text-white/80">{t('date', { ns: 'booking' })}:</label>
                 <Popover>
@@ -192,7 +192,7 @@ export default function SingleTourSelector({ tourId, tourName, tourPrice, tourIm
             </div>
 
             <Button
-                className="bg-hotumatur-primary text-white/80 hover:bg-hotumatur-primary/80 self-end"
+                className="bg-hotumatur-primary text-white/80 hover:bg-hotumatur-primary/80 self-end md:col-span-3"
                 onClick={handleReservation}
             >
                 {t('reserve', { ns: 'booking' })}

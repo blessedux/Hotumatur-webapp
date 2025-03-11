@@ -16,10 +16,12 @@ import { useRouter } from 'next/navigation';
 import SkeletonForm from '@/components/SkeletonForm';
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useTranslation } from 'react-i18next';
+import { Input } from '@/components/ui/input';
 
 const TourSelector = () => {
     const [date, setDate] = useState<Date>();
     const [people, setPeople] = useState("2");
+    const [email, setEmail] = useState("");
     const [selectedTourId, setSelectedTourId] = useState("");
     const { products: tours, loading, error } = useProducts();
     const { addReservation } = useReservations();
@@ -38,7 +40,7 @@ const TourSelector = () => {
         }
     }, [tours]);
 
-    const handleReservation = () => {
+    const handleReservation = async () => {
         if (!date || !selectedTourId) {
             toast({
                 title: t('error', { ns: 'common' }),
@@ -60,6 +62,16 @@ const TourSelector = () => {
             return;
         }
 
+        // Validate email
+        if (!email) {
+            toast({
+                title: t('error', { ns: 'common' }),
+                description: t('errors.emailRequired', { ns: 'booking' }),
+                variant: "destructive",
+            });
+            return;
+        }
+
         const selectedTour = tours.find((tour) => tour.id.toString() === selectedTourId);
 
         if (!selectedTour) {
@@ -69,6 +81,29 @@ const TourSelector = () => {
                 variant: "destructive",
             });
             return;
+        }
+
+        // Save lead first
+        try {
+            const leadResponse = await fetch('/api/leads', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                    tourId: selectedTour.id,
+                    tourName: selectedTour.name,
+                    date: date.toISOString(),
+                    people: parseInt(people)
+                })
+            });
+
+            if (!leadResponse.ok) {
+                console.error('Failed to save lead');
+            }
+        } catch (error) {
+            console.error('Error saving lead:', error);
         }
 
         const reservationId = generateFlightLikeId();
@@ -103,6 +138,7 @@ const TourSelector = () => {
         setDate(undefined);
         setSelectedTourId("");
         setPeople("2");
+        setEmail("");
     };
 
     if (loading) {
@@ -124,7 +160,7 @@ const TourSelector = () => {
     const dateLocale = i18n.language === 'en' ? enUS : es;
 
     return (
-        <div className="grid gap-4 md:grid-cols-[1fr_1.5fr_1fr_auto] items-end">
+        <div className="grid gap-4 md:grid-cols-[0.5fr_1fr_0.5fr_1fr] items-end">
             <div className="space-y-2">
                 <label className="text-lg text-white/80">{t('date', { ns: 'booking' })}:</label>
                 <Popover>
@@ -189,8 +225,19 @@ const TourSelector = () => {
                 </Select>
             </div>
 
+            <div className="space-y-2">
+                <label className="text-lg text-white/80">{t('email', { ns: 'booking' })}:</label>
+                <Input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={t('enterEmail', { ns: 'booking' })}
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/60 hover:bg-white/20 h-[50px] w-full"
+                />
+            </div>
+
             <Button
-                className="bg-hotumatur-primary text-white/80 hover:bg-hotumatur-primary/80 self-end"
+                className="bg-hotumatur-primary text-white/80 hover:bg-hotumatur-primary/80 self-end md:col-span-4"
                 onClick={handleReservation}
             >
                 {t('reserve', { ns: 'booking' })}
