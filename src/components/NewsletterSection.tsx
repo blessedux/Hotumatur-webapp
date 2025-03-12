@@ -3,8 +3,30 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Send } from 'lucide-react'; // Assuming you're using lucide-react for icons.
+import { useDirectTranslation } from '@/hooks/useTranslatedText';
 
 export default function NewsletterSection() {
+    // Use direct translations for all text elements
+    const titleText = useDirectTranslation(
+        "Subscribe to our Newsletter",
+        "Suscríbete a nuestro Newsletter"
+    );
+
+    const descriptionText = useDirectTranslation(
+        "Join our community and receive special offers, travel tips, and the most authentic stories from the magical Easter Island in your email.",
+        "Únete a nuestra comunidad y recibe en tu correo ofertas especiales, consejos de viaje y las historias más auténticas de la mágica Isla de Pascua."
+    );
+
+    const placeholderText = useDirectTranslation(
+        "Your Email Address",
+        "Tu dirección de Email"
+    );
+
+    const buttonText = useDirectTranslation(
+        "Subscribe",
+        "Suscribir"
+    );
+
     return (
         <section
             className="bg-zinc-900 py-16 px-4 relative bg-cover bg-center mx-4 my-8 rounded-2xl overflow-hidden"
@@ -20,17 +42,16 @@ export default function NewsletterSection() {
             <div className="relative container mx-auto px-4">
                 <div className="max-w-2xl mx-auto text-center">
                     <h2 className="text-3xl font-bold text-white mb-4">
-                        Suscríbete a nuestro Newsletter
+                        {titleText}
                     </h2>
                     <p className="text-white mb-8">
-                        Únete a nuestra comunidad y recibe en tu correo ofertas especiales,
-                        consejos de viaje y las historias más auténticas de la mágica Isla de Pascua.
+                        {descriptionText}
                     </p>
 
                     {/* Input and Button */}
                     <div className="flex gap-2 max-w-md mx-auto">
                         <Input
-                            placeholder="Tu dirección de Email"
+                            placeholder={placeholderText}
                             type="email"
                             className="bg-white px-6 py-2"
                         />
@@ -39,7 +60,7 @@ export default function NewsletterSection() {
                             className="bg-blue-600 hover:bg-blue-700 text-white flex items-center w-auto px-6 h-10"
                         >
                             <Send className="h-5 w-5" />
-                            Suscribir
+                            {buttonText}
                         </Button>
                     </div>
                 </div>
