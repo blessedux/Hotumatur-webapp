@@ -12,6 +12,7 @@ import { GiMoai } from "react-icons/gi";
 import { format, parseISO } from 'date-fns'
 import { es, enUS } from 'date-fns/locale'
 import { useTranslation } from 'react-i18next'
+import { useDirectTranslation } from '@/hooks/useTranslatedText'
 
 export default function ReservationIcon() {
     const { reservations, removeReservation } = useReservations()
@@ -20,6 +21,52 @@ export default function ReservationIcon() {
     const { t, i18n } = useTranslation(['booking', 'common'])
     const [isMobile, setIsMobile] = useState(false)
     const [currentLanguage, setCurrentLanguage] = useState(i18n.language)
+
+    // Use our custom hook for direct translations
+    const reservationsText = useDirectTranslation(
+        "Reservations",
+        "Reservas"
+    );
+
+    const yourAdventuresText = useDirectTranslation(
+        "Your Adventures",
+        "Tus Aventuras"
+    );
+
+    const closeText = useDirectTranslation(
+        "Close",
+        "Cerrar"
+    );
+
+    const forText = useDirectTranslation(
+        "for",
+        "para"
+    );
+
+    const personText = useDirectTranslation(
+        "person",
+        "persona"
+    );
+
+    const peopleText = useDirectTranslation(
+        "people",
+        "personas"
+    );
+
+    const dateText = useDirectTranslation(
+        "Date",
+        "Fecha"
+    );
+
+    const totalToPayText = useDirectTranslation(
+        "Total to pay",
+        "Total a pagar"
+    );
+
+    const continueToPayText = useDirectTranslation(
+        "Continue to payment",
+        "Continuar al pago"
+    );
 
     // Get the appropriate date locale based on language
     const dateLocale = i18n.language === 'en' ? enUS : es;
@@ -81,18 +128,15 @@ export default function ReservationIcon() {
         }, 0);
     };
 
-    // For debugging
-    console.log("Current language in ReservationIcon:", i18n.language);
-
     return reservations.length > 0 ? (
         <div className="relative" ref={dropdownRef}>
             <animated.div style={iconAnimation}>
                 <button
                     onClick={() => toggleCart()}
                     className="relative inline-flex items-center text-white text-black/80"
-                    aria-label={t('viewReservations', { ns: 'booking' })}
+                    aria-label={reservationsText}
                 >
-                    <span className="hidden md:inline-block mr-1">{t('reservations', { ns: 'booking' })}</span>
+                    <span className="hidden md:inline-block mr-1">{reservationsText}</span>
                     <GiMoai className="w-8 h-8 transform scale-x-[-1] text-gray-800/90" />
                     {reservations.length > 0 && (
                         <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -120,11 +164,11 @@ export default function ReservationIcon() {
                 >
                     <Card className="p-4 shadow-lg">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="font-semibold">{t('yourAdventures', { ns: 'booking' })}:</h3>
+                            <h3 className="font-semibold">{yourAdventuresText}:</h3>
                             <button
                                 onClick={closeCart}
                                 className="text-gray-500/80 hover:text-gray-700"
-                                aria-label={t('close', { ns: 'common' })}
+                                aria-label={closeText}
                             >
                                 <X size={16} />
                             </button>
@@ -140,10 +184,10 @@ export default function ReservationIcon() {
                                         <div className="flex justify-between items-center mt-1">
                                             <div className="space-y-1">
                                                 <p className="text-sm text-gray-500">
-                                                    {t('for', { ns: 'booking' })} {reservation.quantity} {reservation.quantity === 1 ? t('person', { ns: 'booking' }) : t('people', { ns: 'booking' })}
+                                                    {forText} {reservation.quantity} {reservation.quantity === 1 ? personText : peopleText}
                                                 </p>
                                                 <p className="text-sm text-gray-500">
-                                                    {t('date', { ns: 'booking' })}: {format(parseISO(reservation.date), dateFormatPattern, { locale: dateLocale })}
+                                                    {dateText}: {format(parseISO(reservation.date), dateFormatPattern, { locale: dateLocale })}
                                                 </p>
                                             </div>
                                             <p className="text-sm font-medium">
@@ -165,7 +209,7 @@ export default function ReservationIcon() {
                         </div>
                         <div className="mt-4 pt-4 border-t border-gray-200">
                             <div className="flex justify-between items-center mb-4">
-                                <span className="font-semibold">{t('totalToPay', { ns: 'booking' })}:</span>
+                                <span className="font-semibold">{totalToPayText}:</span>
                                 <span className="font-bold text-lg">
                                     ${calculateTotal().toLocaleString(i18n.language === 'en' ? 'en-US' : 'es-CL')}
                                 </span>
@@ -175,7 +219,7 @@ export default function ReservationIcon() {
                                 className="w-full bg-hotumatur-primary text-white py-2 px-4 rounded-md text-center block hover:bg-hotumatur-primary/90"
                                 onClick={closeCart}
                             >
-                                {t('continueToPay', { ns: 'booking' })}
+                                {continueToPayText}
                             </Link>
                         </div>
                     </Card>

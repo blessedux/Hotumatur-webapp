@@ -11,6 +11,7 @@ import { GiMoai } from "react-icons/gi";
 import { usePathname } from "next/navigation";
 import { useTranslation } from 'react-i18next';
 import { useCart } from '@/context/CartContext';
+import { useDirectTranslation } from '@/hooks/useTranslatedText';
 
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -19,12 +20,70 @@ export default function NavBar() {
     const { t } = useTranslation(['common', 'booking']);
     const { toggleCart } = useCart();
 
-    // Static menu items for Tours
-    const toursMenu = [
-        { name: "Tours Grupales", href: "/tours-grupales" },
-        { name: "Tours Privados", href: "/tours-privados" },
-        { name: "Tours Especiales", href: "/tours-especiales" },
+    // Use our custom hook for direct translations
+    const homeText = useDirectTranslation(
+        "Home",
+        "Inicio"
+    );
+
+    const toursText = useDirectTranslation(
+        "Tours",
+        "Tours"
+    );
+
+    const activitiesText = useDirectTranslation(
+        "Activities",
+        "Actividades"
+    );
+
+    const rentalsText = useDirectTranslation(
+        "Rentals",
+        "Arriendos"
+    );
+
+    const aboutText = useDirectTranslation(
+        "About Us",
+        "Nosotros"
+    );
+
+    const contactText = useDirectTranslation(
+        "Contact",
+        "Contacto"
+    );
+
+    const viewReservationsText = useDirectTranslation(
+        "View Reservations",
+        "Ver Reservas"
+    );
+
+    // Tours menu items with direct translations
+    const toursMenuItems = [
+        {
+            nameEn: "Group Tours",
+            nameEs: "Tours Grupales",
+            href: "/tours-grupales"
+        },
+        {
+            nameEn: "Private Tours",
+            nameEs: "Tours Privados",
+            href: "/tours-privados"
+        },
+        {
+            nameEn: "Special Tours",
+            nameEs: "Tours Especiales",
+            href: "/tours-especiales"
+        },
     ];
+
+    // Get translated tour names based on current language
+    const getToursMenu = () => {
+        return toursMenuItems.map(item => ({
+            name: useDirectTranslation(item.nameEn, item.nameEs),
+            href: item.href
+        }));
+    };
+
+    const toursMenu = getToursMenu();
 
     const menuAnimation = useSpring({
         transform: isOpen ? "translateX(0%)" : "translateX(100%)",
@@ -73,7 +132,7 @@ export default function NavBar() {
                             className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"} 
                             flex items-center border-2 border-current rounded-full px-4 py-1.5 transition-all duration-300 hover:border-blue-500 hover:text-blue-500`}
                         >
-                            <span>{t('tours')}</span>
+                            <span>{toursText}</span>
                             <ChevronDown className="ml-1 h-4 w-4" aria-hidden="true" />
                         </MenuButton>
 
@@ -106,16 +165,16 @@ export default function NavBar() {
                         </Transition>
                     </Menu>
                     <Link href="/actividades" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
-                        {t('activities')}
+                        {activitiesText}
                     </Link>
                     <Link href="/rentals" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
-                        {t('rentals')}
+                        {rentalsText}
                     </Link>
                     <Link href="/nosotros" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
-                        {t('about')}
+                        {aboutText}
                     </Link>
                     <Link href="/contacto" className={`${isWhiteBackground ? "text-black hover:text-gray-700" : "text-white hover:text-white/80"}`}>
-                        {t('contact')}
+                        {contactText}
                     </Link>
                     <ReservationIcon />
                 </div>
@@ -131,7 +190,7 @@ export default function NavBar() {
                             className={`${isWhiteBackground ? "text-black" : "text-white"} text-xl`}
                             onClick={() => setIsOpen(false)}
                         >
-                            {t('home')}
+                            {homeText}
                         </Link>
 
                         <div className="relative z-[200]">
@@ -142,7 +201,7 @@ export default function NavBar() {
                                     e.stopPropagation();
                                 }}
                             >
-                                {t('tours')}
+                                {toursText}
                                 <ChevronDown className="ml-1 h-4 w-4" aria-hidden="true" />
                             </button>
                             <div className="mt-2 space-y-2 p-4">
@@ -159,16 +218,16 @@ export default function NavBar() {
                             </div>
                         </div>
                         <Link href="/actividades" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
-                            {t('activities')}
+                            {activitiesText}
                         </Link>
                         <Link href="/rentals" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
-                            {t('rentals')}
+                            {rentalsText}
                         </Link>
                         <Link href="/nosotros" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
-                            {t('about')}
+                            {aboutText}
                         </Link>
                         <Link href="/contacto" className={`${isWhiteBackground ? "text-black" : "text-white"} text-lg`} onClick={() => setIsOpen(false)}>
-                            {t('contact')}
+                            {contactText}
                         </Link>
 
                         {/* Mobile Reservation Link in Menu */}
@@ -180,7 +239,7 @@ export default function NavBar() {
                                     setIsOpen(false);
                                 }}
                             >
-                                <span>{t('viewReservations', { ns: 'booking' })}</span>
+                                <span>{viewReservationsText}</span>
                                 <GiMoai className="w-6 h-6 transform scale-x-[-1] text-gray-800/90" />
                             </button>
                         </div>
