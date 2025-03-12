@@ -1,7 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import HotelCard from "@/components/HotelCard";
+import { useDirectTranslation } from '@/hooks/useTranslatedText';
 
 export default function Partners() {
+    // Use our custom hook for direct translations
+    const strategicAlliancesText = useDirectTranslation(
+        "Strategic Alliances",
+        "Alianzas estratégicas"
+    );
+
     return (
         <section className="container py-24 w-full">
 
@@ -12,7 +19,7 @@ export default function Partners() {
 
 
                     <section className="container py-24">
-                        <h2 className="text-3xl font-bold text-center mb-12">Alianzas estratégicas</h2>
+                        <h2 className="text-3xl font-bold text-center mb-12">{strategicAlliancesText}</h2>
                         <HotelCard />
                     </section>
                     {/* Right Section: Content */}

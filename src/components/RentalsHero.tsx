@@ -1,10 +1,29 @@
 'use client';
 
 import { FaTripadvisor } from 'react-icons/fa';
+import { useDirectTranslation } from '@/hooks/useTranslatedText';
 
 export default function RentalsHero() {
+    // Use our custom hook for direct translations
+    const titleText = useDirectTranslation(
+        "Experience the Magic of Rapa Nui with Us",
+        "Vive la Magia de Rapa Nui con Nosotros"
+    );
 
+    const descriptionText = useDirectTranslation(
+        "Discover Rapa Nui at your own pace with our rental options.",
+        "Descubre Rapa Nui a tu propio ritmo con nuestras opciones de alquiler."
+    );
 
+    const reviewText = useDirectTranslation(
+        "An unforgettable experience. Highly recommended!",
+        "Una experiencia inolvidable. ¡Altamente recomendado!"
+    );
+
+    const reviewsText = useDirectTranslation(
+        "Reviews",
+        "Reseñas"
+    );
 
     return (
         <div className="relative h-[calc(100dvh-80px)] md:h-[calc(100dvh-132px)] w-full overflow-hidden z-[1]">
@@ -28,14 +47,15 @@ export default function RentalsHero() {
             {/* Content */}
             <div className="relative z-10 flex h-full flex-col items-start justify-center px-4 text-white">
                 {/* Title */}
-                <h1 className="mb-4 text-left text-3xl md:text-5xl  font-bold">Vive la Magia de Rapa Nui con Nosotros</h1>
+                <h1 className="mb-4 text-left text-3xl md:text-5xl font-bold">
+                    {titleText}
+                </h1>
 
                 {/* Main Content */}
                 <div className="w-full max-w-2xl rounded-lg p-6 py-10">
                     <p className="text-left text-lg md:text-2xl leading-relaxed">
-                        Descubre Rapa Nui a tu propio ritmo con nuestras opciones de alquiler.
+                        {descriptionText}
                     </p>
-
                 </div>
 
                 {/* Review Card Positioned Slightly Right */}
@@ -47,20 +67,19 @@ export default function RentalsHero() {
                 >
                     <div className="flex items-center rounded-lg bg-white text-black p-4 shadow-md text-xs gap-3">
                         {/* TripAdvisor Icon */}
-
                         <FaTripadvisor className='w-9 h-9' />
 
                         {/* Card Content */}
                         <div>
                             <h3 className="font-bold text-sm mb-1">Hotumatur Rapa Nui</h3>
-                            <p className="text-gray-700 text-xs mb-1">4.5 ★ | 249 Reseñas</p>
+                            <p className="text-gray-700 text-xs mb-1">4.5 ★ | 249 {reviewsText}</p>
                             <p className="text-gray-500 italic">
-                                "Una experiencia inolvidable. ¡Altamente recomendado!"
+                                "{reviewText}"
                             </p>
                         </div>
                     </div>
                 </a>
             </div>
-        </div >
+        </div>
     );
 }

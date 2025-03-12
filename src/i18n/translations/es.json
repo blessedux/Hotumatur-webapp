@@ -1,0 +1,75 @@
+{
+    "common": {
+        "loading": "Cargando...",
+        "error": "Error",
+        "noProducts": "No se encontraron productos",
+        "showMore": "Mostrar más",
+        "showLess": "Mostrar menos",
+        "perPerson": "por persona",
+        "viewDetails": "Ver detalles",
+        "book": "Reservar ahora",
+        "search": "Buscar",
+        "menu": "Menú",
+        "close": "Cerrar",
+        "reviews": "Reseñas"
+    },
+    "hero": {
+        "subtitle": "Descubre Isla de Pascua",
+        "welcome": "Aventuras Guiadas por Expertos Locales"
+    },
+    "rentals": {
+        "hero": {
+            "title": "Vive la Magia de Rapa Nui con Nosotros",
+            "description": "Descubre Rapa Nui a tu propio ritmo con nuestras opciones de alquiler.",
+            "review": "Una experiencia inolvidable. ¡Altamente recomendado!"
+        }
+    },
+    "about": {
+        "hero": {
+            "title": "Nuestra Historia",
+            "description": "En Hotumatur trabajamos para preservar la cultura y compartir la magia de Rapa Nui con el mundo.",
+            "review": "Una experiencia inolvidable. ¡Altamente recomendado!"
+        }
+    },
+    "tour_section": {
+        "title": "Detalles del Tour",
+        "duration": "Duración",
+        "difficulty": "Dificultad",
+        "includes": "Incluye",
+        "notIncludes": "No Incluye",
+        "hours": "horas",
+        "days": "días"
+    },
+    "booking": {
+        "yourAdventures": "Tus Aventuras",
+        "totalToPay": "Total a pagar",
+        "checkout": "Pagar",
+        "date": "Fecha",
+        "time": "Hora",
+        "people": "Personas",
+        "total": "Total"
+    },
+    "footer": {
+        "rights": "Todos los derechos reservados",
+        "contact": "Contacto",
+        "about": "Sobre nosotros",
+        "terms": "Términos y condiciones",
+        "privacy": "Política de privacidad"
+    },
+    "product_attributes": {
+        "duration": "Duración",
+        "difficulty": "Dificultad",
+        "includes": "Incluye",
+        "not_included": "No Incluye",
+        "easy": "Fácil",
+        "moderate": "Moderado",
+        "difficult": "Difícil"
+    },
+    "tours": {
+        "complete_island_tour": "Tour de Isla Completo",
+        "sunrise_at_tongariki": "Amanecer en Tongariki",
+        "sunset_at_tahai": "Atardecer en Tahai",
+        "archaeological_tour": "Tour Arqueológico",
+        "anakena_tour": "Tour de Anakena"
+    }
+}

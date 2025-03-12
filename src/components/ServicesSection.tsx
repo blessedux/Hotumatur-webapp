@@ -8,19 +8,41 @@ import { FaMotorcycle } from "react-icons/fa6";
 import { BsBicycle } from "react-icons/bs";
 import { MdOutlineDirectionsCar } from "react-icons/md";
 import FadeIn from './FadeIn';
-import { useTranslation } from 'react-i18next';
+import { useDirectTranslation } from '@/hooks/useTranslatedText';
 
 
 
 export default function ServicesSection() {
-    // Specify 'common' as the namespace
-    const { t } = useTranslation('common');
+    // Use our custom hook for direct translations
+    const titleText = useDirectTranslation(
+        "Our Services",
+        "Nuestros Servicios"
+    );
 
-    // For debugging
-    console.log('Services title translation key:', 'services_section.title');
-    console.log('Services title translation value:', t('services_section.title'));
-    console.log('Services description translation key:', 'services_section.description');
-    console.log('Services description translation value:', t('services_section.description'));
+    const descriptionText = useDirectTranslation(
+        "We offer a variety of services to make your stay in Rapa Nui unforgettable. From guided tours to equipment rentals, we have everything you need.",
+        "Ofrecemos una variedad de servicios para hacer tu estadía en Rapa Nui inolvidable. Desde tours guiados hasta alquiler de equipos, tenemos todo lo que necesitas."
+    );
+
+    const carRentalText = useDirectTranslation(
+        "Car Rental",
+        "Alquiler de Autos"
+    );
+
+    const atvRentalText = useDirectTranslation(
+        "ATV Rental",
+        "Alquiler de Cuatrimotos"
+    );
+
+    const bikeRentalText = useDirectTranslation(
+        "Bike Rental",
+        "Alquiler de Bicicletas"
+    );
+
+    const snorkelRentalText = useDirectTranslation(
+        "Snorkel Equipment",
+        "Equipo de Snorkel"
+    );
 
     return (
         <div className="grid lg:grid-cols-2 gap-8 items-center p-6 lg:p-8 bg-white text-black max-w-6xl mx-auto">
@@ -28,27 +50,23 @@ export default function ServicesSection() {
             <div className="space-y-6">
                 <FadeIn>
                     <div className="space-y-4">
-
                         <h2 className="text-3xl lg:text-4xl font-bold font-satisfy leading-tight">
-                            {t('services_section.title')}
+                            {titleText}
                         </h2>
 
                         <p className="text-lg text-gray-600">
-                            {t('services_section.description')}
+                            {descriptionText}
                         </p>
                     </div>
                 </FadeIn>
 
                 <div className="grid">
-
                     <FadeIn>
                         <div className="flex items-center gap-4 p-2">
                             <div className="p-2 rounded-lg">
                                 <MdOutlineDirectionsCar className="w-6 h-6 text-gray-600" />
                             </div>
-
-                            <span>{t('services_section.rentals.car')}</span>
-
+                            <span>{carRentalText}</span>
                         </div>
                     </FadeIn>
                     <FadeIn>
@@ -56,7 +74,7 @@ export default function ServicesSection() {
                             <div className="p-2 rounded-lg">
                                 <FaMotorcycle className="w-6 h-6 text-gray-600" />
                             </div>
-                            <span>{t('services_section.rentals.atv')}</span>
+                            <span>{atvRentalText}</span>
                         </div>
                     </FadeIn>
                     <FadeIn>
@@ -64,16 +82,15 @@ export default function ServicesSection() {
                             <div className="p-2 rounded-lg">
                                 <BsBicycle className="w-6 h-6 text-gray-600" />
                             </div>
-                            <span>{t('services_section.rentals.bike')}</span>
+                            <span>{bikeRentalText}</span>
                         </div>
                     </FadeIn>
-
                     <FadeIn>
                         <div className="flex items-center gap-4 p-2">
                             <div className="p-2 rounded-lg">
                                 <Waves className="w-6 h-6 text-gray-600" />
                             </div>
-                            <span>{t('services_section.rentals.snorkel')}</span>
+                            <span>{snorkelRentalText}</span>
                         </div>
                     </FadeIn>
                 </div>

@@ -217,7 +217,7 @@ async function fetchAndCacheProduct(slug: string, lang: string = 'es'): Promise<
         try {
             // Fetch the product with a timeout
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+            const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
             console.log(`Fetching product (attempt ${retryCount + 1}): ${slug}`);
 
@@ -323,6 +323,8 @@ async function translateProductInBackground(product: any, targetLang: string): P
 async function translateProductsInBackground(products: any[], targetLang: string): Promise<void> {
     for (const product of products) {
         if (product && product.slug) {
+            // Add a small delay between translations to avoid overwhelming the server
+            await new Promise(resolve => setTimeout(resolve, 500));
             translateProductInBackground(product, targetLang);
         }
     }
@@ -336,52 +338,71 @@ export async function preloadAllProducts(): Promise<void> {
         cache.isPreloading = true;
         console.log('Preloading all products...');
 
-        // Fetch all products
-        const response = await fetch('/api/products', {
-            headers: {
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
-                'Expires': '0'
+        // Set up a timeout for the fetch
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+        try {
+            // Fetch all products
+            const response = await fetch('/api/products', {
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                },
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch products: ${response.status}`);
             }
-        });
 
-        if (!response.ok) {
-            throw new Error(`Failed to fetch products: ${response.status}`);
-        }
+            const products = await response.json();
 
-        const products = await response.json();
+            if (!Array.isArray(products)) {
+                throw new Error('Invalid response format');
+            }
 
-        if (!Array.isArray(products)) {
-            throw new Error('Invalid response format');
-        }
+            console.log(`Preloading ${products.length} products`);
 
-        console.log(`Preloading ${products.length} products`);
+            // Cache all products
+            const now = Date.now();
 
-        // Cache all products
-        const now = Date.now();
+            for (const product of products) {
+                if (product && product.slug) {
+                    // Cache the Spanish version
+                    if (!cache.products[product.slug]) {
+                        cache.products[product.slug] = {
+                            es: product,
+                            lastUpdated: now
+                        };
+                    } else {
+                        cache.products[product.slug].es = product;
+                        cache.products[product.slug].lastUpdated = now;
+                    }
 
-        for (const product of products) {
-            if (product && product.slug) {
-                // Cache the Spanish version
-                if (!cache.products[product.slug]) {
-                    cache.products[product.slug] = {
-                        es: product,
-                        lastUpdated: now
-                    };
-                } else {
-                    cache.products[product.slug].es = product;
-                    cache.products[product.slug].lastUpdated = now;
+                    // Translate to English in the background
+                    translateProductInBackground(product, 'en');
                 }
-
-                // Translate to English in the background
-                translateProductInBackground(product, 'en');
             }
+
+            // Save cache
+            saveCache();
+
+            console.log('Preloading complete');
+        } catch (error) {
+            clearTimeout(timeoutId);
+
+            // Handle timeout specifically
+            if (error instanceof DOMException && error.name === 'AbortError') {
+                console.error('Preloading products timed out');
+                throw new Error('Preloading products timed out');
+            }
+
+            throw error;
         }
-
-        // Save cache
-        saveCache();
-
-        console.log('Preloading complete');
     } catch (error) {
         console.error('Error preloading products:', error);
     } finally {
@@ -393,20 +414,19 @@ export async function preloadAllProducts(): Promise<void> {
 export function startBackgroundSync(): void {
     if (typeof window === 'undefined') return;
 
-    // Preload all products when the page loads
-    preloadAllProducts();
+    // Set up periodic sync with a longer interval
+    const syncInterval = 60 * 60 * 1000; // 60 minutes (increased from 30)
 
-    // Set up periodic sync
-    const syncInterval = 30 * 60 * 1000; // 30 minutes
-
-    // Check if we need to sync
-    const now = Date.now();
-    if (now - cache.lastSync > syncInterval) {
-        console.log('Starting background sync...');
-        preloadAllProducts();
-        cache.lastSync = now;
-        saveCache();
-    }
+    // Check if we need to sync, but add a delay to avoid immediate sync on page load
+    setTimeout(() => {
+        const now = Date.now();
+        if (now - cache.lastSync > syncInterval) {
+            console.log('Starting background sync...');
+            preloadAllProducts();
+            cache.lastSync = now;
+            saveCache();
+        }
+    }, 10000); // 10 second delay before first sync
 
     // Set up interval for future syncs
     setInterval(() => {

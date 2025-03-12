@@ -1,0 +1,75 @@
+{
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "noProducts": "No products found",
+        "showMore": "Show more",
+        "showLess": "Show less",
+        "perPerson": "per person",
+        "viewDetails": "View details",
+        "book": "Book now",
+        "search": "Search",
+        "menu": "Menu",
+        "close": "Close",
+        "reviews": "Reviews"
+    },
+    "hero": {
+        "subtitle": "Discover Easter Island",
+        "welcome": "Guided Adventures by Local Experts"
+    },
+    "rentals": {
+        "hero": {
+            "title": "Experience the Magic of Rapa Nui with Us",
+            "description": "Discover Rapa Nui at your own pace with our rental options.",
+            "review": "An unforgettable experience. Highly recommended!"
+        }
+    },
+    "about": {
+        "hero": {
+            "title": "Our Story",
+            "description": "At Hotumatur we work to preserve the culture and share the magic of Rapa Nui with the world.",
+            "review": "An unforgettable experience. Highly recommended!"
+        }
+    },
+    "tour_section": {
+        "title": "Tour Details",
+        "duration": "Duration",
+        "difficulty": "Difficulty",
+        "includes": "Includes",
+        "notIncludes": "Not Included",
+        "hours": "hours",
+        "days": "days"
+    },
+    "booking": {
+        "yourAdventures": "Your Adventures",
+        "totalToPay": "Total to pay",
+        "checkout": "Checkout",
+        "date": "Date",
+        "time": "Time",
+        "people": "People",
+        "total": "Total"
+    },
+    "footer": {
+        "rights": "All rights reserved",
+        "contact": "Contact",
+        "about": "About us",
+        "terms": "Terms and conditions",
+        "privacy": "Privacy policy"
+    },
+    "product_attributes": {
+        "duration": "Duration",
+        "difficulty": "Difficulty",
+        "includes": "Includes",
+        "not_included": "Not Included",
+        "easy": "Easy",
+        "moderate": "Moderate",
+        "difficult": "Difficult"
+    },
+    "tours": {
+        "complete_island_tour": "Complete Island Tour",
+        "sunrise_at_tongariki": "Sunrise at Tongariki",
+        "sunset_at_tahai": "Sunset at Tahai",
+        "archaeological_tour": "Archaeological Tour",
+        "anakena_tour": "Anakena Tour"
+    }
+}

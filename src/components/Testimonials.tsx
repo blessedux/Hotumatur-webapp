@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { FaTripadvisor } from "react-icons/fa"
 import FadeIn from './FadeIn'
 import { useTranslation } from 'react-i18next'
+import { useDirectTranslation } from '@/hooks/useTranslatedText'
 
 interface TestimonialProps {
     name: string;
@@ -83,6 +84,89 @@ export default function Testimonials() {
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
     const { t } = useTranslation('common')
 
+    // Use our custom hook for direct translations
+    const titleText = useDirectTranslation(
+        "What Our Clients Say",
+        "Lo Que Dicen Nuestros Clientes"
+    );
+
+    const subtitleText = useDirectTranslation(
+        "Unforgettable Experiences in Rapa Nui",
+        "Experiencias Inolvidables en Rapa Nui"
+    );
+
+    const prevText = useDirectTranslation(
+        "Previous",
+        "Anterior"
+    );
+
+    const nextText = useDirectTranslation(
+        "Next",
+        "Siguiente"
+    );
+
+    // Testimonial locations
+    const ccLocationText = useDirectTranslation(
+        "United States",
+        "Estados Unidos"
+    );
+
+    const olgaLocationText = useDirectTranslation(
+        "United States",
+        "Estados Unidos"
+    );
+
+    const sergioLocationText = useDirectTranslation(
+        "Chile",
+        "Chile"
+    );
+
+    const fenonoLocationText = useDirectTranslation(
+        "Chile",
+        "Chile"
+    );
+
+    const cisternistaLocationText = useDirectTranslation(
+        "Chile",
+        "Chile"
+    );
+
+    const marioLocationText = useDirectTranslation(
+        "Chile",
+        "Chile"
+    );
+
+    // Testimonial texts
+    const ccText = useDirectTranslation(
+        "We had a wonderful time with Hotumatur. Our guide was knowledgeable and passionate about the island's history and culture. Highly recommended!",
+        "Tuvimos un tiempo maravilloso con Hotumatur. Nuestro guía era conocedor y apasionado por la historia y cultura de la isla. ¡Muy recomendable!"
+    );
+
+    const olgaText = useDirectTranslation(
+        "The tour was amazing! We learned so much about the Moai and the ancient Rapa Nui civilization. The guides were friendly and professional.",
+        "¡El tour fue increíble! Aprendimos mucho sobre los Moai y la antigua civilización Rapa Nui. Los guías fueron amables y profesionales."
+    );
+
+    const sergioText = useDirectTranslation(
+        "An unforgettable experience exploring Easter Island with Hotumatur. The sunset tour was particularly magical.",
+        "Una experiencia inolvidable explorando Isla de Pascua con Hotumatur. El tour del atardecer fue particularmente mágico."
+    );
+
+    const fenonoText = useDirectTranslation(
+        "The best way to discover Rapa Nui! Our guide shared fascinating stories and took us to places we wouldn't have found on our own.",
+        "¡La mejor manera de descubrir Rapa Nui! Nuestro guía compartió historias fascinantes y nos llevó a lugares que no habríamos encontrado por nuestra cuenta."
+    );
+
+    const cisternistaText = useDirectTranslation(
+        "Excellent service from start to finish. The team at Hotumatur made our trip to Easter Island truly special.",
+        "Excelente servicio de principio a fin. El equipo de Hotumatur hizo que nuestro viaje a Isla de Pascua fuera realmente especial."
+    );
+
+    const marioText = useDirectTranslation(
+        "We booked several tours with Hotumatur and each one exceeded our expectations. Their knowledge of the island is impressive.",
+        "Reservamos varios tours con Hotumatur y cada uno superó nuestras expectativas. Su conocimiento de la isla es impresionante."
+    );
+
     const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
     const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
 
@@ -101,64 +185,58 @@ export default function Testimonials() {
     const testimonials = [
         {
             name: "C.C.",
-            location: t('testimonials.reviews.cc.location'),
+            location: ccLocationText,
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/C.C-profile.webp",
             rating: 5,
-            text: t('testimonials.reviews.cc.text'),
+            text: ccText,
             date: "May 2024",
             tripAdvisorLink: "https://www.tripadvisor.com/Profile/S3091BKchrisc",
         },
         {
             name: "Olga S",
-            location: t('testimonials.reviews.olga.location'),
+            location: olgaLocationText,
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/OlgaS_profile.webp",
             rating: 5,
-            text: t('testimonials.reviews.olga.text'),
+            text: olgaText,
             date: "May 2024",
             tripAdvisorLink: "https://www.tripadvisor.com/Profile/D3506MZolgas",
         },
         {
             name: "Sergio Ignacio A",
-            location: t('testimonials.reviews.sergio.location'),
+            location: sergioLocationText,
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/default-avatar-2020-44.webp",
             rating: 5,
-            text: t('testimonials.reviews.sergio.text'),
+            text: sergioText,
             date: "May 2023",
             tripAdvisorLink: "https://www.tripadvisor.com/Profile/sergioignacioa",
         },
         {
             name: "Feñoño",
-            location: t('testimonials.reviews.fenono.location'),
+            location: fenonoLocationText,
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/fenono-avatar.webp",
             rating: 5,
-            text: t('testimonials.reviews.fenono.text'),
+            text: fenonoText,
             date: "Oct 2023",
             tripAdvisorLink: "https://www.tripadvisor.com/ShowUserReviews-g316040-d26626022-r920889084-Hotumatur_RapaNui-Easter_Island.html",
         },
         {
             name: "Cisternista",
-            location: t('testimonials.reviews.cisternista.location'),
+            location: cisternistaLocationText,
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/cisternista.webp",
             rating: 5,
-            text: t('testimonials.reviews.cisternista.text'),
+            text: cisternistaText,
             date: "December 11, 2024",
             tripAdvisorLink: "https://www.tripadvisor.com/AttractionProductReview-g1049073-d26766354-Full_Day_Tour_in_Rapa_Nui-Hanga_Roa_Easter_Island.html",
         },
         {
             name: "Mario B",
-            location: t('testimonials.reviews.mario.location'),
+            location: marioLocationText,
             image: "https://backend.hotumatur.com/wp-content/uploads/2024/12/mario-b.webp",
             rating: 5,
-            text: t('testimonials.reviews.mario.text'),
+            text: marioText,
             date: "December 4, 2024",
         },
     ]
-
-    // For debugging
-    console.log('Testimonials title translation key:', 'testimonials.title');
-    console.log('Testimonials title translation value:', t('testimonials.title'));
-    console.log('Testimonials subtitle translation key:', 'testimonials.subtitle');
-    console.log('Testimonials subtitle translation value:', t('testimonials.subtitle'));
 
     return (
         <div className="bg-primary-900 px-4 py-16 md:py-24">
@@ -166,10 +244,10 @@ export default function Testimonials() {
                 <FadeIn>
                     <div className="text-center space-y-4">
                         <h2 className="text-3xl md:text-5xl font-bold text-black">
-                            {t('testimonials.title')}
+                            {titleText}
                         </h2>
                         <p className="text-2xl md:text-4xl font-bold font-satisfy text-black">
-                            {t('testimonials.subtitle')}
+                            {subtitleText}
                         </p>
                     </div>
                 </FadeIn>
@@ -191,7 +269,7 @@ export default function Testimonials() {
                         disabled={!prevBtnEnabled}
                     >
                         <ChevronLeft className="h-4 w-4" />
-                        <span className="sr-only">{t('testimonials.prev')}</span>
+                        <span className="sr-only">{prevText}</span>
                     </Button>
                     <Button
                         variant="outline"
@@ -201,7 +279,7 @@ export default function Testimonials() {
                         disabled={!nextBtnEnabled}
                     >
                         <ChevronRight className="h-4 w-4" />
-                        <span className="sr-only">{t('testimonials.next')}</span>
+                        <span className="sr-only">{nextText}</span>
                     </Button>
                 </div>
             </div>

@@ -6,14 +6,27 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TourSelector from "@/components/TourSelector";
 import FadeIn from "./FadeIn";
 import { useTranslation } from 'react-i18next';
+import { useDirectTranslation } from "@/hooks/useTranslatedText";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
     const heroRef = useRef<HTMLDivElement>(null);
     const [videoLoaded, setVideoLoaded] = useState(false);
-    const { t } = useTranslation();
+    const { i18n } = useTranslation();
 
+    // Use our custom hook for direct translations
+    const welcomeText = useDirectTranslation(
+        "Guided Adventures by Local Experts",
+        "Aventuras Guiadas por Expertos Locales"
+    );
+
+    const subtitleText = useDirectTranslation(
+        "Discover Easter Island",
+        "Descubre Isla de Pascua"
+    );
+
+    // Set up GSAP animations
     useEffect(() => {
         const hero = heroRef.current;
 
@@ -74,17 +87,18 @@ export default function HeroSection() {
                     frameBorder="0"
                     allow="autoplay; fullscreen"
                     allowFullScreen
+                    onLoad={() => setVideoLoaded(true)}
                 />
             </div>
             <div className="absolute inset-0 bg-black/40" />
 
             <div className="relative z-10 flex h-full flex-col items-center justify-center px-4">
                 <p className="mb-4 text-center text-xl md:text-2xl font-satisfy text-white">
-                    {t('hero.subtitle')}
+                    {subtitleText}
                 </p>
                 <FadeIn>
                     <h1 className="mb-10 md:mb-16 text-center text-3xl font-bold text-white md:text-6xl">
-                        {t('hero.welcome')}
+                        {welcomeText}
                     </h1>
                 </FadeIn>
                 <div className="w-full max-w-4xl rounded-lg bg-gray-200/20 p-6 py-10 backdrop-blur-sm">

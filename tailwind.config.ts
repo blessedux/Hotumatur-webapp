@@ -12,6 +12,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        sans: ["var(--font-sans)"],
         satisfy: ['"Satisfy"'], // Add 'cursive' as a fallback
       },
       colors: {

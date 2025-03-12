@@ -4,50 +4,65 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { GB, ES } from 'country-flag-icons/react/3x2';
 import { useTranslation } from 'react-i18next';
-import '@/i18n/config';
-import { initCache } from '@/services/translationCache.service';
+import { changeLanguage } from '@/i18n/config';
 
 const LanguageToggle = () => {
     const [mounted, setMounted] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const [isChanging, setIsChanging] = useState(false);
     const { i18n } = useTranslation();
+    // Use state to force re-render when language changes
+    const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
     useEffect(() => {
         setMounted(true);
-        // Initialize translation cache
-        initCache();
 
         const savedLang = localStorage.getItem('i18nextLng');
         const browserLang = navigator.language.split('-')[0];
         const defaultLang = (savedLang && ['es', 'en'].includes(savedLang)) ? savedLang :
             (['es', 'en'].includes(browserLang) ? browserLang : 'es');
 
-        i18n.changeLanguage(defaultLang);
-        return () => setMounted(false);
-    }, []);
+        if (i18n.language !== defaultLang) {
+            changeLanguage(defaultLang);
+            setCurrentLanguage(defaultLang);
+        }
+
+        // Listen for language changes
+        const handleLanguageChange = (lng: string) => {
+            console.log(`Language changed in LanguageToggle to: ${lng}`);
+            setCurrentLanguage(lng);
+        };
+
+        i18n.on('languageChanged', handleLanguageChange);
+
+        return () => {
+            i18n.off('languageChanged', handleLanguageChange);
+            setMounted(false);
+        };
+    }, [i18n]);
 
     const handleLanguageChange = async (locale: string) => {
         if (i18n.language === locale || isChanging) return;
 
         try {
+            console.log(`LanguageToggle: Changing language to ${locale}`);
             setIsChanging(true);
 
-            // Change language immediately - this will use cached translations
-            await i18n.changeLanguage(locale);
-            localStorage.setItem('i18nextLng', locale);
+            // Change language
+            changeLanguage(locale);
 
             // Close the language menu
             setIsExpanded(false);
         } catch (error) {
             console.error('Error changing language:', error);
         } finally {
-            setIsChanging(false);
+            // Add a small delay to prevent rapid toggling
+            setTimeout(() => setIsChanging(false), 500);
         }
     };
 
     const getCurrentFlag = () => {
-        return i18n.language === 'en' ? (
+        return currentLanguage === 'en' ? (
             <GB title="English" className="w-4 h-4" />
         ) : (
             <ES title="Español" className="w-4 h-4" />
@@ -112,14 +127,14 @@ const LanguageToggle = () => {
                     `}>
                         <button
                             onClick={() => handleLanguageChange('es')}
-                            className={`w-full py-2 px-3 text-left flex items-center space-x-2 hover:bg-white/10 transition-colors ${i18n.language === 'es' ? 'text-emerald-300' : 'text-white'} ${isChanging ? 'cursor-wait' : ''}`}
+                            className={`w-full py-2 px-3 text-left flex items-center space-x-2 hover:bg-white/10 transition-colors ${currentLanguage === 'es' ? 'text-emerald-300' : 'text-white'} ${isChanging ? 'cursor-wait' : ''}`}
                             disabled={isChanging}
                         >
                             <span className="text-sm">Español</span>
                         </button>
                         <button
                             onClick={() => handleLanguageChange('en')}
-                            className={`w-full py-2 px-3 text-left flex items-center space-x-2 hover:bg-white/10 transition-colors ${i18n.language === 'en' ? 'text-emerald-300' : 'text-white'} ${isChanging ? 'cursor-wait' : ''}`}
+                            className={`w-full py-2 px-3 text-left flex items-center space-x-2 hover:bg-white/10 transition-colors ${currentLanguage === 'en' ? 'text-emerald-300' : 'text-white'} ${isChanging ? 'cursor-wait' : ''}`}
                             disabled={isChanging}
                         >
                             <span className="text-sm">English</span>

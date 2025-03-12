@@ -1,6 +1,6 @@
 'use client';
 
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import { ReservationProvider } from '@/context/ReservationContext'
 import { CartProvider } from '@/context/CartContext'
@@ -14,14 +14,11 @@ import { LanguageProvider } from '@/contexts/LanguageContext';
 import { TranslationProvider } from '@/providers/TranslationProvider';
 import Head from 'next/head';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+// Use Inter as a fallback font which is more reliable
+const inter = Inter({
   subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
 });
 
 // Google Analytics Tracking ID 
@@ -58,7 +55,7 @@ export default function RootLayout({
         />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}>
+      <body className={`${inter.variable} antialiased overflow-x-hidden`}>
         <TranslationProvider>
           <LanguageProvider>
             <ReservationProvider>

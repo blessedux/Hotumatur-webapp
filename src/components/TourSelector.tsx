@@ -17,6 +17,7 @@ import SkeletonForm from '@/components/SkeletonForm';
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/ui/input';
+import { useLanguageChange } from '@/hooks/useLanguageChange';
 
 const TourSelector = () => {
     const [date, setDate] = useState<Date>();
@@ -29,6 +30,8 @@ const TourSelector = () => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const { t, i18n } = useTranslation(['common', 'booking', 'tour_section']);
+    // Use our custom hook to ensure re-render on language change
+    const currentLanguage = useLanguageChange();
 
     // Filter tours when data is loaded
     useEffect(() => {

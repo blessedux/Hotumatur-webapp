@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
 
@@ -76,7 +76,27 @@ const DIRECT_TRANSLATIONS: Record<string, Record<string, string>> = {
     "Seguro de viaje": {
         en: "Travel insurance",
         es: "Seguro de viaje"
-    }
+    },
+    // New translations
+    'Reservar ahora': { 'en': 'Book now' },
+    'Ver más': { 'en': 'See more' },
+    'Ver menos': { 'en': 'See less' },
+    'Detalles': { 'en': 'Details' },
+    'Itinerario': { 'en': 'Itinerary' },
+    'Reseñas': { 'en': 'Reviews' },
+    'Preguntas frecuentes': { 'en': 'FAQ' },
+    'Agregar al carrito': { 'en': 'Add to cart' },
+    'Adultos': { 'en': 'Adults' },
+    'Niños': { 'en': 'Children' },
+    'Fecha': { 'en': 'Date' },
+    'Hora': { 'en': 'Time' },
+    'Precio': { 'en': 'Price' },
+    'Total': { 'en': 'Total' },
+    'Continuar': { 'en': 'Continue' },
+    'Volver': { 'en': 'Back' },
+    'Pagar': { 'en': 'Pay' },
+    'Cancelar': { 'en': 'Cancel' },
+    'Confirmar': { 'en': 'Confirm' },
 };
 
 // Translation cache
@@ -110,7 +130,7 @@ interface TranslatedContentProps {
     className?: string;
 }
 
-export default function TranslatedContent({ html, className = '' }: TranslatedContentProps) {
+function TranslatedContent({ html, className = '' }: TranslatedContentProps) {
     const { i18n } = useTranslation();
     const [translatedHtml, setTranslatedHtml] = useState(html);
 
@@ -121,23 +141,14 @@ export default function TranslatedContent({ html, className = '' }: TranslatedCo
             return;
         }
 
-        // Check if we have a cached translation
-        const cacheKey = `${html}`;
-        if (translationCache[cacheKey] && translationCache[cacheKey][i18n.language]) {
-            setTranslatedHtml(translationCache[cacheKey][i18n.language]);
-            return;
+        // For English, translate the HTML
+        try {
+            const translated = translateHtml(html, i18n.language);
+            setTranslatedHtml(translated);
+        } catch (error) {
+            console.error('Error translating HTML:', error);
+            setTranslatedHtml(html); // Fallback to original HTML
         }
-
-        // Translate the HTML
-        const translated = translateHtml(html, i18n.language);
-        setTranslatedHtml(translated);
-
-        // Cache the translation
-        if (!translationCache[cacheKey]) {
-            translationCache[cacheKey] = {};
-        }
-        translationCache[cacheKey][i18n.language] = translated;
-        saveCache();
     }, [html, i18n.language]);
 
     // Sanitize the HTML to prevent XSS attacks
@@ -185,6 +196,15 @@ function processNode(node: Node, language: string) {
         }
     }
 
+    // Special handling for links to preserve URLs
+    if (node.nodeName === 'A' && node instanceof HTMLAnchorElement) {
+        // Don't modify href attributes
+        const linkText = node.textContent?.trim();
+        if (linkText && !linkText.startsWith('http') && !linkText.includes('@')) {
+            node.textContent = translateText(linkText, language);
+        }
+    }
+
     // Process child nodes recursively
     const childNodes = Array.from(node.childNodes);
     childNodes.forEach(child => processNode(child, language));
@@ -193,6 +213,11 @@ function processNode(node: Node, language: string) {
 // Function to translate text
 function translateText(text: string, language: string): string {
     if (!text || language === 'es') return text;
+
+    // Skip URLs and email addresses
+    if (text.startsWith('http') || text.includes('@') || text.match(/^[\/\.]/) || text.match(/\.(com|org|net|io)/)) {
+        return text;
+    }
 
     // Check for direct translations
     if (DIRECT_TRANSLATIONS[text] && DIRECT_TRANSLATIONS[text][language]) {
@@ -209,6 +234,11 @@ function translateText(text: string, language: string): string {
     // Split text into words and translate each word
     const words = text.split(/\s+/);
     const translatedWords = words.map(word => {
+        // Skip words that look like URLs or parts of URLs
+        if (word.startsWith('http') || word.includes('@') || word.match(/\.(com|org|net|io)/)) {
+            return word;
+        }
+
         // Check if this word has a direct translation
         if (DIRECT_TRANSLATIONS[word] && DIRECT_TRANSLATIONS[word][language]) {
             return DIRECT_TRANSLATIONS[word][language];
@@ -217,4 +247,7 @@ function translateText(text: string, language: string): string {
     });
 
     return translatedWords.join(' ');
-} 
+}
+
+// Memoize the component to prevent unnecessary re-renders
+export default memo(TranslatedContent); 

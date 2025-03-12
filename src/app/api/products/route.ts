@@ -63,7 +63,10 @@ export async function GET(request: NextRequest) {
         params.append('per_page', limit);
 
         if (slug) {
-            params.append('slug', slug);
+            // Ensure slug is properly encoded
+            const encodedSlug = encodeURIComponent(slug);
+            params.append('slug', encodedSlug);
+            console.log(`[API] Using encoded slug: ${encodedSlug} (original: ${slug})`);
         }
 
         if (category) {
@@ -82,7 +85,7 @@ export async function GET(request: NextRequest) {
 
         // Fetch products from WooCommerce with a timeout
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
         try {
             const response = await fetch(apiUrl, {
@@ -101,8 +104,18 @@ export async function GET(request: NextRequest) {
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error(`[API] WooCommerce API error (${response.status}): ${errorText}`);
+                console.error(`[API] Request URL: ${apiUrl}`);
+                console.error(`[API] Request headers:`, {
+                    Authorization: 'Basic ***' + auth.substring(auth.length - 5),
+                    'Content-Type': 'application/json',
+                });
+
                 return NextResponse.json(
-                    { error: `Failed to fetch products: ${response.status}` },
+                    {
+                        error: `Failed to fetch products: ${response.status}`,
+                        details: errorText,
+                        url: apiUrl.replace(config.woocommerce.consumerSecret, '***')
+                    },
                     { status: response.status }
                 );
             }

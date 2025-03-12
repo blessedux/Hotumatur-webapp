@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useProducts } from "@/hooks/useProducts";
 import { ProductCard } from "@/components/ProductCard";
 import { useTranslation } from 'react-i18next';
+import { useDirectTranslation } from '@/hooks/useTranslatedText';
 
 // Category ID to Name Mapping
 const categoryNames: Record<number, string> = {
@@ -23,6 +24,22 @@ export default function ProductSection({ categoryId }: ProductSectionProps) {
     const { t, i18n } = useTranslation(['common']);
     const [showSkeleton, setShowSkeleton] = useState(true);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    // Direct translations
+    const errorText = useDirectTranslation(
+        "Error",
+        "Error"
+    );
+
+    const retryText = useDirectTranslation(
+        "Retry",
+        "Reintentar"
+    );
+
+    const noProductsText = useDirectTranslation(
+        "No products available in this category",
+        "No hay productos disponibles en esta categoría"
+    );
 
     // Only fetch products after component is mounted to avoid hydration issues
     const { products, loading, error, refetch } = useProducts(categoryId, isMounted);
@@ -77,12 +94,12 @@ export default function ProductSection({ categoryId }: ProductSectionProps) {
     if (error) {
         return (
             <div className="text-center py-8">
-                <p className="text-red-500">{t('error', { ns: 'common' })}: {error}</p>
+                <p className="text-red-500">{errorText}: {error}</p>
                 <button
                     onClick={() => refetch()}
                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                 >
-                    {t('retry', { ns: 'common' })}
+                    {retryText}
                 </button>
             </div>
         );
@@ -96,7 +113,7 @@ export default function ProductSection({ categoryId }: ProductSectionProps) {
                         <ProductCard key={product.id} product={product} />
                     ))
                 ) : (
-                    <p className="text-center col-span-3 py-8 text-gray-500">{t('noProducts', { ns: 'common' })}</p>
+                    <p className="text-center col-span-3 py-8 text-gray-500">{noProductsText}</p>
                 )}
             </div>
         </section>

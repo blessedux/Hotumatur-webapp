@@ -17,8 +17,8 @@ export default function ContactHeroVideo() {
     windowWidth < 768
       ? '250%' // Mobile scale
       : windowWidth < 1024
-      ? '200%' // Tablet scale
-      : '180%'; // Desktop scale
+        ? '200%' // Tablet scale
+        : '180%'; // Desktop scale
 
   return (
     <section className="relative h-[50vh] min-h-[400px] w-full overflow-hidden">

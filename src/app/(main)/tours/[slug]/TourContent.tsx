@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { Product } from "@/types/woocommerce";
 import { getCachedProduct, startBackgroundSync } from "@/services/translationCache.service";
+import TranslatedContent from '@/components/TranslatedContent';
 
 // Add direct translations for content that isn't being translated properly
 const DIRECT_TRANSLATIONS: Record<string, Record<string, string>> = {
@@ -610,7 +611,7 @@ export default function TourContent({ slug }: TourContentProps) {
             <div className="container mx-auto py-12 px-4 max-w-[1200px]">
                 {product.short_description && (
                     <div className="mb-8 text-xl text-gray-700 font-medium">
-                        <div dangerouslySetInnerHTML={{ __html: product.short_description }} />
+                        <TranslatedContent html={product.short_description} />
                     </div>
                 )}
 
@@ -622,8 +623,9 @@ export default function TourContent({ slug }: TourContentProps) {
                             prose-ul:mt-4 prose-ul:list-disc prose-ul:pl-6
                             prose-li:text-gray-600 prose-li:mb-2
                             prose-strong:text-gray-900 prose-strong:font-semibold"
-                    dangerouslySetInnerHTML={{ __html: product.description }}
-                />
+                >
+                    <TranslatedContent html={product.description} />
+                </div>
                 <Card className="mt-10">
                     <CardContent className="p-10">
                         <h3 className="text-2xl font-bold mb-6">{t('title', { ns: 'tour_section' })}</h3>

@@ -3,87 +3,62 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import Backend from 'i18next-http-backend';
 
-// Import translation files directly
-import commonES from '../locales/es/common.json';
-import commonEN from '../locales/en/common.json';
-import bookingES from '../locales/es/booking.json';
-import bookingEN from '../locales/en/booking.json';
-import tourSectionES from '../locales/es/tour_section.json';
-import tourSectionEN from '../locales/en/tour_section.json';
-import footerES from '../locales/es/footer.json';
-import footerEN from '../locales/en/footer.json';
+// Import translations
+import enTranslations from './translations/en.json';
+import esTranslations from './translations/es.json';
 
-// Import public locales
-import publicCommonEN from '../../public/locales/en/common.json';
-import publicCommonES from '../../public/locales/es/common.json';
-
-// Merge the translations from src/locales and public/locales
-const mergedCommonEN = { ...commonEN, ...publicCommonEN };
-const mergedCommonES = { ...commonES, ...publicCommonES };
-
-const resources = {
-    es: {
-        common: mergedCommonES,
-        booking: bookingES,
-        tour_section: tourSectionES,
-        footer: footerES
-    },
-    en: {
-        common: mergedCommonEN,
-        booking: bookingEN,
-        tour_section: tourSectionEN,
-        footer: footerEN
-    }
-};
-
-console.log('Merged translations:', {
-    en: {
-        testimonials: mergedCommonEN.testimonials,
-        pre_footer: mergedCommonEN.pre_footer
-    },
-    es: {
-        testimonials: mergedCommonES.testimonials,
-        pre_footer: mergedCommonES.pre_footer
-    }
-});
-
-// Initialize i18n
+// Initialize i18next
 i18n
-    .use(initReactI18next)
     .use(LanguageDetector)
-    .use(Backend)
+    .use(initReactI18next)
     .init({
-        resources,
-        debug: false, // Set to false to avoid unnecessary console logs
-        fallbackLng: 'es',
-        supportedLngs: ['es', 'en'],
-        defaultNS: 'common',
-        fallbackNS: 'common',
-        ns: ['common', 'booking', 'tour_section', 'footer'],
-        interpolation: {
-            escapeValue: false,
+        resources: {
+            en: enTranslations,
+            es: esTranslations
         },
-        detection: {
-            order: ['htmlTag', 'localStorage', 'navigator'],
-            caches: ['localStorage'],
-            lookupLocalStorage: 'i18nextLng',
+        fallbackLng: 'es',
+        debug: process.env.NODE_ENV === 'development',
+        interpolation: {
+            escapeValue: false, // React already escapes values
         },
         react: {
             useSuspense: false,
+            bindI18n: 'languageChanged',
+            bindI18nStore: 'added removed',
         },
-        backend: {
-            loadPath: '/locales/{{lng}}/{{ns}}.json',
-        }
+        detection: {
+            order: ['localStorage', 'navigator'],
+            caches: ['localStorage'],
+        },
     });
 
-// Force initial language to match HTML lang attribute to avoid hydration mismatch
-if (typeof document !== 'undefined') {
-    const htmlLang = document.documentElement.lang || 'es';
-    if (i18n.language !== htmlLang) {
-        i18n.changeLanguage(htmlLang);
+// Add a listener to log language changes
+i18n.on('languageChanged', (lng) => {
+    console.log(`i18n language changed to: ${lng}`);
+    console.log('Current translations:', i18n.getResourceBundle(lng, 'hero'));
+});
+
+// Function to change language
+export const changeLanguage = (language: string) => {
+    if (i18n.language !== language) {
+        console.log(`Changing language from ${i18n.language} to ${language}`);
+
+        // Change language in i18next
+        i18n.changeLanguage(language)
+            .then(() => {
+                console.log(`Language successfully changed to ${language}`);
+                console.log('Hero welcome translation:', i18n.t('hero.welcome'));
+            })
+            .catch((error) => {
+                console.error('Error changing language:', error);
+            });
+
+        // Store language preference
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('i18nextLng', language);
+        }
     }
-}
+};
 
 export default i18n; 
