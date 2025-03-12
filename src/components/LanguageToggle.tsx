@@ -17,26 +17,29 @@ const LanguageToggle = () => {
     useEffect(() => {
         setMounted(true);
 
-        const savedLang = localStorage.getItem('i18nextLng');
-        const browserLang = navigator.language.split('-')[0];
-        const defaultLang = (savedLang && ['es', 'en'].includes(savedLang)) ? savedLang :
-            (['es', 'en'].includes(browserLang) ? browserLang : 'es');
+        // Listen for language changes from other components
+        const handleLanguageChangeEvent = (event: Event) => {
+            const customEvent = event as CustomEvent;
+            if (customEvent.detail && customEvent.detail.language) {
+                console.log(`Language change event detected in LanguageToggle: ${customEvent.detail.language}`);
+                setCurrentLanguage(customEvent.detail.language);
+            }
+        };
 
-        if (i18n.language !== defaultLang) {
-            changeLanguage(defaultLang);
-            setCurrentLanguage(defaultLang);
-        }
-
-        // Listen for language changes
-        const handleLanguageChange = (lng: string) => {
-            console.log(`Language changed in LanguageToggle to: ${lng}`);
+        // Listen for language changes from i18n
+        const handleI18nLanguageChange = (lng: string) => {
+            console.log(`i18n language changed in LanguageToggle to: ${lng}`);
             setCurrentLanguage(lng);
         };
 
-        i18n.on('languageChanged', handleLanguageChange);
+        // Add event listeners
+        window.addEventListener('language-changed', handleLanguageChangeEvent);
+        i18n.on('languageChanged', handleI18nLanguageChange);
 
         return () => {
-            i18n.off('languageChanged', handleLanguageChange);
+            // Clean up event listeners
+            window.removeEventListener('language-changed', handleLanguageChangeEvent);
+            i18n.off('languageChanged', handleI18nLanguageChange);
             setMounted(false);
         };
     }, [i18n]);

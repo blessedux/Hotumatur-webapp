@@ -105,66 +105,66 @@ export default function Testimonials() {
         "Siguiente"
     );
 
-    // Testimonial locations
+    // Original testimonial locations
     const ccLocationText = useDirectTranslation(
-        "United States",
-        "Estados Unidos"
+        "Miami Beach, FL",
+        "Miami Beach, FL"
     );
 
     const olgaLocationText = useDirectTranslation(
-        "United States",
-        "Estados Unidos"
+        "Miami Beach, FL",
+        "Miami Beach, FL"
     );
 
     const sergioLocationText = useDirectTranslation(
-        "Chile",
-        "Chile"
+        "Santiago, Chile",
+        "Santiago, Chile"
     );
 
     const fenonoLocationText = useDirectTranslation(
-        "Chile",
-        "Chile"
+        "Santiago, Chile",
+        "Santiago, Chile"
     );
 
     const cisternistaLocationText = useDirectTranslation(
-        "Chile",
-        "Chile"
+        "Veniano, Italy",
+        "Veniano, Italia"
     );
 
     const marioLocationText = useDirectTranslation(
-        "Chile",
-        "Chile"
+        "Santiago, Chile",
+        "Santiago, Chile"
     );
 
-    // Testimonial texts
+    // Original testimonial texts
     const ccText = useDirectTranslation(
-        "We had a wonderful time with Hotumatur. Our guide was knowledgeable and passionate about the island's history and culture. Highly recommended!",
-        "Tuvimos un tiempo maravilloso con Hotumatur. Nuestro guía era conocedor y apasionado por la historia y cultura de la isla. ¡Muy recomendable!"
+        "Fantastic tour! Enzo was amazing tour guide: knowledgeable, kind, and excellent English. AC van and the time spent at each site was timed perfectly! Highly recommend this tour of the South Easter Island.",
+        "¡Tour fantástico! Enzo fue un guía turístico increíble: conocedor, amable y con excelente inglés. La camioneta con aire acondicionado y el tiempo dedicado a cada sitio fue perfectamente cronometrado. Recomiendo encarecidamente este tour por el sur de Isla de Pascua."
     );
 
     const olgaText = useDirectTranslation(
-        "The tour was amazing! We learned so much about the Moai and the ancient Rapa Nui civilization. The guides were friendly and professional.",
-        "¡El tour fue increíble! Aprendimos mucho sobre los Moai y la antigua civilización Rapa Nui. Los guías fueron amables y profesionales."
+        "Amazing tour guide, very knowledgeable, pleasant, attentive. He answered every single question in full detail. Me and my wife were very happy with our guide!",
+        "Guía turístico increíble, muy conocedor, agradable y atento. Respondió a cada pregunta con todo detalle. ¡Mi esposa y yo estuvimos muy contentos con nuestro guía!"
     );
 
     const sergioText = useDirectTranslation(
-        "An unforgettable experience exploring Easter Island with Hotumatur. The sunset tour was particularly magical.",
-        "Una experiencia inolvidable explorando Isla de Pascua con Hotumatur. El tour del atardecer fue particularmente mágico."
+        "I went with my partner and we received an excellent welcome from Hotumatur and Hotel Tupa. They showed us the most impressive places on the island, always in a close and personal manner, making you appreciate the place in a way that stays with you forever in your memory. I recommend them 100%.",
+        "Fui con mi pareja y recibimos una excelente acogida por parte de Hotumatur y Hotel Tupa. Nos mostraron los lugares más impresionantes de la isla, siempre de manera cercana y personal, haciendo que aprecies el lugar de una manera que permanece para siempre en tu memoria. Los recomiendo 100%."
     );
 
     const fenonoText = useDirectTranslation(
-        "The best way to discover Rapa Nui! Our guide shared fascinating stories and took us to places we wouldn't have found on our own.",
-        "¡La mejor manera de descubrir Rapa Nui! Nuestro guía compartió historias fascinantes y nos llevó a lugares que no habríamos encontrado por nuestra cuenta."
+        "Pretty friendly, excellent service!! From the very first day they have helped me a lot, we went there with any plan set, thanks to them we took advantage of the whole stay, knowing new places of the island every single day. Also, after the tours we have with them great moments and share good meals.",
+        "¡Muy amables, excelente servicio! Desde el primer día me han ayudado mucho, fuimos sin ningún plan establecido, gracias a ellos aprovechamos toda la estadía, conociendo nuevos lugares de la isla cada día. Además, después de los tours tuvimos con ellos grandes momentos y compartimos buenas comidas."
     );
 
     const cisternistaText = useDirectTranslation(
-        "Excellent service from start to finish. The team at Hotumatur made our trip to Easter Island truly special.",
-        "Excelente servicio de principio a fin. El equipo de Hotumatur hizo que nuestro viaje a Isla de Pascua fuera realmente especial."
+        "Excellent tour with Hotumatur! Our guide was very knowledgeable and passionate about the island's history and culture. We visited all the main sites and learned so much. Highly recommended!",
+        "¡Excelente tour con Hotumatur! Nuestro guía era muy conocedor y apasionado por la historia y cultura de la isla. Visitamos todos los sitios principales y aprendimos muchísimo. ¡Muy recomendable!"
     );
 
     const marioText = useDirectTranslation(
-        "We booked several tours with Hotumatur and each one exceeded our expectations. Their knowledge of the island is impressive.",
-        "Reservamos varios tours con Hotumatur y cada uno superó nuestras expectativas. Su conocimiento de la isla es impresionante."
+        "We had an amazing experience with Hotumatur. The guides were friendly, professional, and very knowledgeable about the island's history and culture. The tours were well-organized and we got to see all the main attractions. Highly recommended!",
+        "Tuvimos una experiencia increíble con Hotumatur. Los guías fueron amables, profesionales y muy conocedores de la historia y cultura de la isla. Los tours estuvieron bien organizados y pudimos ver todas las principales atracciones. ¡Muy recomendable!"
     );
 
     const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])

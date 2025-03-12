@@ -1,3 +1,5 @@
+'use client';
+
 import { Card, CardContent } from "@/components/ui/card";
 import HotelCard from "@/components/HotelCard";
 import { useDirectTranslation } from '@/hooks/useTranslatedText';
