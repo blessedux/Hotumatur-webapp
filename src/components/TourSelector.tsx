@@ -18,6 +18,7 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/ui/input';
 import { useLanguageChange } from '@/hooks/useLanguageChange';
+import { useDirectTranslation } from '@/hooks/useTranslatedText';
 
 const TourSelector = () => {
     const [date, setDate] = useState<Date>();
@@ -32,6 +33,9 @@ const TourSelector = () => {
     const { t, i18n } = useTranslation(['common', 'booking', 'tour_section']);
     // Use our custom hook to ensure re-render on language change
     const currentLanguage = useLanguageChange();
+
+    // Direct translation for the Book Now button
+    const bookNowText = useDirectTranslation("Book Now", "Reservar Ahora");
 
     // Filter tours when data is loaded
     useEffect(() => {
@@ -176,7 +180,7 @@ const TourSelector = () => {
                             )}
                         >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {date ? format(date, 'PPP', { locale: dateLocale }) : t('selectDate', { ns: 'booking' })}
+                            {date ? format(date, 'PPP', { locale: dateLocale }) : t('', { ns: 'booking' })}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
@@ -200,7 +204,7 @@ const TourSelector = () => {
                 <label className="text-lg text-white/80">{t('title', { ns: 'tour_section' })}:</label>
                 <Select value={selectedTourId} onValueChange={setSelectedTourId}>
                     <SelectTrigger className="bg-white/10 border-white/20 text-white [&>span]:text-white/80 hover:bg-white/20">
-                        <SelectValue placeholder={t('selectTour', { ns: 'booking' })} />
+                        <SelectValue placeholder={t('Tour', { ns: 'booking' })} />
                     </SelectTrigger>
                     <SelectContent>
                         {filteredTours.map((tour) => (
@@ -234,7 +238,7 @@ const TourSelector = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder={t('enterEmail', { ns: 'booking' })}
+                    placeholder={t('me@gmail.com', { ns: 'booking' })}
                     className="bg-white/10 border-white/20 text-white placeholder:text-white/60 hover:bg-white/20 h-[50px] w-full"
                 />
             </div>
@@ -243,7 +247,7 @@ const TourSelector = () => {
                 className="bg-hotumatur-primary text-white/80 hover:bg-hotumatur-primary/80 self-end md:col-span-4"
                 onClick={handleReservation}
             >
-                {t('reserve', { ns: 'booking' })}
+                {bookNowText}
             </Button>
         </div>
     );
