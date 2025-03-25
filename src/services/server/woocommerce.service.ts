@@ -27,12 +27,18 @@ export class WooCommerceService {
         }>;
     }): Promise<Order> {
         try {
+            // Validate and format email
+            const formattedEmail = orderData.customer.email.trim().toLowerCase();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formattedEmail)) {
+                throw new Error('Invalid email format');
+            }
+
             const formattedData = {
                 status: "pending",
                 billing: {
                     first_name: orderData.customer.first_name,
                     last_name: orderData.customer.last_name,
-                    email: orderData.customer.email,
+                    email: formattedEmail,
                     phone: orderData.customer.phone,
                     country: orderData.customer.country
                 },

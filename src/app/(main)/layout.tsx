@@ -10,6 +10,8 @@ import Preloader from '@/components/Preloader';
 import React from 'react';
 import Script from 'next/script';
 import { Toaster } from "@/components/ui/toaster";
+import { usePathname } from 'next/navigation';
+
 
 const Footer = dynamic(() => import('@/components/Footer'), {
     loading: () => <div>Loading...</div>,
@@ -21,6 +23,10 @@ export default function MainLayout({
     children: React.ReactNode;
 }) {
     const [isPreloading, setIsPreloading] = useState(true);
+    const pathname = usePathname();
+
+    // Check if current page is checkout
+    const isCheckoutPage = pathname?.includes('/checkout');
 
     useEffect(() => {
         if (typeof window !== 'undefined' && window.location.pathname === '/') {
@@ -62,7 +68,8 @@ export default function MainLayout({
                             )}
                         </main>
 
-                        <Footer />
+                        {/* Only render Footer if not on checkout page */}
+                        {!isCheckoutPage && <Footer />}
                     </div>
 
                     {/* WhatsApp button is now rendered via portal */}

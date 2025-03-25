@@ -4,7 +4,7 @@ import { useReservations } from '@/context/ReservationContext'
 import { useCart } from '@/context/CartContext'
 import Link from 'next/link'
 import { useSpring, animated } from '@react-spring/web'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { Card } from './ui/card'
 import { PiTrashLight } from "react-icons/pi";
 import { X } from 'lucide-react'
@@ -13,14 +13,33 @@ import { format, parseISO } from 'date-fns'
 import { es, enUS } from 'date-fns/locale'
 import { useTranslation } from 'react-i18next'
 import { useDirectTranslation } from '@/hooks/useTranslatedText'
+import { Button } from './ui/button'
+import { useRouter } from 'next/navigation'
+
+// Extend HTMLButtonElement to include our custom properties
+declare global {
+    interface HTMLButtonElement {
+        _checkoutListener?: (e: MouseEvent) => void;
+        _deleteListener?: (e: MouseEvent) => void;
+    }
+}
 
 export default function ReservationIcon() {
-    const { reservations, removeReservation } = useReservations()
+    const { reservations, removeReservation, forceUpdate } = useReservations()
     const { isCartOpen, openCart, closeCart, toggleCart } = useCart()
     const dropdownRef = useRef<HTMLDivElement>(null)
+    const cartRef = useRef<HTMLDivElement>(null)
     const { t, i18n } = useTranslation(['booking', 'common'])
     const [isMobile, setIsMobile] = useState(false)
     const [currentLanguage, setCurrentLanguage] = useState(i18n.language)
+    const router = useRouter()
+    const [isClient, setIsClient] = useState(false)
+    const [isNavigating, setIsNavigating] = useState(false)
+    // Track the source of the close operation
+    const [closeSource, setCloseSource] = useState<'button' | 'outside' | null>(null)
+
+    // Flag to track if we're currently processing a click inside the cart
+    const isClickingInsideRef = useRef(false);
 
     // Use our custom hook for direct translations
     const reservationsText = useDirectTranslation(
@@ -68,6 +87,23 @@ export default function ReservationIcon() {
         "Continuar al pago"
     );
 
+    const removeText = useDirectTranslation(
+        "Remove",
+        "Eliminar"
+    );
+
+    // Set isClient to true once component mounts
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
+
+    // Debug: Log reservations whenever they change
+    useEffect(() => {
+        if (isClient) {
+            console.log('ReservationIcon - Current reservations:', reservations);
+        }
+    }, [reservations, isClient]);
+
     // Get the appropriate date locale based on language
     const dateLocale = i18n.language === 'en' ? enUS : es;
 
@@ -108,17 +144,65 @@ export default function ReservationIcon() {
         config: { tension: 300, friction: 20 }
     })
 
-    // Cerrar dropdown al hacer click fuera
+    // COMPLETELY NEW APPROACH - Handle clicks using capture phase and manual tracking
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                closeCart()
-            }
-        }
+        if (!isClient) return;
 
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [closeCart])
+        const handleGlobalMouseDown = (e: MouseEvent) => {
+            // Only process if cart is open
+            if (!isCartOpen) return;
+
+            // Check if the click is inside the cart
+            const isInsideCart = cartRef.current?.contains(e.target as Node);
+
+            if (isInsideCart) {
+                // Flag that we're clicking inside
+                isClickingInsideRef.current = true;
+                console.log('Mouse down INSIDE cart');
+            } else {
+                // Flag that we're clicking outside
+                isClickingInsideRef.current = false;
+                console.log('Mouse down OUTSIDE cart');
+            }
+        };
+
+        const handleGlobalMouseUp = (e: MouseEvent) => {
+            // Only process if cart is open
+            if (!isCartOpen) return;
+
+            // Check if the click ended inside the cart
+            const isInsideCart = cartRef.current?.contains(e.target as Node);
+
+            // If we started clicking outside and ended outside, close the cart
+            if (!isClickingInsideRef.current && !isInsideCart) {
+                console.log('Complete click OUTSIDE cart - closing');
+                setCloseSource('outside');
+                closeCart();
+            } else {
+                console.log('Click involved cart - not closing');
+            }
+
+            // Reset the flag
+            isClickingInsideRef.current = false;
+        };
+
+        // Add global listeners using capture phase
+        document.addEventListener('mousedown', handleGlobalMouseDown, true);
+        document.addEventListener('mouseup', handleGlobalMouseUp, true);
+
+        // Cleanup
+        return () => {
+            document.removeEventListener('mousedown', handleGlobalMouseDown, true);
+            document.removeEventListener('mouseup', handleGlobalMouseUp, true);
+        };
+    }, [isClient, isCartOpen, closeCart]);
+
+    // Reset close source when cart opens
+    useEffect(() => {
+        if (isCartOpen) {
+            setCloseSource(null);
+        }
+    }, [isCartOpen]);
 
     const calculateTotal = () => {
         return reservations.reduce((total, reservation) => {
@@ -128,11 +212,82 @@ export default function ReservationIcon() {
         }, 0);
     };
 
-    return reservations.length > 0 ? (
+    // Handle the checkout navigation
+    const handleCheckout = useCallback((e: React.MouseEvent) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        console.log('CHECKOUT BUTTON CLICKED');
+
+        // Prevent double-clicks/navigation
+        if (isNavigating) {
+            console.log('Already navigating, ignoring click');
+            return;
+        }
+
+        setIsNavigating(true);
+        console.log('Starting checkout process with reservations:', reservations);
+
+        // Navigate to the checkout form page instead of direct payment processing
+        setTimeout(() => {
+            console.log('Navigating to checkout form page');
+            // Navigate to the checkout page where users can review and enter information
+            window.location.href = '/checkout/form';
+        }, 100);
+    }, [isNavigating, reservations]);
+
+    // Handle removing a reservation
+    const handleRemove = useCallback((id: string, e: React.MouseEvent) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        console.log('DELETE BUTTON CLICKED for reservation:', id);
+
+        try {
+            // Call the removeReservation function from context
+            removeReservation(id);
+            console.log('Reservation removed successfully - keeping cart open');
+
+            // Force a re-render to show updated cart but do NOT close the cart
+            setTimeout(() => {
+                console.log('Forcing update after reservation removal');
+                forceUpdate();
+                setCurrentLanguage(prev => prev); // Also force component re-render
+            }, 50);
+        } catch (error) {
+            console.error('Error removing reservation:', error);
+        }
+    }, [removeReservation, forceUpdate, setCurrentLanguage]);
+
+    // Handle closing the cart explicitly with the X button
+    const handleCloseCart = useCallback((e: React.MouseEvent) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        console.log('CLOSE BUTTON CLICKED');
+        setCloseSource('button');
+        closeCart();
+    }, [closeCart]);
+
+    if (!isClient || reservations.length === 0) {
+        return null;
+    }
+
+    return (
         <div className="relative" ref={dropdownRef}>
             <animated.div style={iconAnimation}>
                 <button
-                    onClick={() => toggleCart()}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        toggleCart();
+                    }}
                     className="relative inline-flex items-center text-white text-black/80"
                     aria-label={reservationsText}
                 >
@@ -161,13 +316,22 @@ export default function ReservationIcon() {
                         zIndex: 50
                     }}
                     className={isCartOpen ? 'pointer-events-auto' : 'pointer-events-none'}
+                    ref={cartRef}
                 >
-                    <Card className="p-4 shadow-lg">
+                    <Card
+                        className="p-4 shadow-lg relative"
+                    >
+                        {/* Debug indicator for close source */}
+                        {closeSource && (
+                            <div className="absolute top-0 right-0 bg-yellow-200 text-xs px-1 rounded-bl">
+                                Closed by: {closeSource}
+                            </div>
+                        )}
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="font-semibold">{yourAdventuresText}:</h3>
                             <button
-                                onClick={closeCart}
-                                className="text-gray-500/80 hover:text-gray-700"
+                                onClick={handleCloseCart}
+                                className="text-gray-500/80 hover:text-gray-700 p-1"
                                 aria-label={closeText}
                             >
                                 <X size={16} />
@@ -195,13 +359,15 @@ export default function ReservationIcon() {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="absolute right-1 top-3">
+                                    <div className="absolute right-1 top-3 z-10">
+                                        {/* Delete button */}
                                         <button
-                                            onClick={() => removeReservation(reservation.id)}
-                                            className="ml-4 text-red-500/80 hover:text-red-600"
-                                            aria-label={t('removeReservation', { ns: 'booking' })}
+                                            type="button"
+                                            onClick={(e) => handleRemove(reservation.id, e)}
+                                            className="ml-4 text-red-500 hover:text-red-600 p-2 hover:bg-red-50 rounded cursor-pointer"
+                                            aria-label={removeText}
                                         >
-                                            <PiTrashLight size={16} />
+                                            <PiTrashLight size={18} />
                                         </button>
                                     </div>
                                 </div>
@@ -214,17 +380,18 @@ export default function ReservationIcon() {
                                     ${calculateTotal().toLocaleString(i18n.language === 'en' ? 'en-US' : 'es-CL')}
                                 </span>
                             </div>
-                            <Link
-                                href="/checkout"
-                                className="w-full bg-hotumatur-primary text-white py-2 px-4 rounded-md text-center block hover:bg-hotumatur-primary/90"
-                                onClick={closeCart}
+                            {/* Checkout button */}
+                            <button
+                                disabled={isNavigating}
+                                className="w-full bg-hotumatur-primary text-white py-2 px-4 rounded-md cursor-pointer hover:bg-hotumatur-primary/90 font-medium"
+                                onClick={handleCheckout}
                             >
-                                {continueToPayText}
-                            </Link>
+                                {isNavigating ? '...' : continueToPayText}
+                            </button>
                         </div>
                     </Card>
                 </animated.div>
             </div>
         </div>
-    ) : null
+    )
 }

@@ -3,9 +3,15 @@
 import { FaWhatsapp } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useDirectTranslation } from '@/hooks/useTranslatedText';
+import { usePathname } from 'next/navigation';
 
 const WhatsAppButton = () => {
     const [mounted, setMounted] = useState(false);
+    const pathname = usePathname();
+
+    // Skip rendering on checkout pages
+    const isCheckoutPage = pathname?.includes('/checkout');
 
     useEffect(() => {
         setMounted(true);
@@ -13,12 +19,17 @@ const WhatsAppButton = () => {
     }, []);
 
     const whatsappNumber = '+56998897762'; // Replace with your WhatsApp number
-    const message = 'Hola! Me gustaría conocer más sobre Rapa Nui y reservar un Tour con Ustedes! me pueden dar más información?'; // Default message
+
+    // Use direct translation for the WhatsApp message
+    const whatsappMessage = useDirectTranslation(
+        "Hello! I would like to learn more about Easter Island and book a Tour with you! Can you give me more information?",
+        "Hola! Me gustaría conocer más sobre Rapa Nui y reservar un Tour con Ustedes! me pueden dar más información?"
+    );
 
     const whatsappLink = `https://wa.me/${whatsappNumber.replace(
         /[^\d]/g,
         ''
-    )}?text=${encodeURIComponent(message)}`;
+    )}?text=${encodeURIComponent(whatsappMessage)}`;
 
     const button = (
         <div
@@ -48,7 +59,8 @@ const WhatsAppButton = () => {
         </div>
     );
 
-    if (!mounted) return null;
+    // Don't render if not mounted or if we're on a checkout page
+    if (!mounted || isCheckoutPage) return null;
 
     // Create a portal to render the button at the root level
     return createPortal(

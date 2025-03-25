@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import { es, enUS } from 'date-fns/locale';
 import { useProducts } from '@/hooks/useProducts';
 import { useReservations } from '@/context/ReservationContext';
+import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import SkeletonForm from '@/components/SkeletonForm';
@@ -27,6 +28,7 @@ const TourSelector = () => {
     const [selectedTourId, setSelectedTourId] = useState("");
     const { products: tours, loading, error } = useProducts();
     const { addReservation } = useReservations();
+    const { openCart } = useCart();
     const { toast } = useToast();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
@@ -125,6 +127,9 @@ const TourSelector = () => {
             image: selectedTour.images[0]?.src || "/placeholder.svg",
         });
 
+        // Open the cart automatically after adding a reservation
+        openCart();
+
         toast({
             variant: 'success',
             title: t('success', { ns: 'booking' }),
@@ -134,7 +139,9 @@ const TourSelector = () => {
                     <Button
                         variant="default"
                         size="default"
-                        onClick={() => router.push('/checkout')}
+                        onClick={() => {
+                            router.push('/checkout');
+                        }}
                     >
                         {t('continue', { ns: 'booking' })}
                     </Button>
