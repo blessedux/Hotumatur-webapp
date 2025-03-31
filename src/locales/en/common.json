@@ -29,5 +29,22 @@
     },
     "gallery": {
         "title": "Rapa Nui Gallery"
-    }
+    },
+    "paymentSuccess": "Payment Successful!",
+    "orderConfirmed": "Your order has been confirmed",
+    "orderNumber": "Order Number",
+    "paymentMethod": "Payment Method",
+    "thankYouMessage": "Thank you for your purchase. We're processing your order and will update you on its status soon.",
+    "confirmationEmail": "You will receive a confirmation email with your order details shortly.",
+    "backToHome": "Back to Home",
+    "contactUs": "Contact Us",
+    "paymentError": "Payment Failed",
+    "paymentFailed": "There was a problem processing your payment",
+    "errorCode": "Error Code",
+    "paymentErrorMessage": "We were unable to process your payment. Please check the following:",
+    "checkCardDetails": "Verify your card details are correct",
+    "tryDifferentMethod": "Try a different payment method",
+    "contactSupportIfPersistent": "Contact support if the problem persists",
+    "tryAgain": "Try Again",
+    "contactSupport": "Contact Support"
 }

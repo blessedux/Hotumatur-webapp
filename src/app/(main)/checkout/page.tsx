@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useReservations } from '@/context/ReservationContext';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
@@ -27,13 +27,20 @@ export default function CheckoutPage() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [isClient, setIsClient] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [errorDetails, setErrorDetails] = useState<any>(null);
     const [customerInfo, setCustomerInfo] = useState<CustomerInfo | null>(null);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'flow' | 'paypal'>('flow');
+    const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
     // Translations
     const preparingCheckoutText = useDirectTranslation(
         "Preparing your checkout...",
         "Preparando tu pago..."
+    );
+
+    const processingPaymentText = useDirectTranslation(
+        "Processing your payment...",
+        "Procesando tu pago..."
     );
 
     const noReservationsText = useDirectTranslation(
@@ -44,6 +51,11 @@ export default function CheckoutPage() {
     const errorText = useDirectTranslation(
         "There was an error processing your payment",
         "Hubo un error procesando tu pago"
+    );
+
+    const paymentErrorText = useDirectTranslation(
+        "Payment error",
+        "Error de pago"
     );
 
     const tryAgainText = useDirectTranslation(
@@ -92,7 +104,28 @@ export default function CheckoutPage() {
 
         // Debug log for initial render
         console.log('Checkout page mounted');
-    }, [router]);
+
+        // Set a timeout to make sure we don't hang forever on errors
+        const timeout = setTimeout(() => {
+            if (isProcessing) {
+                console.error('Payment processing timeout - taking too long');
+                setError('Payment processing timeout - please try again');
+                setIsProcessing(false);
+                toast({
+                    title: errorText,
+                    description: 'The payment process is taking too long. Please try again.',
+                    variant: "destructive"
+                });
+            }
+        }, 30000); // 30 second timeout
+
+        setTimeoutId(timeout);
+
+        return () => {
+            // Clear timeout on unmount
+            if (timeout) clearTimeout(timeout);
+        };
+    }, [router, toast, errorText]);
 
     // Debug log for reservations changes
     useEffect(() => {
@@ -101,7 +134,160 @@ export default function CheckoutPage() {
         }
     }, [reservations, isClient]);
 
-    // Process the payment when the component mounts and has customer info
+    // Process the payment - defined as a callback so we can call it again on retry
+    const processPayment = useCallback(async () => {
+        // Reset error state
+        setError(null);
+        setErrorDetails(null);
+
+        try {
+            setIsProcessing(true);
+            console.log('Processing payment for reservations:', reservations);
+            console.log('Using payment method:', selectedPaymentMethod);
+
+            if (!customerInfo) {
+                throw new Error('No customer information available');
+            }
+
+            if (reservations.length === 0) {
+                throw new Error('No reservations to process');
+            }
+
+            // Create an order with the reservations and customer info
+            const orderData = {
+                customer: customerInfo,
+                line_items: reservations.map(reservation => ({
+                    product_id: reservation.productId,
+                    quantity: reservation.quantity,
+                    meta_data: [
+                        {
+                            key: "date",
+                            value: reservation.date
+                        }
+                    ]
+                }))
+            };
+
+            console.log('Creating order with data:', orderData);
+
+            // Create the order
+            const orderResponse = await fetch('/api/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            // Handle non-200 responses with detailed error logging
+            if (!orderResponse.ok) {
+                let errorMessage = `Failed to create order: ${orderResponse.status}`;
+                let errorData;
+                try {
+                    errorData = await orderResponse.json();
+                    console.error('Order creation failed:', orderResponse.status, errorData);
+                    errorMessage += ` - ${JSON.stringify(errorData)}`;
+                } catch (e) {
+                    console.error('Could not parse error response');
+                }
+                throw new Error(errorMessage);
+            }
+
+            const { order } = await orderResponse.json();
+            console.log('Created order:', order);
+
+            // Determine payment gateway based on selected payment method
+            const paymentGateway = selectedPaymentMethod === 'flow' ? 'flow' : 'paypal';
+
+            // Create payment (Flow or PayPal)
+            const paymentResponse = await fetch(`/api/payments/${paymentGateway}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ orderId: order.id })
+            });
+
+            // Handle non-200 responses with detailed error logging
+            if (!paymentResponse.ok) {
+                let errorMessage = `Failed to create ${paymentGateway} payment: ${paymentResponse.status}`;
+                let errorData;
+                try {
+                    errorData = await paymentResponse.json();
+                    console.error(`${paymentGateway.toUpperCase()} payment creation failed:`, paymentResponse.status, errorData);
+                    errorMessage += ` - ${JSON.stringify(errorData)}`;
+                    setErrorDetails(errorData);
+                } catch (e) {
+                    console.error('Could not parse error response');
+                }
+                throw new Error(errorMessage);
+            }
+
+            const paymentData = await paymentResponse.json();
+            console.log(`${paymentGateway.toUpperCase()} payment created:`, paymentData);
+
+            // Redirect to payment gateway
+            if (paymentData.paymentUrl) {
+                console.log('Redirecting to payment URL:', paymentData.paymentUrl);
+
+                // Update UI to show we're redirecting
+                toast({
+                    title: "Redirecting to payment processor",
+                    description: "Please wait while we redirect you to the payment page...",
+                });
+
+                // Clean up customer info from session storage
+                sessionStorage.removeItem('hotumatur_customer_info');
+
+                // Clear the timeout since we're about to redirect
+                if (timeoutId) {
+                    clearTimeout(timeoutId);
+                }
+
+                // Save orderId in localStorage for reference after payment flow
+                if (order && order.id) {
+                    localStorage.setItem('lastOrderId', order.id.toString());
+                }
+
+                // Short delay to allow the toast to show before redirecting
+                setTimeout(() => {
+                    // Redirect to payment page
+                    window.location.href = paymentData.paymentUrl;
+                }, 1000);
+            } else {
+                throw new Error('No payment URL received');
+            }
+
+        } catch (error: any) {
+            console.error('Payment processing error:', error);
+            setError(error.message || 'Unknown error occurred');
+            setIsProcessing(false);
+
+            // Extract more detailed error information if available
+            let errorMsg = error.message || 'Unknown error occurred';
+
+            if (typeof errorDetails === 'object' && errorDetails !== null) {
+                if (errorDetails.error) errorMsg = errorDetails.error;
+                if (errorDetails.message) errorMsg += `: ${errorDetails.message}`;
+                if (errorDetails.details) {
+                    console.error('Error details:', errorDetails.details);
+
+                    // For Flow-specific errors, check for API error messages
+                    if (typeof errorDetails.details === 'string' && errorDetails.details.includes('Flow API error')) {
+                        errorMsg = errorDetails.details;
+                    }
+                }
+            }
+
+            toast({
+                title: paymentErrorText,
+                description: errorMsg,
+                variant: "destructive"
+            });
+        }
+    }, [reservations, customerInfo, selectedPaymentMethod, timeoutId, toast, paymentErrorText]);
+
+    // Start payment processing when we have all the required data
     useEffect(() => {
         // Only run on client-side and when we have customer info
         if (!isClient || !customerInfo) return;
@@ -115,107 +301,8 @@ export default function CheckoutPage() {
             return;
         }
 
-        const processPayment = async () => {
-            try {
-                setIsProcessing(true);
-                setError(null);
-                console.log('Processing payment for reservations:', reservations);
-                console.log('Using payment method:', selectedPaymentMethod);
-
-                // Create an order with the reservations and customer info
-                const orderData = {
-                    customer: customerInfo,
-                    line_items: reservations.map(reservation => ({
-                        product_id: reservation.productId,
-                        quantity: reservation.quantity,
-                        meta_data: [
-                            {
-                                key: "date",
-                                value: reservation.date
-                            }
-                        ]
-                    }))
-                };
-
-                console.log('Creating order with data:', orderData);
-
-                // Create the order
-                const orderResponse = await fetch('/api/orders', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(orderData)
-                });
-
-                // Handle non-200 responses with detailed error logging
-                if (!orderResponse.ok) {
-                    let errorMessage = `Failed to create order: ${orderResponse.status}`;
-                    try {
-                        const errorData = await orderResponse.json();
-                        console.error('Order creation failed:', orderResponse.status, errorData);
-                        errorMessage += ` - ${JSON.stringify(errorData)}`;
-                    } catch (e) {
-                        console.error('Could not parse error response');
-                    }
-                    throw new Error(errorMessage);
-                }
-
-                const { order } = await orderResponse.json();
-                console.log('Created order:', order);
-
-                // Determine payment gateway based on selected payment method
-                const paymentGateway = selectedPaymentMethod === 'flow' ? 'flow' : 'paypal';
-
-                // Create payment (Flow or PayPal)
-                const paymentResponse = await fetch(`/api/payments/${paymentGateway}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ orderId: order.id })
-                });
-
-                // Handle non-200 responses with detailed error logging
-                if (!paymentResponse.ok) {
-                    let errorMessage = `Failed to create ${paymentGateway} payment: ${paymentResponse.status}`;
-                    try {
-                        const errorData = await paymentResponse.json();
-                        console.error(`${paymentGateway.toUpperCase()} payment creation failed:`, paymentResponse.status, errorData);
-                        errorMessage += ` - ${JSON.stringify(errorData)}`;
-                    } catch (e) {
-                        console.error('Could not parse error response');
-                    }
-                    throw new Error(errorMessage);
-                }
-
-                const paymentData = await paymentResponse.json();
-                console.log(`${paymentGateway.toUpperCase()} payment created:`, paymentData);
-
-                // Redirect to payment gateway
-                if (paymentData.paymentUrl) {
-                    console.log('Redirecting to payment URL:', paymentData.paymentUrl);
-
-                    // Clean up customer info from session storage
-                    sessionStorage.removeItem('hotumatur_customer_info');
-
-                    // Redirect to payment page
-                    window.location.href = paymentData.paymentUrl;
-                } else {
-                    throw new Error('No payment URL received');
-                }
-
-            } catch (error: any) {
-                console.error('Payment processing error:', error);
-                setError(error.message || 'Unknown error occurred');
-                toast({
-                    title: errorText,
-                    description: error.message || 'Something went wrong with the payment process',
-                    variant: "destructive"
-                });
-                setIsProcessing(false);
-            }
-        };
+        // Skip if we already have an error
+        if (error) return;
 
         // Start payment processing with a small delay to ensure reservations are loaded
         const timer = setTimeout(() => {
@@ -223,11 +310,11 @@ export default function CheckoutPage() {
         }, 500);
 
         return () => clearTimeout(timer);
-    }, [reservations, toast, isClient, isProcessing, errorText, clearReservations, customerInfo, selectedPaymentMethod]);
+    }, [reservations, isClient, isProcessing, customerInfo, error, processPayment]);
 
     // Handle retry
     const handleRetry = () => {
-        setIsProcessing(false); // Reset processing state to trigger the effect again
+        processPayment();
     };
 
     // Handle go back to form
@@ -250,67 +337,63 @@ export default function CheckoutPage() {
         );
     }
 
-    // Show error state if there was an error
+    // Show error state - simplified version without Alert component
     if (error) {
         return (
-            <div className="flex flex-col items-center justify-center mt-40 min-h-[60vh]">
-                <div className="text-red-500 text-xl mb-4">{errorText}</div>
-                <p className="mb-6">{error}</p>
-                <div className="flex gap-4">
-                    <Button
-                        onClick={handleRetry}
-                        className="bg-hotumatur-primary hover:bg-hotumatur-primary/90"
-                    >
-                        {tryAgainText}
-                    </Button>
-                    <Button
-                        variant="outline"
-                        onClick={handleBackToForm}
-                    >
-                        {backToFormText}
-                    </Button>
-                    <Button
-                        variant="outline"
-                        onClick={handleGoBack}
-                    >
-                        {backToHomeText}
-                    </Button>
+            <div className="flex flex-col items-center justify-center mt-20 min-h-[60vh] px-4">
+                <div className="w-full max-w-2xl">
+                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">
+                        <h3 className="text-lg font-semibold mb-2">{paymentErrorText}</h3>
+                        <p>{error}</p>
+                    </div>
+
+                    {errorDetails && (
+                        <div className="text-sm text-gray-500 mb-6">
+                            <details>
+                                <summary className="cursor-pointer font-medium">Technical Details</summary>
+                                <pre className="mt-2 whitespace-pre-wrap overflow-auto max-h-40 p-2 bg-gray-100 rounded">
+                                    {JSON.stringify(errorDetails, null, 2)}
+                                </pre>
+                            </details>
+                        </div>
+                    )}
+
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center mt-4">
+                        <Button onClick={handleRetry} className="mb-2 sm:mb-0">
+                            {tryAgainText}
+                        </Button>
+                        <Button onClick={handleBackToForm} variant="outline" className="mb-2 sm:mb-0">
+                            {backToFormText}
+                        </Button>
+                        <Button onClick={handleGoBack} variant="ghost">
+                            {backToHomeText}
+                        </Button>
+                    </div>
                 </div>
             </div>
         );
     }
 
-    // Client-side rendering - no reservations
+    // No reservations
     if (reservations.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center mt-40 min-h-[60vh]">
-                <p className="text-lg mb-6">{noReservationsText}</p>
-                <Button
-                    onClick={handleGoBack}
-                    className="bg-hotumatur-primary hover:bg-hotumatur-primary/90"
-                >
+                <h2 className="text-xl font-bold mb-4">{noReservationsText}</h2>
+                <Button onClick={handleGoBack}>
                     {backToHomeText}
                 </Button>
             </div>
         );
     }
 
-    // Processing state
+    // Processing payment
     return (
         <div className="flex flex-col items-center justify-center mt-40 min-h-[60vh]">
             <LoadingSpinner />
-            <p className="mt-4 text-lg">{preparingCheckoutText}</p>
-            <p className="mt-2 text-sm text-gray-500">Processing {reservations.length} item(s)...</p>
-            {customerInfo && (
-                <div className="mt-2 text-center">
-                    <p className="text-sm text-gray-500">
-                        Order for: {customerInfo.first_name} {customerInfo.last_name}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                        Payment method: {selectedPaymentMethod === 'flow' ? 'Flow (CLP)' : 'PayPal (USD)'}
-                    </p>
-                </div>
-            )}
+            <p className="mt-4 text-lg">{processingPaymentText}</p>
+            <p className="mt-2 text-sm text-gray-500">
+                {selectedPaymentMethod === 'flow' ? 'Flow' : 'PayPal'}
+            </p>
         </div>
     );
 } 

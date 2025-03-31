@@ -24,5 +24,8 @@
         "futureDateRequired": "Date must be in the future",
         "emailRequired": "Please enter your email",
         "tourNotFound": "Tour not found"
-    }
+    },
+    "": "Select a date",
+    "Tour": "Tour",
+    "me@gmail.com": "me@gmail.com"
 }

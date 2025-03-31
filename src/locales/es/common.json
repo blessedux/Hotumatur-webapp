@@ -29,5 +29,22 @@
     },
     "gallery": {
         "title": "Galería de Rapa Nui"
-    }
+    },
+    "paymentSuccess": "¡Pago Exitoso!",
+    "orderConfirmed": "Tu orden ha sido confirmada",
+    "orderNumber": "Número de Orden",
+    "paymentMethod": "Método de Pago",
+    "thankYouMessage": "Gracias por tu compra. Estamos procesando tu pedido y te actualizaremos sobre su estado pronto.",
+    "confirmationEmail": "Recibirás un correo electrónico de confirmación con los detalles de tu pedido en breve.",
+    "backToHome": "Volver al Inicio",
+    "contactUs": "Contáctanos",
+    "paymentError": "Pago Fallido",
+    "paymentFailed": "Hubo un problema al procesar tu pago",
+    "errorCode": "Código de Error",
+    "paymentErrorMessage": "No pudimos procesar tu pago. Por favor verifica lo siguiente:",
+    "checkCardDetails": "Verifica que los datos de tu tarjeta sean correctos",
+    "tryDifferentMethod": "Intenta con un método de pago diferente",
+    "contactSupportIfPersistent": "Contacta a soporte si el problema persiste",
+    "tryAgain": "Intentar de Nuevo",
+    "contactSupport": "Contactar Soporte"
 }

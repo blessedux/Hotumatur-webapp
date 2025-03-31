@@ -41,6 +41,106 @@ const TRANSLATABLE_ATTRIBUTES = [
     'no incluye'
 ];
 
+// Mock data for development and testing
+const mockProducts = [
+    {
+        id: 1001,
+        name: "Rapa Nui Sunset Tour",
+        slug: "rapa-nui-sunset-tour",
+        permalink: "/tour/rapa-nui-sunset-tour",
+        date_created: "2023-03-15T14:30:00",
+        status: "publish",
+        description: "Experience the magical sunset of Easter Island with our expert guides.",
+        short_description: "Sunset tour of Rapa Nui",
+        price: "75000",
+        categories: [{ id: 1, name: "Tours", slug: "tours" }],
+        images: [{ id: 101, src: "/images/placeholder-tour.jpg", alt: "Rapa Nui Sunset" }],
+        attributes: [
+            {
+                id: 1,
+                name: "duracion",
+                position: 0,
+                visible: true,
+                variation: false,
+                options: ["3 hours"]
+            },
+            {
+                id: 2,
+                name: "dificultad",
+                position: 1,
+                visible: true,
+                variation: false,
+                options: ["Easy"]
+            }
+        ],
+        meta_data: []
+    },
+    {
+        id: 1002,
+        name: "Moai Archaeological Tour",
+        slug: "moai-archaeological-tour",
+        permalink: "/tour/moai-archaeological-tour",
+        date_created: "2023-03-16T10:00:00",
+        status: "publish",
+        description: "Explore the ancient Moai statues with our archaeology experts.",
+        short_description: "Archaeological tour of the Moai",
+        price: "95000",
+        categories: [{ id: 1, name: "Tours", slug: "tours" }],
+        images: [{ id: 102, src: "/images/placeholder-tour-2.jpg", alt: "Moai statues" }],
+        attributes: [
+            {
+                id: 1,
+                name: "duracion",
+                position: 0,
+                visible: true,
+                variation: false,
+                options: ["6 hours"]
+            },
+            {
+                id: 2,
+                name: "dificultad",
+                position: 1,
+                visible: true,
+                variation: false,
+                options: ["Moderate"]
+            }
+        ],
+        meta_data: []
+    },
+    {
+        id: 1003,
+        name: "Island Cultural Experience",
+        slug: "island-cultural-experience",
+        permalink: "/tour/island-cultural-experience",
+        date_created: "2023-03-17T09:15:00",
+        status: "publish",
+        description: "Immerse yourself in the rich cultural heritage of Rapa Nui.",
+        short_description: "Cultural immersion tour",
+        price: "85000",
+        categories: [{ id: 1, name: "Tours", slug: "tours" }],
+        images: [{ id: 103, src: "/images/placeholder-tour-3.jpg", alt: "Cultural experience" }],
+        attributes: [
+            {
+                id: 1,
+                name: "duracion",
+                position: 0,
+                visible: true,
+                variation: false,
+                options: ["4 hours"]
+            },
+            {
+                id: 2,
+                name: "dificultad",
+                position: 1,
+                visible: true,
+                variation: false,
+                options: ["Easy"]
+            }
+        ],
+        meta_data: []
+    }
+];
+
 export async function GET(request: NextRequest) {
     try {
         // Get query parameters
@@ -51,6 +151,26 @@ export async function GET(request: NextRequest) {
         const limit = searchParams.get('limit') || '100';
 
         console.log(`[API] Request - Products: slug=${slug}, lang=${lang}, category=${category}, limit=${limit}`);
+
+        // Check for environment or use mock data for development
+        if (process.env.NODE_ENV === 'development' && process.env.USE_MOCK_DATA === 'true') {
+            console.log('[API] Using mock product data for development');
+
+            // Filter mock products based on query parameters
+            let filteredProducts = [...mockProducts];
+
+            if (slug) {
+                filteredProducts = filteredProducts.filter(p => p.slug === slug);
+            }
+
+            if (category) {
+                filteredProducts = filteredProducts.filter(p =>
+                    p.categories.some(c => c.id.toString() === category || c.slug === category)
+                );
+            }
+
+            return NextResponse.json(filteredProducts);
+        }
 
         // Create auth header
         const auth = Buffer.from(`${config.woocommerce.consumerKey}:${config.woocommerce.consumerSecret}`).toString('base64');
@@ -88,6 +208,9 @@ export async function GET(request: NextRequest) {
         const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
         try {
+            console.log(`[API] Making request to WooCommerce with URL: ${apiUrl}`);
+            console.log(`[API] Using auth header: Basic ${auth.substring(0, 10)}...`);
+
             const response = await fetch(apiUrl, {
                 headers: {
                     Authorization: `Basic ${auth}`,
@@ -110,6 +233,20 @@ export async function GET(request: NextRequest) {
                     'Content-Type': 'application/json',
                 });
 
+                // Try to get more information about the error
+                try {
+                    const errorJson = JSON.parse(errorText);
+                    console.error(`[API] Parsed error response:`, errorJson);
+                } catch (e) {
+                    console.error(`[API] Could not parse error response as JSON:`, e);
+                }
+
+                // Fall back to mock data in development
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('[API] Falling back to mock data due to API error');
+                    return NextResponse.json(mockProducts);
+                }
+
                 return NextResponse.json(
                     {
                         error: `Failed to fetch products: ${response.status}`,
@@ -130,6 +267,13 @@ export async function GET(request: NextRequest) {
             } catch (parseError) {
                 console.error('[API] Error parsing JSON response:', parseError);
                 console.error('[API] Response text preview:', responseText.substring(0, 200));
+
+                // Fall back to mock data in development
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('[API] Falling back to mock data due to JSON parse error');
+                    return NextResponse.json(mockProducts);
+                }
+
                 return NextResponse.json(
                     { error: 'Invalid JSON response from WooCommerce API' },
                     { status: 500 }
@@ -139,6 +283,13 @@ export async function GET(request: NextRequest) {
             // Validate response
             if (!Array.isArray(products)) {
                 console.error('[API] Invalid response format from WooCommerce API:', products);
+
+                // Fall back to mock data in development
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('[API] Falling back to mock data due to non-array response');
+                    return NextResponse.json(mockProducts);
+                }
+
                 return NextResponse.json(
                     { error: 'Invalid response format from WooCommerce API' },
                     { status: 500 }
@@ -253,6 +404,13 @@ export async function GET(request: NextRequest) {
             // Handle timeout specifically
             if (error instanceof DOMException && error.name === 'AbortError') {
                 console.error('[API] WooCommerce API request timed out');
+
+                // Fall back to mock data in development
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('[API] Falling back to mock data due to timeout');
+                    return NextResponse.json(mockProducts);
+                }
+
                 return NextResponse.json(
                     { error: 'Request to WooCommerce API timed out' },
                     { status: 504 }
@@ -264,6 +422,13 @@ export async function GET(request: NextRequest) {
         }
     } catch (error) {
         console.error('[API] Error fetching products:', error);
+
+        // Fall back to mock data in development
+        if (process.env.NODE_ENV === 'development') {
+            console.log('[API] Falling back to mock data due to general error');
+            return NextResponse.json(mockProducts);
+        }
+
         return NextResponse.json(
             { error: 'Failed to fetch products', detail: error instanceof Error ? error.message : String(error) },
             { status: 500 }

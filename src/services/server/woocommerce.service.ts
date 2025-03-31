@@ -27,6 +27,14 @@ export class WooCommerceService {
         }>;
     }): Promise<Order> {
         try {
+            console.log('[WooCommerce] Creating order with data:', {
+                customer: {
+                    ...orderData.customer,
+                    email: '***@***' // Mask email for logging
+                },
+                lineItems: orderData.line_items.length
+            });
+
             // Validate and format email
             const formattedEmail = orderData.customer.email.trim().toLowerCase();
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formattedEmail)) {
@@ -47,21 +55,63 @@ export class WooCommerceService {
                 set_paid: false
             };
 
+            console.log('[WooCommerce] Sending order creation request');
             const response = await api.post(this.ordersPath, formattedData);
+            console.log('[WooCommerce] Order created successfully:', {
+                orderId: response.data.id,
+                status: response.data.status,
+                total: response.data.total
+            });
+
             return response.data;
-        } catch (error) {
-            console.error('Failed to create order:', error);
-            throw error;
+        } catch (error: any) {
+            console.error('[WooCommerce] Failed to create order:', error);
+
+            // Extract detailed error information
+            const errorDetails = {
+                message: error.message,
+                status: error.response?.status,
+                statusText: error.response?.statusText,
+                data: error.response?.data,
+                url: error.config?.url
+            };
+
+            console.error('[WooCommerce] Error details:', errorDetails);
+
+            // Throw enhanced error
+            throw new Error(`Failed to create order: ${JSON.stringify(errorDetails)}`);
         }
     }
 
     async getOrder(id: number): Promise<Order> {
         try {
+            console.log(`[WooCommerce] Getting order ${id}`);
+            console.log(`[WooCommerce] API URL: ${this.ordersPath}/${id}`);
+
             const response = await api.get(`${this.ordersPath}/${id}`);
+            console.log(`[WooCommerce] Order ${id} retrieved successfully:`, {
+                status: response.status,
+                orderId: response.data.id,
+                total: response.data.total
+            });
+
             return response.data;
-        } catch (error) {
-            console.error(`Failed to get order ${id}:`, error);
-            throw error;
+        } catch (error: any) {
+            console.error(`[WooCommerce] Failed to get order ${id}:`, error);
+
+            // Extract detailed error information
+            const errorDetails = {
+                message: error.message,
+                status: error.response?.status,
+                statusText: error.response?.statusText,
+                data: error.response?.data,
+                url: error.config?.url
+            };
+
+            console.error('[WooCommerce] Error details:', errorDetails);
+
+            // Throw enhanced error
+            throw new Error(`Failed to get order ${id}: ${JSON.stringify(errorDetails)}`);
         }
     }
 
